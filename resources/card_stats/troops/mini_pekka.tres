@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardStats" load_steps=2 format=3 uid="uid://dcife0k06pr5l"]
+
+[ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://scenes/card_stats.gd" id="1_3jn0r"]
+
+[resource]
+script = ExtResource("1_3jn0r")
+hp = 1433
+move_speed = 90
+hit_speed = 1.6
+first_hit_speed = 0.5
+deploy_time = 1.0
+sight_range = 5.0
+hit_range = 0.8
+damage = 755
+crown_tower_damage = 755
+target_troops = true
+target_buildings = true
+target_ground = true
+is_troop = true
+mass = 4
+metadata/_custom_type_script = "uid://chdsc6dtr4mny"

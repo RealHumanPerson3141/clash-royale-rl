@@ -1,37 +1,37 @@
 class_name CardStats
 extends Resource
 
-# Health points
-var hp: int
-#var hp_shield: int
+@export_group("Health")
+@export var hp: int
+@export var hp_shield: int
 
-# Used to calculate how units are pushed around
-var mass: int
+@export_group("Speeds")
+@export var move_speed: int
+@export var hit_speed: float
 
-# Speeds
-var speed: int
-var hit_speed: float
+@export_group("Deploy")
+@export var first_hit_speed: float
+@export var deploy_time: float
 
-# Deploy related stats
-var first_hit_speed: float
-var deploy_time: float
+@export_group("Attack Range")
+@export var sight_range: float
+@export var hit_range: float
 
-# Ranges
-var hit_range: float
-var sight_range: float
+@export_group("Damage")
+@export var damage: int
+@export var crown_tower_damage: int
 
-# Damage
-var damage: int
-var crown_tower_damage: int
-var damage_per_second: int
+@export_group("Targeting")
+@export var target_troops: bool
+@export var target_buildings: bool
+@export var target_air: bool
+@export var target_ground: bool
 
-# Targeting
-var target_troops: bool
-var target_air: bool
-var target_ground: bool
+@export_group("Type")
+@export var is_troop: bool
+@export var is_spell: bool
+@export var is_building: bool
 
-# Card type
-var is_air: bool
-var is_troop: bool
-var is_spell: bool
-#var is_building: bool
+@export_group("Miscellaneous")
+@export var is_air: bool
+@export var mass: int
