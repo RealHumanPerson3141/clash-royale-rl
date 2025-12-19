@@ -501,26 +501,22 @@ tile_set = SubResource("TileSet_4ag8t")
 
 [node name="CrownTowers" type="Node" parent="Cards/Blue"]
 
-[node name="PrincessUp" parent="Cards/Blue/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="BluePrincessUp" parent="Cards/Blue/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(104, 56)
 stats = ExtResource("4_7ft05")
 is_blue = true
 
-[node name="BlueKing" parent="Cards/Blue/CrownTowers" instance=ExtResource("3_olpmc")]
+[node name="BlueKing" parent="Cards/Blue/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(48, 144)
 stats = ExtResource("5_4ag8t")
 is_blue = true
 
-[node name="RedKing" parent="Cards/Blue/CrownTowers" instance=ExtResource("3_olpmc")]
-position = Vector2(464, 144)
-stats = ExtResource("5_4ag8t")
-
-[node name="PrincessDown" parent="Cards/Blue/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="BluePrincessDown" parent="Cards/Blue/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(104, 232)
 stats = ExtResource("4_7ft05")
 is_blue = true
 
-[node name="BlueMiniPekka" parent="Cards" instance=ExtResource("3_olpmc")]
+[node name="BlueMiniPekka" parent="Cards/Blue" instance=ExtResource("3_olpmc")]
 position = Vector2(38, 105)
 stats = ExtResource("4_xdvfk")
 is_blue = true
@@ -529,11 +525,15 @@ is_blue = true
 
 [node name="CrownTowers" type="Node" parent="Cards/Red"]
 
-[node name="PrincessUp" parent="Cards/Red/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="RedPrincessUp" parent="Cards/Red/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(408, 56)
 stats = ExtResource("4_7ft05")
 
-[node name="PrincessDown" parent="Cards/Red/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="RedKing" parent="Cards/Red/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+position = Vector2(464, 144)
+stats = ExtResource("5_4ag8t")
+
+[node name="RedPrincessDown" parent="Cards/Red/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(408, 232)
 stats = ExtResource("4_7ft05")
 
