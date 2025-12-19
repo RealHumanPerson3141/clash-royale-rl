@@ -66,7 +66,7 @@ func _physics_process(_delta: float) -> void:
 	if target == null:
 		_retarget()
 	
-	if stats.move_speed > 0:
+	if stats.move_speed > 0 and hit_timer.is_stopped():
 		
 		navigation.target_position = target.position
 		
