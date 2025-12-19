@@ -50,6 +50,11 @@ four={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Blue"
+2d_physics/layer_2="Red"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

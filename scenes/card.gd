@@ -14,6 +14,7 @@ var tiles_per_second: float
 var enemy_group: String
 
 var target: Card = null
+var targets: Array[Card] = []
 var target_groups: Array[String]
 
 var in_combat: bool = false
@@ -28,12 +29,16 @@ var in_combat: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
 	# TODO: Add actual card designs
 	if is_blue:
 		$Sprite2D.modulate = Color(0,0,1,1)
 	else:
 		$Sprite2D.modulate = Color(1,0,0,1)
+	
+	# Set collision layers to differenciate blue and red
+	collision_layer = 2 - int(is_blue)
+	sight_area.collision_mask = 2 - int(not is_blue)
+	hit_area.collision_mask = 2 - int(not is_blue)
 	
 	navigation.target_desired_distance = stats.hit_range * tile_size
 	
@@ -61,7 +66,7 @@ func _physics_process(delta: float) -> void:
 		print(name, " died")
 		queue_free()
 	
-	if target == null or target.is_queued_for_deletion():
+	if target == null:
 		_retarget()
 	
 	if stats.move_speed > 0:
@@ -112,36 +117,48 @@ func _configure_target_groups():
 
 
 func _retarget():
-	var towers = get_tree().get_nodes_in_group("towers")
-	var enemy_towers = _filter_by_groups(towers, [enemy_group])
-	
-	# We have to convert the Node2D array into a Node array for some reason (ignoring inheritance??)
-	var near_enemies = sight_area.get_overlapping_bodies()
-	near_enemies = _filter_by_groups(near_enemies, target_groups)
-	
-	var targets = near_enemies + enemy_towers
+	# TODO: Find an even slightly more elegant solution because this sucks
+	if targets.is_empty():
+		# Add enemy crown towers to targets, as they are
+		# anomalously targeted by every card since start
+		var towers = get_tree().get_nodes_in_group("towers")
+		for tower in towers:
+			if tower.is_in_group(enemy_group):
+				targets.append(tower)
 	
 	target = _get_nearest(targets)
 	
-	if near_enemies == []:
+	if not hit_area.has_overlapping_bodies():
+		hit_timer.stop()
+	if not sight_area.has_overlapping_bodies():
 		in_combat = false
 
 
 func _on_sight_area_body_entered(body: Node2D) -> void:
-	# Attempt to reach spotted enemy if not in combat
-	if not in_combat and body.is_in_group(enemy_group):
+	# Enemy towers are always targeted, and so are not appended when spotted
+	if _is_targetable(body) and not body.is_in_group("towers"):
+		targets.append(body)
+	
+	if not in_combat and _is_targetable(body):
 		_retarget()
 		in_combat = true
 
 
 func _on_sight_area_body_exited(body: Node2D) -> void:
+	if body in targets:
+		targets.erase(body)
 	if body == target:
 		_retarget()
 
 
 func _on_hit_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group(enemy_group):
+	if _is_targetable(body):
 		hit_timer.start()
+
+
+func _on_hit_area_body_exited(body: Node2D) -> void:
+	if body == target:
+		hit_timer.stop()
 
 
 func _on_hit_timer_timeout() -> void:
@@ -156,7 +173,7 @@ func _on_hit_timer_timeout() -> void:
 	else:
 		target.current_hp -= stats.damage
 	
-	if target.current_hp <= 0:
+	if target == null or target.current_hp <= 0:
 		target = _retarget()
 	else:
 		hit_timer.start()
@@ -175,18 +192,8 @@ func _get_nearest(nodes):
 	return nearest_node
 
 
-func _filter_by_groups(nodes, groups: Array[String]):
-	var filtered: = []
-	
-	for node in nodes:
-		var in_all_groups := true
-		
-		for group in groups:
-			if not node.is_in_group(group):
-				in_all_groups = false
-				break
-		
-		if in_all_groups:
-			filtered.append(node)
-	
-	return filtered
+func _is_targetable(card: Card) -> bool:
+	for group in target_groups:
+		if not card.is_in_group(group):
+			return card.is_in_group(enemy_group) and card.is_in_group("towers")
+	return true

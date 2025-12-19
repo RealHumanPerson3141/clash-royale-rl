@@ -22,8 +22,8 @@ bg_color = Color(1, 1, 1, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_kg30u"]
 
 [node name="Card" type="CharacterBody2D"]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 0
+collision_mask = 3
 script = ExtResource("1_6u4wf")
 stats = SubResource("Resource_kg30u")
 
@@ -49,16 +49,16 @@ value = 0.34
 show_percentage = false
 
 [node name="SightArea" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 0
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SightArea"]
 shape = SubResource("CircleShape2D_ktuci")
 debug_color = Color(0.5304256, 0.57135326, 0, 0.41960785)
 
 [node name="HitArea" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 0
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
 shape = SubResource("CircleShape2D_kg30u")
@@ -70,4 +70,5 @@ one_shot = true
 [connection signal="body_entered" from="SightArea" to="." method="_on_sight_area_body_entered"]
 [connection signal="body_exited" from="SightArea" to="." method="_on_sight_area_body_exited"]
 [connection signal="body_entered" from="HitArea" to="." method="_on_hit_area_body_entered"]
+[connection signal="body_exited" from="HitArea" to="." method="_on_hit_area_body_exited"]
 [connection signal="timeout" from="HitTimer" to="." method="_on_hit_timer_timeout"]
