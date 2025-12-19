@@ -54,7 +54,7 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SightArea"]
 shape = SubResource("CircleShape2D_ktuci")
-debug_color = Color(0.5304256, 0.57135326, 0, 0.41960785)
+debug_color = Color(0.7808608, 0.4040467, 0.4585783, 0.14901961)
 
 [node name="HitArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -62,7 +62,7 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
 shape = SubResource("CircleShape2D_kg30u")
-debug_color = Color(0.5304256, 0.57135326, 0, 0.41960785)
+debug_color = Color(0.49542093, 0.49512863, 0.81674886, 0.41960785)
 
 [node name="HitTimer" type="Timer" parent="."]
 one_shot = true

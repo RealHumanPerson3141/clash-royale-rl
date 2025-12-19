@@ -30,10 +30,7 @@ var in_combat: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# TODO: Add actual card designs
-	if is_blue:
-		$Sprite2D.modulate = Color(0,0,1,1)
-	else:
-		$Sprite2D.modulate = Color(1,0,0,1)
+	$Sprite2D.modulate = Color(0,0,1,1) if is_blue else Color(1,0,0,1)
 	
 	# Set collision layers to differenciate blue and red
 	collision_layer = 2 - int(is_blue)
@@ -59,7 +56,7 @@ func _ready() -> void:
 	_configure_target_groups()
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	health_bar.value = current_hp
 	
 	if current_hp <= 0:
@@ -179,8 +176,8 @@ func _on_hit_timer_timeout() -> void:
 		hit_timer.start()
 
 
-func _get_nearest(nodes):
-	var nearest_node
+func _get_nearest(nodes: Array):
+	var nearest_node: Node2D = null
 	var min_distance := 1.79769e308 # Maximum float value
 	
 	for node in nodes:
