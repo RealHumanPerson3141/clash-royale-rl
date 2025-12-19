@@ -181,6 +181,10 @@ func _get_nearest(nodes: Array):
 	var min_distance := 1.79769e308 # Maximum float value
 	
 	for node in nodes:
+		# TODO: Fix allowing freed cards to remain in target pool
+		if node == null:
+			continue
+		
 		var distance_to_node = position.distance_squared_to(node.position)
 		if distance_to_node < min_distance:
 			nearest_node = node
