@@ -15,4 +15,5 @@ target_buildings = true
 target_air = true
 target_ground = true
 is_building = true
+is_ranged = true
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

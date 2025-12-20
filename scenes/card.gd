@@ -2,8 +2,6 @@ class_name Card
 extends CharacterBody2D
 
 
-static var tile_size := 16
-
 @export var stats: CardStats
 @export var is_blue: bool
 
@@ -27,6 +25,8 @@ var in_combat: bool = false
 @onready var sight_area: Area2D = $SightArea
 @onready var hit_area: Area2D = $HitArea
 
+@onready var projectile_scene := preload("res://scenes/projectile.tscn")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# TODO: Add actual card designs
@@ -37,20 +37,20 @@ func _ready() -> void:
 	sight_area.collision_mask = 2 - int(not is_blue)
 	hit_area.collision_mask = 2 - int(not is_blue)
 	
-	navigation.target_desired_distance = stats.hit_range * tile_size
+	navigation.target_desired_distance = stats.hit_range * Global.TILE_SIZE
 	
 	current_hp = stats.hp
 	health_bar.max_value = stats.hp
 	
-	tiles_per_second = stats.move_speed * 0.02 * tile_size
+	tiles_per_second = stats.move_speed * 0.02 * Global.TILE_SIZE
 	
 	hit_timer.wait_time = stats.hit_speed
 	
 	# The only children of these areas should be their collision circles
 	sight_area.get_child(0).shape = CircleShape2D.new()
-	sight_area.get_child(0).shape.radius = stats.sight_range * tile_size
+	sight_area.get_child(0).shape.radius = stats.sight_range * Global.TILE_SIZE
 	hit_area.get_child(0).shape = CircleShape2D.new()
-	hit_area.get_child(0).shape.radius = stats.hit_range * tile_size
+	hit_area.get_child(0).shape.radius = stats.hit_range * Global.TILE_SIZE
 	
 	_configure_groups()
 	_configure_target_groups()
@@ -131,6 +131,14 @@ func _retarget():
 		in_combat = false
 
 
+func _attack() -> void:
+	print(name, " hit ", target.name)
+	
+	if target.is_in_group("towers"):
+		target.current_hp -= stats.crown_tower_damage
+	else:
+		target.current_hp -= stats.damage
+
 func _on_sight_area_body_entered(body: Node2D) -> void:
 	# Enemy towers are always targeted, and so are not appended when spotted
 	if _is_targetable(body) and not body.is_in_group("towers"):
@@ -162,13 +170,17 @@ func _on_hit_timer_timeout() -> void:
 	if not in_combat:
 		return
 	
-	# TODO: Make hitting more responsive and display projectiles
-	print(name, " hit ", target.name, " (%d damage)" % stats.damage)
-	
-	if target.is_in_group("towers"):
-		target.current_hp -= stats.crown_tower_damage
+	if stats.is_ranged:
+		var projectile = projectile_scene.instantiate()
+		
+		projectile.position = position
+		projectile.target = target
+		projectile.tiles_per_second = 600 * 0.02 * Global.TILE_SIZE
+		projectile.hit_target.connect(_attack)
+		
+		add_sibling(projectile)
 	else:
-		target.current_hp -= stats.damage
+		_attack()
 	
 	if target == null or target.current_hp <= 0:
 		target = _retarget()

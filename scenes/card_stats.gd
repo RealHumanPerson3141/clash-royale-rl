@@ -34,4 +34,5 @@ extends Resource
 
 @export_group("Miscellaneous")
 @export var is_air: bool
+@export var is_ranged: bool
 @export var mass: int
