@@ -9,10 +9,11 @@
 [ext_resource type="Resource" uid="uid://c8qyh26fe0x0r" path="res://resources/card_stats/troops/giant.tres" id="7_dpxgc"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7ft05"]
-vertices = PackedVector2Array(280, 227, 280, 61, 488, 184, 488, 280, 280, 51, 280, 8, 488, 8, 488, 104, 504, 104, 504, 184, 232, 51, 232, 61, 280, 280, 280, 237, 232, 227, 232, 237, 24, 184, 232, 280, 24, 280, 24, 104, 8, 184, 8, 104, 24, 8, 232, 8)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(7, 8, 9, 2), PackedInt32Array(7, 2, 1, 4), PackedInt32Array(10, 4, 1, 11), PackedInt32Array(3, 12, 13), PackedInt32Array(0, 3, 13, 14), PackedInt32Array(14, 13, 15, 16), PackedInt32Array(15, 17, 18, 16), PackedInt32Array(11, 14, 16, 19), PackedInt32Array(16, 20, 21, 19), PackedInt32Array(11, 19, 22, 10), PackedInt32Array(23, 10, 22)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(16, 0, 16, 96, 0, 96, 0, 192, 16, 192, 16, 288, 240, 288, 240, 245, 272, 245, 272, 288, 496, 288, 496, 192, 512, 192, 512, 96, 496, 96, 496, 0, 272, 0, 272, 43, 240, 43, 240, 0), PackedVector2Array(240, 69, 272, 69, 272, 219, 240, 219)])
-agent_radius = 8.0
+vertices = PackedVector2Array(279.89844, 231.89844, 279.89844, 56.101563, 488.10156, 184.10156, 488.10156, 280.10156, 279.89844, 55.898438, 279.89844, 7.8984375, 488.10156, 7.8984375, 488.10156, 103.89844, 504.10156, 103.89844, 504.10156, 184.10156, 232.10156, 55.898438, 232.10156, 56.101563, 279.89844, 280.10156, 279.89844, 232.10156, 232.10156, 231.89844, 232.10156, 232.10156, 232.10156, 280.10156, 23.898438, 280.10156, 23.898438, 184.10156, 23.898438, 103.89844, 7.8984375, 184.10156, 7.8984375, 103.89844, 23.898438, 7.8984375, 232.10156, 7.8984375)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(7, 8, 9, 2), PackedInt32Array(7, 2, 1, 4), PackedInt32Array(10, 4, 1, 11), PackedInt32Array(3, 12, 13), PackedInt32Array(0, 3, 13), PackedInt32Array(14, 0, 13, 15), PackedInt32Array(15, 16, 17, 18), PackedInt32Array(14, 15, 18), PackedInt32Array(11, 14, 18, 19), PackedInt32Array(18, 20, 21, 19), PackedInt32Array(11, 19, 22, 10), PackedInt32Array(23, 10, 22)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(16, 0, 16, 96, 0, 96, 0, 192, 16, 192, 16, 288, 240, 288, 240, 240, 272, 240, 272, 288, 496, 288, 496, 192, 512, 192, 512, 96, 496, 96, 496, 0, 272, 0, 272, 48, 240, 48, 240, 0), PackedVector2Array(240, 64, 272, 64, 272, 224, 240, 224)])
+cell_size = 16.0
+agent_radius = 7.9
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xdvfk"]
 texture = ExtResource("1_wl4x5")
