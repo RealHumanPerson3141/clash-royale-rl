@@ -125,9 +125,9 @@ func _retarget():
 	
 	target = _get_nearest(targets)
 	
-	if not hit_area.has_overlapping_bodies():
+	if not hit_area.overlaps_body(target):
 		hit_timer.stop()
-	if not sight_area.has_overlapping_bodies():
+	if not sight_area.overlaps_body(target):
 		in_combat = false
 
 
@@ -167,6 +167,8 @@ func _on_hit_area_body_exited(body: Node2D) -> void:
 
 
 func _on_hit_timer_timeout() -> void:
+	if target == null or target.current_hp <= 0:
+		_retarget()
 	if not in_combat:
 		return
 	
@@ -182,10 +184,7 @@ func _on_hit_timer_timeout() -> void:
 	else:
 		_attack()
 	
-	if target == null or target.current_hp <= 0:
-		target = _retarget()
-	else:
-		hit_timer.start()
+	hit_timer.start()
 
 
 func _get_nearest(nodes: Array):
