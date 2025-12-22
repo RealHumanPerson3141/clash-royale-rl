@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwj88xgjuaiv4"]
+
+[ext_resource type="Script" uid="uid://csbs0mha1tbcy" path="res://splash.gd" id="1_86pdq"]
+
+[node name="Splash" type="Area2D"]
+script = ExtResource("1_86pdq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]

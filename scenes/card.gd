@@ -26,6 +26,7 @@ var in_combat: bool = false
 @onready var hit_area: Area2D = $HitArea
 
 @onready var projectile_scene := preload("res://scenes/projectile.tscn")
+@onready var splash_scene := preload("res://scenes/splash.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -64,7 +65,6 @@ func _physics_process(_delta: float) -> void:
 	else:
 		$Sprite2D.modulate.b = hit_timer.time_left / stats.hit_speed
 	
-	
 	if current_hp <= 0:
 		print(name, " died")
 		queue_free()
@@ -73,7 +73,6 @@ func _physics_process(_delta: float) -> void:
 		_retarget()
 	
 	if stats.move_speed > 0 and hit_timer.is_stopped():
-		
 		navigation.target_position = target.position
 		
 		var next_path_direction = to_local(navigation.get_next_path_position()).normalized()
@@ -140,10 +139,21 @@ func _retarget():
 func _attack() -> void:
 	print(name, " hit ", target.name)
 	
-	if target.is_in_group("towers"):
-		target.current_hp -= stats.crown_tower_damage
-	else:
-		target.current_hp -= stats.damage
+	if stats.splash_radius == 0:
+		if target.is_in_group("towers"):
+			target.current_hp -= stats.crown_tower_damage
+		else:
+			target.current_hp -= stats.damage
+		return
+	
+	var splash = splash_scene.instantiate()
+	# TODO: Make this not suck
+	splash.position = position if stats.is_centered_attack else target.position
+	splash.damage = stats.damage
+	splash.crown_tower_damage = stats.crown_tower_damage
+	splash.radius = stats.splash_radius
+	
+	add_sibling(splash)
 
 func _on_sight_area_body_entered(body: Node2D) -> void:
 	# Enemy towers are always targeted, and so are not appended when spotted

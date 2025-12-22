@@ -1,4 +1,3 @@
-class_name Projectile
 extends Area2D
 
 
@@ -8,7 +7,6 @@ var tiles_per_second: float
 var target: Card
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	if target == null:
 		queue_free()

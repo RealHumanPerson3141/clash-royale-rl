@@ -21,6 +21,10 @@ extends Resource
 @export var damage: int
 @export var crown_tower_damage: int
 
+@export_group("Splash")
+@export var splash_radius: float
+@export var is_centered_attack: bool
+
 @export_group("Targeting")
 @export var target_troops: bool
 @export var target_buildings: bool
