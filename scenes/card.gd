@@ -143,8 +143,6 @@ func _retarget():
 
 
 func _attack() -> void:
-	print(name, " hit ", target.name)
-	
 	if stats.splash_radius == 0:
 		if target.is_in_group("towers"):
 			target.current_hp -= stats.crown_tower_damage

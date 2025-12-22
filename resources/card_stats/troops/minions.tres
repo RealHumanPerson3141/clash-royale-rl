@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://scenes/card_stats.gd" id="1_ujqjg"]
 
 [resource]
+resource_name = "Minions"
 script = ExtResource("1_ujqjg")
 hp = 230
 move_speed = 90

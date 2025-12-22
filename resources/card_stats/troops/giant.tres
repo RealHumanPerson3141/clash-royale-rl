@@ -3,12 +3,12 @@
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://scenes/card_stats.gd" id="1_l6q51"]
 
 [resource]
+resource_name = "Giant"
 script = ExtResource("1_l6q51")
 hp = 4090
 move_speed = 45
 hit_speed = 1.5
 first_hit_speed = 0.5
-deploy_time = 1.0
 sight_range = 7.5
 hit_range = 1.2
 damage = 253

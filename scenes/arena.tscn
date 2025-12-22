@@ -1,12 +1,11 @@
-[gd_scene load_steps=12 format=4 uid="uid://lyjsvmqbf02i"]
+[gd_scene load_steps=11 format=4 uid="uid://lyjsvmqbf02i"]
 
+[ext_resource type="Script" uid="uid://d2jhelqpw6li3" path="res://scenes/arena.gd" id="1_4ag8t"]
 [ext_resource type="Texture2D" uid="uid://dis4582m5ul5h" path="res://assets/tilesets/dev/TX Tileset Grass.png" id="1_wl4x5"]
 [ext_resource type="Texture2D" uid="uid://m5shugyjcoqk" path="res://assets/tilesets/dev/TX Tileset Stone Ground.png" id="2_olpmc"]
 [ext_resource type="PackedScene" uid="uid://b3037ygui4mb5" path="res://scenes/card.tscn" id="3_olpmc"]
 [ext_resource type="Resource" uid="uid://cddlsr53im4lv" path="res://resources/card_stats/buildings/princess_tower.tres" id="4_7ft05"]
-[ext_resource type="Resource" uid="uid://dcife0k06pr5l" path="res://resources/card_stats/troops/mini_pekka.tres" id="4_xdvfk"]
 [ext_resource type="Resource" uid="uid://dq7kn6yqpf2mg" path="res://resources/card_stats/buildings/king_tower.tres" id="5_4ag8t"]
-[ext_resource type="Resource" uid="uid://c8qyh26fe0x0r" path="res://resources/card_stats/troops/giant.tres" id="7_dpxgc"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7ft05"]
 vertices = PackedVector2Array(279.89844, 231.89844, 279.89844, 56.101563, 488.10156, 184.10156, 488.10156, 280.10156, 279.89844, 55.898438, 279.89844, 7.8984375, 488.10156, 7.8984375, 488.10156, 103.89844, 504.10156, 103.89844, 504.10156, 184.10156, 232.10156, 55.898438, 232.10156, 56.101563, 279.89844, 280.10156, 279.89844, 232.10156, 232.10156, 231.89844, 232.10156, 232.10156, 232.10156, 280.10156, 23.898438, 280.10156, 23.898438, 184.10156, 23.898438, 103.89844, 7.8984375, 184.10156, 7.8984375, 103.89844, 23.898438, 7.8984375, 232.10156, 7.8984375)
@@ -482,6 +481,7 @@ sources/0 = SubResource("TileSetAtlasSource_xdvfk")
 sources/1 = SubResource("TileSetAtlasSource_7ft05")
 
 [node name="Arena" type="Node2D"]
+script = ExtResource("1_4ag8t")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(64, 32)
@@ -495,50 +495,31 @@ tile_set = SubResource("TileSet_4ag8t")
 
 [node name="Cards" type="Node" parent="."]
 
-[node name="Blue" type="Node" parent="Cards"]
+[node name="CrownTowers" type="Node" parent="Cards"]
 
-[node name="CrownTowers" type="Node" parent="Cards/Blue"]
-
-[node name="BluePrincessUp" parent="Cards/Blue/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="BluePrincessUp" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(168, 88)
 stats = ExtResource("4_7ft05")
 is_blue = true
 
-[node name="BlueKing" parent="Cards/Blue/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="BlueKing" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(112, 176)
 stats = ExtResource("5_4ag8t")
 is_blue = true
 
-[node name="BluePrincessDown" parent="Cards/Blue/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="BluePrincessDown" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(168, 264)
 stats = ExtResource("4_7ft05")
 is_blue = true
 
-[node name="BlueMiniPekka" parent="Cards/Blue" instance=ExtResource("3_olpmc")]
-position = Vector2(102, 137)
-stats = ExtResource("4_xdvfk")
-is_blue = true
-
-[node name="Red" type="Node2D" parent="Cards"]
-
-[node name="CrownTowers" type="Node" parent="Cards/Red"]
-
-[node name="RedPrincessUp" parent="Cards/Red/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="RedPrincessUp" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(472, 88)
 stats = ExtResource("4_7ft05")
 
-[node name="RedKing" parent="Cards/Red/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="RedKing" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(528, 176)
 stats = ExtResource("5_4ag8t")
 
-[node name="RedPrincessDown" parent="Cards/Red/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
+[node name="RedPrincessDown" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(472, 264)
 stats = ExtResource("4_7ft05")
-
-[node name="Giant" parent="Cards/Red" instance=ExtResource("3_olpmc")]
-position = Vector2(319, 87)
-stats = ExtResource("7_dpxgc")
-
-[node name="Giant2" parent="Cards/Red" instance=ExtResource("3_olpmc")]
-position = Vector2(284, 263)
-stats = ExtResource("7_dpxgc")

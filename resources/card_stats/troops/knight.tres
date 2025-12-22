@@ -3,12 +3,12 @@
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://scenes/card_stats.gd" id="1_4se1m"]
 
 [resource]
+resource_name = "Knight"
 script = ExtResource("1_4se1m")
 hp = 1766
 move_speed = 60
 hit_speed = 1.2
 first_hit_speed = 0.5
-deploy_time = 1.0
 sight_range = 5.5
 hit_range = 1.2
 damage = 202
