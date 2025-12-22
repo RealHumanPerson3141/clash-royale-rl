@@ -58,6 +58,12 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	health_bar.value = current_hp
 	
+	if stats.is_spell:
+		_retarget()
+		_attack()
+		queue_free()
+		return
+	
 	# TODO: Add actual attack animations
 	$Sprite2D.modulate.g = hit_timer.time_left / stats.hit_speed
 	if is_blue:
