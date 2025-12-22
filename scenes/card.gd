@@ -44,8 +44,6 @@ func _ready() -> void:
 	
 	tiles_per_second = stats.move_speed * 0.02 * Global.TILE_SIZE
 	
-	hit_timer.wait_time = stats.hit_speed
-	
 	# The only children of these areas should be their collision circles
 	sight_area.get_child(0).shape = CircleShape2D.new()
 	sight_area.get_child(0).shape.radius = stats.sight_range * Global.TILE_SIZE
@@ -157,8 +155,8 @@ func _on_sight_area_body_exited(body: Node2D) -> void:
 
 
 func _on_hit_area_body_entered(body: Node2D) -> void:
-	if _is_targetable(body):
-		hit_timer.start()
+	if _is_targetable(body) and hit_timer.is_stopped():
+		hit_timer.start(stats.first_hit_speed)
 
 
 func _on_hit_area_body_exited(body: Node2D) -> void:
@@ -184,7 +182,7 @@ func _on_hit_timer_timeout() -> void:
 	else:
 		_attack()
 	
-	hit_timer.start()
+	hit_timer.start(stats.hit_speed)
 
 
 func _get_nearest(nodes: Array):

@@ -36,6 +36,8 @@ texture = ExtResource("1_d81rb")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 2.0
 target_desired_distance = 4.0
+path_postprocessing = 2
+debug_enabled = true
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = -6.0
