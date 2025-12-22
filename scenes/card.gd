@@ -57,6 +57,14 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	health_bar.value = current_hp
 	
+	# TODO: Add actual attack animations
+	$Sprite2D.modulate.g = hit_timer.time_left / stats.hit_speed
+	if is_blue:
+		$Sprite2D.modulate.r = hit_timer.time_left / stats.hit_speed
+	else:
+		$Sprite2D.modulate.b = hit_timer.time_left / stats.hit_speed
+	
+	
 	if current_hp <= 0:
 		print(name, " died")
 		queue_free()
