@@ -31,6 +31,11 @@ window/stretch/mode="viewport"
 
 project/assembly_name="Clash Royale RL"
 
+[editor]
+
+movie_writer/video_quality=1.0
+movie_writer/movie_file="/home/ok/Projects/Godot/clash-royale-rl/latest_run.ogv"
+
 [input]
 
 blue_1={
