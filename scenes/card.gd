@@ -65,11 +65,11 @@ func _physics_process(_delta: float) -> void:
 		return
 	
 	# TODO: Add actual attack animations
-	$Sprite2D.modulate.g = hit_timer.time_left / stats.hit_speed
+	$Sprite2D.modulate.g = hit_timer.time_left / hit_timer.wait_time
 	if is_blue:
-		$Sprite2D.modulate.r = hit_timer.time_left / stats.hit_speed
+		$Sprite2D.modulate.r = hit_timer.time_left / hit_timer.wait_time
 	else:
-		$Sprite2D.modulate.b = hit_timer.time_left / stats.hit_speed
+		$Sprite2D.modulate.b = hit_timer.time_left / hit_timer.wait_time
 	
 	if current_hp <= 0:
 		print(name, " died")
