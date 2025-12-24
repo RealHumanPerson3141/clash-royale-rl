@@ -7,6 +7,7 @@ resource_name = "Princess Tower"
 script = ExtResource("1_q8xhy")
 hp = 3052
 hit_speed = 0.8
+first_hit_speed = 0.8
 sight_range = 7.5
 hit_range = 7.5
 damage = 109
