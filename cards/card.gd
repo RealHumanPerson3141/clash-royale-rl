@@ -59,7 +59,6 @@ func _physics_process(_delta: float) -> void:
 	health_bar.value = current_hp
 	
 	if stats.is_spell:
-		_retarget()
 		_attack()
 		queue_free()
 		return
@@ -156,6 +155,8 @@ func _attack() -> void:
 	splash.damage = stats.damage
 	splash.crown_tower_damage = stats.crown_tower_damage
 	splash.radius = stats.splash_radius
+	
+	splash.collision_mask = hit_area.collision_mask
 	
 	add_sibling(splash)
 

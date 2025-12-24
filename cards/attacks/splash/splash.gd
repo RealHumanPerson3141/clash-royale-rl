@@ -1,25 +1,22 @@
 extends Area2D
 
 
-var enemy_group: String
-
 var damage: int
 var crown_tower_damage: int
 
 var radius: float
 
 
-func _pyhsics_process(_delta: float) -> void:
+func _ready() -> void:
 	$CollisionShape2D.shape = CircleShape2D.new()
 	$CollisionShape2D.shape.radius = radius * Global.TILE_SIZE
-	
+
+
+func _on_timer_timeout() -> void:
 	var cards := get_overlapping_bodies()
-	
 	for card in cards:
-		if card.is_in_group(enemy_group):
-			if card.is_in_group("towers"):
-				card.current_health -= crown_tower_damage
-			else:
-				card.current_health -= damage
-	
+		if card.is_in_group("towers"):
+			card.current_hp -= crown_tower_damage
+		else:
+			card.current_hp -= damage
 	queue_free()
