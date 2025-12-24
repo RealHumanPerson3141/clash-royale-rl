@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="Clash Royale RL"
-run/main_scene="res://scenes/arena.tscn"
+run/main_scene="res://arena/arena.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Global="*res://scenes/global.gd"
+Global="*res://global.gd"
 
 [display]
 

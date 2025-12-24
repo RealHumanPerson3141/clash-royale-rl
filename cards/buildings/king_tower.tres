@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardStats" load_steps=2 format=3 uid="uid://dq7kn6yqpf2mg"]
+
+[ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_i6hfg"]
+
+[resource]
+resource_name = "King Tower"
+script = ExtResource("1_i6hfg")
+hp = 4824
+hit_speed = 1.0
+first_hit_speed = 0.5
+sight_range = 7.0
+hit_range = 7.0
+damage = 109
+crown_tower_damage = 109
+target_troops = true
+target_buildings = true
+target_air = true
+target_ground = true
+is_building = true
+is_ranged = true
+metadata/_custom_type_script = "uid://chdsc6dtr4mny"

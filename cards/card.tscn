@@ -1,0 +1,80 @@
+[gd_scene load_steps=10 format=3 uid="uid://b3037ygui4mb5"]
+
+[ext_resource type="Script" uid="uid://hts18mno883l" path="res://cards/card.gd" id="1_6u4wf"]
+[ext_resource type="Texture2D" uid="uid://bckb5g0nffja0" path="res://cards/troops/troop.png" id="1_d81rb"]
+[ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="2_ktuci"]
+
+[sub_resource type="Resource" id="Resource_kg30u"]
+script = ExtResource("2_ktuci")
+metadata/_custom_type_script = "uid://chdsc6dtr4mny"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6u4wf"]
+radius = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ktuci"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kg30u"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ktuci"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kg30u"]
+
+[node name="Card" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 3
+motion_mode = 1
+script = ExtResource("1_6u4wf")
+stats = SubResource("Resource_kg30u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6u4wf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_d81rb")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 2.0
+target_desired_distance = 4.0
+radius = 8.0
+neighbor_distance = 32.0
+max_neighbors = 4
+time_horizon_agents = 0.0
+max_speed = 128.0
+debug_enabled = true
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -6.0
+offset_top = 9.0
+offset_right = 6.0
+offset_bottom = 10.0
+theme_override_styles/background = SubResource("StyleBoxFlat_ktuci")
+theme_override_styles/fill = SubResource("StyleBoxFlat_kg30u")
+value = 0.34
+show_percentage = false
+
+[node name="SightArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightArea"]
+shape = SubResource("CircleShape2D_ktuci")
+debug_color = Color(0.7808608, 0.4040467, 0.4585783, 0.14901961)
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("CircleShape2D_kg30u")
+debug_color = Color(0.49542093, 0.49512863, 0.81674886, 0.41960785)
+
+[node name="HitTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="body_entered" from="SightArea" to="." method="_on_sight_area_body_entered"]
+[connection signal="body_exited" from="SightArea" to="." method="_on_sight_area_body_exited"]
+[connection signal="body_entered" from="HitArea" to="." method="_on_hit_area_body_entered"]
+[connection signal="body_exited" from="HitArea" to="." method="_on_hit_area_body_exited"]
+[connection signal="timeout" from="HitTimer" to="." method="_on_hit_timer_timeout"]
