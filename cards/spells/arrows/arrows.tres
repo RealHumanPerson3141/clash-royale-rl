@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="CardStats" load_steps=2 format=3 uid="uid://daf08fwnffotp"]
 
-[ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_5w1pn"]
+[ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_vs6fd"]
 
 [resource]
 resource_name = "Arrows"
-script = ExtResource("1_5w1pn")
+script = ExtResource("1_vs6fd")
 sight_range = 3.5
 hit_range = 3.5
 damage = 366
