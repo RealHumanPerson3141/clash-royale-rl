@@ -1,5 +1,5 @@
 class_name Card
-extends CharacterBody2D
+extends Area2D
 
 
 @export var stats: CardStats
@@ -33,8 +33,8 @@ func _ready() -> void:
 	# TODO: Add actual card designs
 	$Sprite2D.modulate = Color(0,0,1,1) if is_blue else Color(1,0,0,1)
 	
-	# Set collision layers to differenciate blue and red
-	collision_layer = 2 - int(is_blue)
+	# Set collision layers to differenciate blue and red (but give all cards the card layer)
+	collision_layer = 2 - int(is_blue) + 4
 	sight_area.collision_mask = 2 - int(not is_blue)
 	hit_area.collision_mask = 2 - int(not is_blue)
 	
@@ -55,7 +55,7 @@ func _ready() -> void:
 	_configure_target_groups()
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	health_bar.value = current_hp
 	
 	if stats.is_spell:
@@ -81,9 +81,9 @@ func _physics_process(_delta: float) -> void:
 		navigation.target_position = target.position
 		
 		var next_path_direction = to_local(navigation.get_next_path_position()).normalized()
-		velocity = next_path_direction * tiles_per_second
-		
-		move_and_slide()
+		position += next_path_direction * tiles_per_second * delta
+	
+	_repel_colliding_cards()
 
 
 func _configure_groups():
@@ -159,6 +159,24 @@ func _attack() -> void:
 	splash.collision_mask = hit_area.collision_mask
 	
 	add_sibling(splash)
+
+
+func _repel_colliding_cards() -> void:
+	var radius := Global.TILE_SIZE / 2.0
+	
+	
+	for card in get_overlapping_areas():
+		if not card is Card:
+			continue
+		
+		#var mass_ratio := stats.mass / card.stats.mass
+		var position_diff := -to_local(card.position)
+		
+		var repel_force := exp(-position_diff.length() / Global.TILE_SIZE)
+		var repel_vector = position_diff.normalized() * repel_force * radius
+		
+		position += repel_vector
+
 
 func _on_sight_area_body_entered(body: Node2D) -> void:
 	# Enemy towers are always targeted, and so are not appended when spotted

@@ -37,16 +37,17 @@ func _input(event: InputEvent) -> void:
 			
 			var card_stats := hand.get_card(index)
 			
-			var card := card_scene.instantiate()
+			for i in range(card_stats.count):
+				var card := card_scene.instantiate()
 			
-			card.stats = card_stats
-			card.is_blue = color == "blue"
-			card.position = get_global_mouse_position()
-			card.name = color.capitalize() + " " + card_stats.resource_name
+				card.stats = card_stats
+				card.is_blue = color == "blue"
+				card.position = get_global_mouse_position()
+				card.name = color.capitalize() + " " + card_stats.resource_name
 			
-			$Cards.add_child(card)
+				$Cards.add_child(card)
 			
-			print("\n" + card.name)
+				print("\n" + card.name)
 
 
 class Hand:
