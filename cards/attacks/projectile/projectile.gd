@@ -15,7 +15,7 @@ func _physics_process(delta: float) -> void:
 	position = position.move_toward(target.position, tiles_per_second * delta)
 
 
-func _on_body_entered(body: Node2D) -> void:
-	if body == target:
+func _on_area_entered(area: Node2D) -> void:
+	if area == target:
 		hit_target.emit()
 		queue_free()

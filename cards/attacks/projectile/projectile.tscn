@@ -7,7 +7,7 @@
 radius = 2.0
 
 [node name="Projectile" type="Area2D"]
-collision_layer = 3
+collision_layer = 0
 collision_mask = 3
 script = ExtResource("1_q3m7n")
 metadata/_custom_type_script = "uid://ba42tmd05tid1"
@@ -18,4 +18,4 @@ shape = SubResource("CircleShape2D_6q2a6")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_softn")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

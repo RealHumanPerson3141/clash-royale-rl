@@ -135,9 +135,9 @@ func _retarget():
 	
 	target = _get_nearest(targets)
 	
-	if not hit_area.overlaps_body(target):
+	if not hit_area.overlaps_area(target):
 		hit_timer.stop()
-	if not sight_area.overlaps_body(target):
+	if not sight_area.overlaps_area(target):
 		in_combat = false
 
 
@@ -178,30 +178,30 @@ func _repel_colliding_cards() -> void:
 		position += repel_vector
 
 
-func _on_sight_area_body_entered(body: Node2D) -> void:
+func _on_sight_area_entered(area: Node2D) -> void:
 	# Enemy towers are always targeted, and so are not appended when spotted
-	if _is_targetable(body) and not body.is_in_group("towers"):
-		targets.append(body)
+	if _is_targetable(area) and not area.is_in_group("towers"):
+		targets.append(area)
 	
-	if not in_combat and _is_targetable(body):
-		_retarget()
+	if not in_combat and _is_targetable(area):
+		target = area
 		in_combat = true
 
 
-func _on_sight_area_body_exited(body: Node2D) -> void:
-	if body in targets:
-		targets.erase(body)
-	if body == target:
+func _on_sight_area_exited(area: Node2D) -> void:
+	if area in targets:
+		targets.erase(area)
+	if area == target:
 		_retarget()
 
 
-func _on_hit_area_body_entered(body: Node2D) -> void:
-	if _is_targetable(body) and hit_timer.is_stopped():
+func _on_hit_area_entered(area: Node2D) -> void:
+	if _is_targetable(area) and hit_timer.is_stopped():
 		hit_timer.start(stats.first_hit_speed)
 
 
-func _on_hit_area_body_exited(body: Node2D) -> void:
-	if body == target:
+func _on_hit_area_exited(area: Node2D) -> void:
+	if area == target:
 		hit_timer.stop()
 
 

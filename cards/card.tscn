@@ -72,8 +72,8 @@ debug_color = Color(0.49542093, 0.49512863, 0.81674886, 0.41960785)
 [node name="HitTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="body_entered" from="SightArea" to="." method="_on_sight_area_body_entered"]
-[connection signal="body_exited" from="SightArea" to="." method="_on_sight_area_body_exited"]
-[connection signal="body_entered" from="HitArea" to="." method="_on_hit_area_body_entered"]
-[connection signal="body_exited" from="HitArea" to="." method="_on_hit_area_body_exited"]
+[connection signal="area_entered" from="SightArea" to="." method="_on_sight_area_entered"]
+[connection signal="area_exited" from="SightArea" to="." method="_on_sight_area_exited"]
+[connection signal="area_entered" from="HitArea" to="." method="_on_hit_area_entered"]
+[connection signal="area_exited" from="HitArea" to="." method="_on_hit_area_exited"]
 [connection signal="timeout" from="HitTimer" to="." method="_on_hit_timer_timeout"]

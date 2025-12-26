@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 func _on_timer_timeout() -> void:
-	var cards := get_overlapping_bodies()
+	var cards := get_overlapping_areas()
 	for card in cards:
 		if card.is_in_group("towers"):
 			card.current_hp -= crown_tower_damage
