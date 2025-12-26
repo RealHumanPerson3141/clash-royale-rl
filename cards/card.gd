@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 		var next_path_direction = to_local(navigation.get_next_path_position()).normalized()
 		position += next_path_direction * tiles_per_second * delta
 	
-	_repel_colliding_cards()
+	_repel_colliding_cards(delta)
 
 
 func _configure_groups():
@@ -161,21 +161,25 @@ func _attack() -> void:
 	add_sibling(splash)
 
 
-func _repel_colliding_cards() -> void:
-	var radius := Global.TILE_SIZE / 2.0
-	
-	
+func _repel_colliding_cards(delta: float) -> void:
 	for card in get_overlapping_areas():
 		if not card is Card:
 			continue
 		
-		#var mass_ratio := stats.mass / card.stats.mass
+		var mass_ratio := float(stats.mass) / float(card.stats.mass)
+		if stats.is_building:
+			mass_ratio = 0.5
+		if card.stats.is_building:
+			mass_ratio = 0.5
+		
 		var position_diff := -to_local(card.position)
 		
-		var repel_force := exp(-position_diff.length() / Global.TILE_SIZE)
-		var repel_vector = position_diff.normalized() * repel_force * radius
+		var repel_vector = position_diff.normalized() * Global.TILE_SIZE
 		
-		position += repel_vector
+		if not stats.is_building:
+			position += repel_vector * delta / mass_ratio
+		if not card.stats.is_building:
+			card.position -= repel_vector * delta * mass_ratio
 
 
 func _on_sight_area_entered(area: Node2D) -> void:
