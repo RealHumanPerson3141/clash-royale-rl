@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_xtx6h"]
 
 [resource]
-resource_name = "Mini P.E.K.K.A."
+resource_name = "MiniPEKKA"
 script = ExtResource("1_xtx6h")
 hp = 1433
 move_speed = 90

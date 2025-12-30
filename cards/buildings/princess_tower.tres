@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_q8xhy"]
 
 [resource]
-resource_name = "Princess Tower"
+resource_name = "PrincessTower"
 script = ExtResource("1_q8xhy")
 hp = 3052
 hit_speed = 0.8
