@@ -33,8 +33,12 @@ func _ready() -> void:
 	# TODO: Add actual card designs
 	$Sprite2D.modulate = Color(0,0,1,1) if is_blue else Color(1,0,0,1)
 	
-	# Set collision layers to differenciate blue and red (but give all cards the card layer)
-	collision_layer = 2 - int(is_blue) + 4
+	# Set collision mask to only collide with cards of same transport type (ground/air)
+	collision_mask = 4 + 4 * int(stats.is_air)
+	# Set collision layers to differenciate blue and red
+	collision_layer = 2 - int(is_blue) + collision_mask
+	z_index = int(stats.is_air)
+	
 	sight_area.collision_mask = 2 - int(not is_blue)
 	hit_area.collision_mask = 2 - int(not is_blue)
 	
