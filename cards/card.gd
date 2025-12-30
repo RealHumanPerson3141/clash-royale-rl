@@ -133,6 +133,9 @@ func _retarget():
 			if tower.is_in_group(enemy_group):
 				targets.append(tower)
 	
+	# Remove untargetable cards from target list
+	targets = targets.filter(func(node): return node != null and not node.is_queued_for_deletion())
+	
 	target = _get_nearest(targets)
 	
 	if not hit_area.overlaps_area(target):
@@ -235,15 +238,11 @@ func _get_nearest(nodes: Array):
 	var min_distance := 1.79769e308 # Maximum float value
 	
 	for node in nodes:
-		# TODO: Fix allowing freed cards to remain in target pool
-		if node == null:
-			continue
-		
 		var distance_to_node = position.distance_squared_to(node.position)
 		if distance_to_node < min_distance:
 			nearest_node = node
 			min_distance = distance_to_node
-		
+	
 	return nearest_node
 
 
