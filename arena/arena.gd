@@ -43,7 +43,8 @@ func _input(event: InputEvent) -> void:
 				card.stats = card_stats
 				card.is_blue = color == "blue"
 				card.position = get_global_mouse_position()
-				card.name = color.capitalize() + " " + card_stats.resource_name
+				var unique_id := str(get_tree().get_node_count_in_group(color))
+				card.name = color.capitalize() + card_stats.resource_name + unique_id
 			
 				$Cards.add_child(card)
 			
