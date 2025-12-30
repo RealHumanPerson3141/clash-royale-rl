@@ -15,7 +15,8 @@ var target: Card = null
 var targets: Array[Card] = []
 var target_groups: Array[String]
 
-var in_combat: bool = false
+var in_combat := false
+var attacking := false
 
 @onready var navigation: NavigationAgent2D = $NavigationAgent2D
 @onready var health_bar: ProgressBar = $HealthBar
@@ -81,6 +82,9 @@ func _physics_process(delta: float) -> void:
 	if target == null:
 		_retarget()
 	
+	if attacking and hit_timer.is_stopped():
+		hit_timer.start(stats.hit_speed)
+	
 	if stats.move_speed > 0 and hit_timer.is_stopped():
 		navigation.target_position = target.position
 		
@@ -143,7 +147,7 @@ func _retarget():
 	target = _get_nearest(targets)
 	
 	if not hit_area.overlaps_area(target):
-		hit_timer.stop()
+		attacking = false
 	if not sight_area.overlaps_area(target):
 		in_combat = false
 
@@ -208,18 +212,18 @@ func _on_sight_area_exited(area: Node2D) -> void:
 
 func _on_hit_area_entered(area: Node2D) -> void:
 	if _is_targetable(area) and hit_timer.is_stopped():
-		hit_timer.start(stats.first_hit_speed)
+		attacking = true
 
 
 func _on_hit_area_exited(area: Node2D) -> void:
 	if area == target:
-		hit_timer.stop()
+		_retarget()
 
 
 func _on_hit_timer_timeout() -> void:
 	if target == null or target.current_hp <= 0:
 		_retarget()
-	if not in_combat:
+	if not attacking:
 		return
 	
 	if stats.is_ranged:
@@ -233,8 +237,6 @@ func _on_hit_timer_timeout() -> void:
 		add_sibling(projectile)
 	else:
 		_attack()
-	
-	hit_timer.start(stats.hit_speed)
 
 
 func _get_nearest(nodes: Array):
