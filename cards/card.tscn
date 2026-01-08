@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://b3037ygui4mb5"]
 
 [ext_resource type="Script" uid="uid://hts18mno883l" path="res://cards/card.gd" id="1_6u4wf"]
-[ext_resource type="Texture2D" uid="uid://bckb5g0nffja0" path="res://cards/troops/troop.png" id="1_d81rb"]
+[ext_resource type="Texture2D" uid="uid://bckb5g0nffja0" path="res://cards/troops/arena.png" id="1_d81rb"]
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="2_ktuci"]
 
 [sub_resource type="Resource" id="Resource_kg30u"]

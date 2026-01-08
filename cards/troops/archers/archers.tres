@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardStats" load_steps=2 format=3 uid="uid://cmgaduxvnkxtu"]
+[gd_resource type="Resource" script_class="CardStats" load_steps=3 format=3 uid="uid://cmgaduxvnkxtu"]
 
+[ext_resource type="Texture2D" uid="uid://b435uog2168kc" path="res://cards/troops/archers/assets/arena.png" id="1_ene80"]
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_wnlto"]
 
 [resource]
@@ -20,5 +21,6 @@ target_air = true
 target_ground = true
 is_troop = true
 is_ranged = true
+arena_sprite = ExtResource("1_ene80")
 mass = 3
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

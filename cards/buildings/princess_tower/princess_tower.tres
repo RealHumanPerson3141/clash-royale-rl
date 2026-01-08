@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardStats" load_steps=2 format=3 uid="uid://cddlsr53im4lv"]
+[gd_resource type="Resource" script_class="CardStats" load_steps=3 format=3 uid="uid://cddlsr53im4lv"]
 
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_q8xhy"]
+[ext_resource type="Texture2D" uid="uid://b4pak27xmcctd" path="res://cards/buildings/princess_tower/assets/arena.png" id="1_ur5t3"]
 
 [resource]
 resource_name = "PrincessTower"
@@ -18,4 +19,6 @@ target_air = true
 target_ground = true
 is_building = true
 is_ranged = true
+arena_sprite = ExtResource("1_ur5t3")
+radius = 1.0
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

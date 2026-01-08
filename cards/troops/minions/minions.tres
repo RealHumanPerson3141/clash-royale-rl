@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardStats" load_steps=2 format=3 uid="uid://cubq5kmeum1nn"]
+[gd_resource type="Resource" script_class="CardStats" load_steps=3 format=3 uid="uid://cubq5kmeum1nn"]
 
+[ext_resource type="Texture2D" uid="uid://bfti15ttrdxyw" path="res://cards/troops/minions/assets/arena.png" id="1_cjgj0"]
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_ujqjg"]
 
 [resource]
@@ -21,5 +22,6 @@ target_ground = true
 is_troop = true
 is_air = true
 is_ranged = true
+arena_sprite = ExtResource("1_cjgj0")
 mass = 2
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

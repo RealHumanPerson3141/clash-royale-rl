@@ -36,8 +36,12 @@ extends Resource
 @export var is_troop: bool
 @export var is_spell: bool
 @export var is_building: bool
-
-@export_group("Miscellaneous")
 @export var is_air: bool
 @export var is_ranged: bool
+
+@export_group("Visual")
+@export var arena_sprite: Texture2D
+
+@export_group("Miscellaneous")
 @export var mass: int
+@export var radius: float = 0.5

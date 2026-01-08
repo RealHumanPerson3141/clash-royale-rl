@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="CardStats" load_steps=2 format=3 uid="uid://dq7kn6yqpf2mg"]
+[gd_resource type="Resource" script_class="CardStats" load_steps=3 format=3 uid="uid://dq7kn6yqpf2mg"]
 
+[ext_resource type="Texture2D" uid="uid://dvjcgxw3o5ifh" path="res://cards/buildings/king_tower/assets/arena.png" id="1_76unj"]
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_i6hfg"]
 
 [resource]
@@ -18,4 +19,6 @@ target_air = true
 target_ground = true
 is_building = true
 is_ranged = true
+arena_sprite = ExtResource("1_76unj")
+radius = 1.5
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

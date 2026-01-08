@@ -1,11 +1,11 @@
-[gd_scene load_steps=7 format=4 uid="uid://lyjsvmqbf02i"]
+[gd_scene load_steps=10 format=4 uid="uid://lyjsvmqbf02i"]
 
 [ext_resource type="Script" uid="uid://d2jhelqpw6li3" path="res://arena/arena.gd" id="1_4ag8t"]
 [ext_resource type="TileSet" uid="uid://b4gvw31o3wo84" path="res://arena/assets/arena_tileset.tres" id="2_7ft05"]
 [ext_resource type="PackedScene" uid="uid://b3037ygui4mb5" path="res://cards/card.tscn" id="3_olpmc"]
-[ext_resource type="Resource" uid="uid://cddlsr53im4lv" path="res://cards/buildings/princess_tower.tres" id="4_7ft05"]
-[ext_resource type="Resource" uid="uid://dq7kn6yqpf2mg" path="res://cards/buildings/king_tower.tres" id="5_4ag8t"]
 [ext_resource type="Texture2D" uid="uid://cn85mcwihqogp" path="res://ui/assets/ui_tileset.png" id="3_x52g8"]
+[ext_resource type="Resource" uid="uid://cddlsr53im4lv" path="res://cards/buildings/princess_tower/princess_tower.tres" id="5_8d55x"]
+[ext_resource type="Resource" uid="uid://dq7kn6yqpf2mg" path="res://cards/buildings/king_tower/king_tower.tres" id="6_8d55x"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7ft05"]
 vertices = PackedVector2Array(279.89844, 223.89844, 279.89844, 64.10156, 488.10156, 184.10156, 488.10156, 280.10156, 279.89844, 47.898438, 279.89844, 7.8984375, 488.10156, 7.8984375, 488.10156, 103.89844, 504.10156, 103.89844, 504.10156, 184.10156, 232.10156, 47.898438, 232.10156, 64.10156, 279.89844, 280.10156, 279.89844, 240.10156, 232.10156, 223.89844, 232.10156, 240.10156, 23.898438, 184.10156, 232.10156, 280.10156, 23.898438, 280.10156, 23.898438, 103.89844, 7.8984375, 184.10156, 7.8984375, 103.89844, 23.898438, 7.8984375, 232.10156, 7.8984375)
@@ -60,27 +60,27 @@ tile_set = SubResource("TileSet_ts1j6")
 
 [node name="BluePrincessUp" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(168, 88)
-stats = ExtResource("4_7ft05")
+stats = ExtResource("5_8d55x")
 is_blue = true
 
 [node name="BlueKing" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(112, 176)
-stats = ExtResource("5_4ag8t")
+stats = ExtResource("6_8d55x")
 is_blue = true
 
 [node name="BluePrincessDown" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(168, 264)
-stats = ExtResource("4_7ft05")
+stats = ExtResource("5_8d55x")
 is_blue = true
 
 [node name="RedPrincessUp" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(472, 88)
-stats = ExtResource("4_7ft05")
+stats = ExtResource("5_8d55x")
 
 [node name="RedKing" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(528, 176)
-stats = ExtResource("5_4ag8t")
+stats = ExtResource("6_8d55x")
 
 [node name="RedPrincessDown" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(472, 264)
-stats = ExtResource("4_7ft05")
+stats = ExtResource("5_8d55x")

@@ -31,8 +31,8 @@ var attacking := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# TODO: Add actual card designs
-	$Sprite2D.modulate = Color(0,0,1,1) if is_blue else Color(1,0,0,1)
+	if stats.arena_sprite != null:
+		$Sprite2D.texture = stats.arena_sprite
 	
 	# Set collision mask to only collide with cards of same transport type (ground/air)
 	collision_mask = 4 + 4 * int(stats.is_air)
@@ -47,14 +47,18 @@ func _ready() -> void:
 	
 	current_hp = stats.hp
 	health_bar.max_value = stats.hp
+	health_bar.modulate = Color(0, 0, 1) if is_blue else Color(1, 0, 0)
 	
 	tiles_per_second = stats.move_speed * 0.02 * Global.TILE_SIZE
 	
-	# The only children of these areas should be their collision circles
+	# The first children of these areas should be their collision circles
 	sight_area.get_child(0).shape = CircleShape2D.new()
 	sight_area.get_child(0).shape.radius = stats.sight_range * Global.TILE_SIZE
 	hit_area.get_child(0).shape = CircleShape2D.new()
 	hit_area.get_child(0).shape.radius = stats.hit_range * Global.TILE_SIZE
+	
+	$CollisionShape2D.shape = CircleShape2D.new()
+	$CollisionShape2D.shape.radius = stats.radius * Global.TILE_SIZE
 	
 	_configure_groups()
 	_configure_target_groups()
@@ -69,11 +73,6 @@ func _physics_process(delta: float) -> void:
 		return
 	
 	# TODO: Add actual attack animations
-	$Sprite2D.modulate.g = hit_timer.time_left / hit_timer.wait_time
-	if is_blue:
-		$Sprite2D.modulate.r = hit_timer.time_left / hit_timer.wait_time
-	else:
-		$Sprite2D.modulate.b = hit_timer.time_left / hit_timer.wait_time
 	
 	if current_hp <= 0:
 		print(name, " died")
@@ -90,6 +89,8 @@ func _physics_process(delta: float) -> void:
 		
 		var next_path_direction = to_local(navigation.get_next_path_position()).normalized()
 		position += next_path_direction * tiles_per_second * delta
+		# Lock rotation to 90 degree intervals
+		$Sprite2D.rotation = round(next_path_direction.angle() * 2 / PI) / 2 * PI 
 	
 	_repel_colliding_cards(delta)
 

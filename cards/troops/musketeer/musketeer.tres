@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CardStats" load_steps=2 format=3 uid="uid://carayjgss6qpp"]
+[gd_resource type="Resource" script_class="CardStats" load_steps=3 format=3 uid="uid://carayjgss6qpp"]
 
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_1g01d"]
+[ext_resource type="Texture2D" uid="uid://c1lvkogvqs7wy" path="res://cards/troops/musketeer/assets/arena.png" id="1_iffta"]
 
 [resource]
 resource_name = "Musketeer"
@@ -19,5 +20,6 @@ target_air = true
 target_ground = true
 is_troop = true
 is_ranged = true
+arena_sprite = ExtResource("1_iffta")
 mass = 5
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

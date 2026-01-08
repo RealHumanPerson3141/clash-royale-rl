@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bckb5g0nffja0"
-path="res://.godot/imported/troop.png-5c3c2a1d8004621ff63ad5362c93ba11.ctex"
+uid="uid://dvjcgxw3o5ifh"
+path="res://.godot/imported/arena.png-27bc359d60a15b2ac8980d8ed36739db.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://cards/troops/troop.png"
-dest_files=["res://.godot/imported/troop.png-5c3c2a1d8004621ff63ad5362c93ba11.ctex"]
+source_file="res://cards/buildings/king_tower/assets/arena.png"
+dest_files=["res://.godot/imported/arena.png-27bc359d60a15b2ac8980d8ed36739db.ctex"]
 
 [params]
 
