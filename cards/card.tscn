@@ -46,10 +46,9 @@ max_speed = 128.0
 offset_left = -6.0
 offset_top = 9.0
 offset_right = 6.0
-offset_bottom = 10.0
+offset_bottom = 11.0
 theme_override_styles/background = SubResource("StyleBoxFlat_ktuci")
 theme_override_styles/fill = SubResource("StyleBoxFlat_kg30u")
-value = 0.34
 show_percentage = false
 
 [node name="SightArea" type="Area2D" parent="."]
