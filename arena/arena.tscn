@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://lyjsvmqbf02i"]
+[gd_scene load_steps=25 format=4 uid="uid://lyjsvmqbf02i"]
 
 [ext_resource type="Script" uid="uid://d2jhelqpw6li3" path="res://arena/arena.gd" id="1_4ag8t"]
 [ext_resource type="TileSet" uid="uid://b4gvw31o3wo84" path="res://arena/assets/arena_tileset.tres" id="2_7ft05"]
@@ -6,6 +6,24 @@
 [ext_resource type="Texture2D" uid="uid://cn85mcwihqogp" path="res://ui/assets/ui_tileset.png" id="3_x52g8"]
 [ext_resource type="Resource" uid="uid://cddlsr53im4lv" path="res://cards/buildings/princess_tower/princess_tower.tres" id="5_8d55x"]
 [ext_resource type="Resource" uid="uid://dq7kn6yqpf2mg" path="res://cards/buildings/king_tower/king_tower.tres" id="6_8d55x"]
+[ext_resource type="Texture2D" uid="uid://fjn4bs5ncn18" path="res://ui/assets/cards/card_slot_blue.png" id="7_ts1j6"]
+[ext_resource type="Texture2D" uid="uid://d2f5dpudtm2vq" path="res://ui/assets/cards/card_frame.png" id="8_lebtn"]
+[ext_resource type="Texture2D" uid="uid://0vhxfkl3xem7" path="res://cards/spells/arrows/assets/card.png" id="8_mxqhn"]
+[ext_resource type="Texture2D" uid="uid://crqqlmg42uwr0" path="res://ui/assets/cards/card_frame_hover.png" id="9_0310r"]
+[ext_resource type="Texture2D" uid="uid://dmthbjavnas6q" path="res://ui/assets/elixir/elixir_icon.png" id="11_57w3w"]
+[ext_resource type="FontFile" uid="uid://b5rp2neeiipol" path="res://ui/assets/fonts/block_craft.otf" id="12_dp7am"]
+[ext_resource type="Texture2D" uid="uid://cuc8j88it6sxt" path="res://ui/assets/cards/next_card_slot_blue.png" id="13_macxf"]
+[ext_resource type="Texture2D" uid="uid://ckmyn7k8fxjhb" path="res://ui/assets/cards/card_slot_red.png" id="14_gi188"]
+[ext_resource type="Texture2D" uid="uid://bbsf6sx7wene" path="res://ui/assets/cards/next_card_slot_red.png" id="15_7rgpn"]
+[ext_resource type="Texture2D" uid="uid://bqc7p1lunpryd" path="res://ui/assets/elixir/elixir_under.png" id="16_7rgpn"]
+[ext_resource type="Texture2D" uid="uid://bx3lsxb7yhcxm" path="res://ui/assets/elixir/elixir_progress.png" id="17_2alhc"]
+[ext_resource type="Texture2D" uid="uid://brmikn28v10op" path="res://ui/assets/elixir/elixir_box.png" id="18_2alhc"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_2alhc"]
+allow_unpress = true
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_788rj"]
+allow_unpress = true
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7ft05"]
 vertices = PackedVector2Array(279.89844, 223.89844, 279.89844, 64.10156, 488.10156, 184.10156, 488.10156, 280.10156, 279.89844, 47.898438, 279.89844, 7.8984375, 488.10156, 7.8984375, 488.10156, 103.89844, 504.10156, 103.89844, 504.10156, 184.10156, 232.10156, 47.898438, 232.10156, 64.10156, 279.89844, 280.10156, 279.89844, 240.10156, 232.10156, 223.89844, 232.10156, 240.10156, 23.898438, 184.10156, 232.10156, 280.10156, 23.898438, 280.10156, 23.898438, 103.89844, 7.8984375, 184.10156, 7.8984375, 103.89844, 23.898438, 7.8984375, 232.10156, 7.8984375)
@@ -13,6 +31,9 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Arr
 outlines = Array[PackedVector2Array]([PackedVector2Array(16, 0, 16, 96, 0, 96, 0, 192, 16, 192, 16, 288, 240, 288, 240, 248, 272, 248, 272, 288, 496, 288, 496, 192, 512, 192, 512, 96, 496, 96, 496, 0, 272, 0, 272, 40, 240, 40, 240, 0), PackedVector2Array(240, 72, 272, 72, 272, 216, 240, 216)])
 cell_size = 16.0
 agent_radius = 7.9
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2alhc"]
+size = Vector2(224, 288)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8m4co"]
 texture = ExtResource("3_x52g8")
@@ -27,10 +48,29 @@ sources/0 = SubResource("TileSetAtlasSource_8m4co")
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_4ag8t")
+blue_hand_ui = SubResource("ButtonGroup_2alhc")
+red_hand_ui = SubResource("ButtonGroup_788rj")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 position = Vector2(64, 32)
 navigation_polygon = SubResource("NavigationPolygon_7ft05")
+
+[node name="BlueSide" type="Area2D" parent="."]
+position = Vector2(192, 176)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BlueSide"]
+shape = SubResource("RectangleShape2D_2alhc")
+
+[node name="RedSide" type="Area2D" parent="."]
+position = Vector2(448, 176)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedSide"]
+shape = SubResource("RectangleShape2D_2alhc")
 
 [node name="TileMap" type="Node2D" parent="."]
 
@@ -49,10 +89,6 @@ tile_set = ExtResource("2_7ft05")
 [node name="Paths" type="TileMapLayer" parent="TileMap"]
 tile_map_data = PackedByteArray("AAAJAAQAAAAAAAEAAAAJAAUAAAAAAAEAAAAJAAYAAAAAAAEAAAAKAAQAAAAAAAEAAAAKAAUAAAAAAAEAAAAKAAYAAAAAAAEAAAALAAQAAAAAAAEAAAALAAUAAAAAAAEAAAALAAYAAAAAAAEAAAAcAAQAAAAAAAEAAAAcAAUAAAAAAAEAAAAcAAYAAAAAAAEAAAAdAAQAAAAAAAEAAAAdAAUAAAAAAAEAAAAdAAYAAAAAAAEAAAAeAAQAAAAAAAEAAAAeAAUAAAAAAAEAAAAeAAYAAAAAAAEAAAAfAAkAAAAAAAEAAAAfAAoAAAAAAAEAAAAfAAsAAAAAAAEAAAAfAAwAAAAAAAEAAAAgAAkAAAAAAAEAAAAgAAoAAAAAAAEAAAAgAAsAAAAAAAEAAAAgAAwAAAAAAAEAAAAhAAkAAAAAAAEAAAAhAAoAAAAAAAEAAAAhAAsAAAAAAAEAAAAhAAwAAAAAAAEAAAAiAAkAAAAAAAEAAAAiAAoAAAAAAAEAAAAiAAsAAAAAAAEAAAAiAAwAAAAAAAEAAAAcAA8AAAAAAAEAAAAcABAAAAAAAAEAAAAcABEAAAAAAAEAAAAdAA8AAAAAAAEAAAAdABAAAAAAAAEAAAAdABEAAAAAAAEAAAAeAA8AAAAAAAEAAAAeABAAAAAAAAEAAAAeABEAAAAAAAEAAAAJAA8AAAAAAAEAAAAJABAAAAAAAAEAAAAJABEAAAAAAAEAAAAKAA8AAAAAAAEAAAAKABAAAAAAAAEAAAAKABEAAAAAAAEAAAALAA8AAAAAAAEAAAALABAAAAAAAAEAAAALABEAAAAAAAEAAAAFAAkAAAAAAAEAAAAFAAoAAAAAAAEAAAAFAAsAAAAAAAEAAAAFAAwAAAAAAAEAAAAGAAkAAAAAAAEAAAAGAAoAAAAAAAEAAAAGAAsAAAAAAAEAAAAGAAwAAAAAAAEAAAAHAAkAAAAAAAEAAAAHAAoAAAAAAAEAAAAHAAsAAAAAAAEAAAAHAAwAAAAAAAEAAAAIAAkAAAAAAAEAAAAIAAoAAAAAAAEAAAAIAAsAAAAAAAEAAAAIAAwAAAAAAAEAAAAHAAgAAAAAAAEAAAAHAAcAAAAAAAEAAAAHAAYAAAAAAAEAAAAHAAUAAAAAAAEAAAAIAAUAAAAAAAEAAAAHAA0AAAAAAAEAAAAHAA4AAAAAAAEAAAAHAA8AAAAAAAEAAAAHABAAAAAAAAEAAAAIABAAAAAAAAEAAAAMABAAAAAAAAEAAAANABAAAAAAAAEAAAAOABAAAAAAAAEAAAAPABAAAAAAAAEAAAAQABAAAAAAAAEAAAARABAAAAAAAAEAAAASABAAAAAAAAEAAAAVABAAAAAAAAEAAAAWABAAAAAAAAEAAAAXABAAAAAAAAEAAAAYABAAAAAAAAEAAAAZABAAAAAAAAEAAAAaABAAAAAAAAEAAAAbABAAAAAAAAEAAAAfABAAAAAAAAEAAAAgABAAAAAAAAEAAAAgAA8AAAAAAAEAAAAgAA4AAAAAAAEAAAAgAAcAAAAAAAEAAAAgAAYAAAAAAAEAAAAgAAUAAAAAAAEAAAAfAAUAAAAAAAEAAAAbAAUAAAAAAAEAAAAaAAUAAAAAAAEAAAAZAAUAAAAAAAEAAAAYAAUAAAAAAAEAAAAXAAUAAAAAAAEAAAAWAAUAAAAAAAEAAAAVAAUAAAAAAAEAAAAMAAUAAAAAAAEAAAANAAUAAAAAAAEAAAAOAAUAAAAAAAEAAAAPAAUAAAAAAAEAAAAQAAUAAAAAAAEAAAARAAUAAAAAAAEAAAASAAUAAAAAAAEAAAATAAQAAAABAAAAAAATAAUAAAABAAEAAAATAAYAAAABAAIAAAAUAAQAAAABAAAAAAAUAAUAAAABAAEAAAAUAAYAAAABAAIAAAATAA8AAAABAAAAAAATABAAAAABAAEAAAATABEAAAABAAIAAAAUAA8AAAABAAAAAAAUABAAAAABAAEAAAAUABEAAAABAAIAAAAMABEAAAACAAMAAAAMAA8AAAACAAMAAGAIAA8AAAADAAMAADAIABEAAAACAAMAAFAfAA8AAAADAAMAADAIAAYAAAADAAMAAAAfAAYAAAADAAMAAAAJABIAAAABAAMAAFAKABIAAAABAAMAAFALABIAAAABAAMAAFALAA4AAAABAAMAAGAKAA4AAAABAAMAAGAJAA4AAAABAAMAAGAIAA4AAAABAAMAAAAIAA0AAAACAAMAAAAGAA0AAAACAAMAAFAGAA4AAAABAAMAADAGAA8AAAABAAMAADAGABAAAAABAAMAADAHABEAAAABAAMAAFANABEAAAABAAMAAFAOABEAAAABAAMAAFAPABEAAAABAAMAAFAQABEAAAABAAMAAFARABEAAAABAAMAAFASABEAAAABAAMAAFAVABEAAAABAAMAAFAWABEAAAABAAMAAFAXABEAAAABAAMAAFAYABEAAAABAAMAAFAZABEAAAABAAMAAFAaABEAAAABAAMAAFAbABEAAAACAAMAAFAbAA8AAAACAAMAADAaAA8AAAABAAMAAGAZAA8AAAABAAMAAGAYAA8AAAABAAMAAGAXAA8AAAABAAMAAGAWAA8AAAABAAMAAGAVAA8AAAABAAMAAGASAA8AAAABAAMAAGARAA8AAAABAAMAAGAQAA8AAAABAAMAAGAPAA8AAAABAAMAAGAOAA8AAAABAAMAAGANAA8AAAABAAMAAGAMAAQAAAACAAMAAGANAAQAAAABAAMAAGAOAAQAAAABAAMAAGAPAAQAAAABAAMAAGAQAAQAAAABAAMAAGARAAQAAAABAAMAAGASAAQAAAABAAMAAGAVAAQAAAABAAMAAGAWAAQAAAABAAMAAGAXAAQAAAABAAMAAGAYAAQAAAABAAMAAGAZAAQAAAABAAMAAGAaAAQAAAABAAMAAGAbAAQAAAACAAMAADAbAAYAAAACAAMAAFAaAAYAAAABAAMAAFAZAAYAAAABAAMAAFAYAAYAAAABAAMAAFAXAAYAAAABAAMAAFAWAAYAAAABAAMAAFAVAAYAAAABAAMAAFASAAYAAAABAAMAAFARAAYAAAABAAMAAFAQAAYAAAABAAMAAFAPAAYAAAABAAMAAFAOAAYAAAABAAMAAFANAAYAAAABAAMAAFAMAAYAAAACAAMAAAAIAAQAAAACAAMAADAfAAQAAAACAAMAAGAcAAcAAAABAAMAAFAdAAcAAAABAAMAAFAeAAcAAAABAAMAAFAcAAMAAAABAAMAAGAdAAMAAAABAAMAAGAeAAMAAAABAAMAAGALAAMAAAABAAMAAGAKAAMAAAABAAMAAGAJAAMAAAABAAMAAGAcAA4AAAABAAMAAGAdAA4AAAABAAMAAGAeAA4AAAABAAMAAGAfABEAAAACAAMAAAAcABIAAAABAAMAAFAdABIAAAABAAMAAFAeABIAAAABAAMAAFAgABEAAAABAAMAAFAhAA4AAAABAAMAAAAhAA8AAAABAAMAAAAhABAAAAABAAMAAAAfAA4AAAABAAMAADAEAAwAAAABAAMAADAEAAsAAAABAAMAADAEAAoAAAABAAMAADAEAAkAAAABAAMAADAFAAgAAAABAAMAAGAJAAkAAAABAAMAAAAJAAoAAAABAAMAAAAJAAsAAAABAAMAAAAJAAwAAAABAAMAAAAIAAgAAAACAAMAAGAGAAgAAAACAAMAADAFAA0AAAABAAMAAFAeAAkAAAABAAMAADAeAAoAAAABAAMAADAeAAsAAAABAAMAADAeAAwAAAABAAMAADAjAAkAAAABAAMAAAAjAAoAAAABAAMAAAAjAAsAAAABAAMAAAAjAAwAAAABAAMAAAAhAA0AAAACAAMAAAAfAA0AAAACAAMAAFAfAAgAAAACAAMAADAhAAgAAAACAAMAAGAiAAgAAAABAAMAAGAiAA0AAAABAAMAAFAgAA0AAAAAAAEAAAAgAAgAAAAAAAEAAAAhAAcAAAABAAMAAAAhAAYAAAABAAMAAAAhAAUAAAABAAMAAAAgAAQAAAABAAMAAGAfAAcAAAABAAMAADAGAAcAAAABAAMAADAGAAYAAAABAAMAADAGAAUAAAABAAMAADAIAAcAAAABAAMAAAAHAAQAAAABAAMAAGAJAAcAAAABAAMAAFAKAAcAAAABAAMAAFALAAcAAAABAAMAAFAFAAEAAAABAAAAAAAGAAEAAAABAAAAAAAHAAEAAAABAAAAAAAIAAEAAAABAAAAAAAJAAEAAAABAAAAAAAKAAEAAAABAAAAAAALAAEAAAABAAAAAAAMAAEAAAABAAAAAAANAAEAAAABAAAAAAAOAAEAAAABAAAAAAAPAAEAAAABAAAAAAAQAAEAAAABAAAAAAARAAEAAAABAAAAAAASAAEAAAABAAAAAAAVAAEAAAABAAAAAAAWAAEAAAABAAAAAAAXAAEAAAABAAAAAAAYAAEAAAABAAAAAAAZAAEAAAABAAAAAAAaAAEAAAABAAAAAAAbAAEAAAABAAAAAAAcAAEAAAABAAAAAAAdAAEAAAABAAAAAAAeAAEAAAABAAAAAAAfAAEAAAABAAAAAAAgAAEAAAABAAAAAAAhAAEAAAABAAAAAAAiAAEAAAABAAAAAAAVABQAAAABAAIAAAAWABQAAAABAAIAAAAXABQAAAABAAIAAAAYABQAAAABAAIAAAAZABQAAAABAAIAAAAaABQAAAABAAIAAAAbABQAAAABAAIAAAAcABQAAAABAAIAAAAdABQAAAABAAIAAAAeABQAAAABAAIAAAAfABQAAAABAAIAAAAgABQAAAABAAIAAAAhABQAAAABAAIAAAAiABQAAAABAAIAAAAFABQAAAABAAIAAAAGABQAAAABAAIAAAAHABQAAAABAAIAAAAIABQAAAABAAIAAAAJABQAAAABAAIAAAAKABQAAAABAAIAAAALABQAAAABAAIAAAAMABQAAAABAAIAAAANABQAAAABAAIAAAAOABQAAAABAAIAAAAPABQAAAABAAIAAAAQABQAAAABAAIAAAARABQAAAABAAIAAAASABQAAAABAAIAAAATABQAAAABAAIAAAAUABQAAAABAAIAAAATAAEAAAABAAAAAAAUAAEAAAABAAAAAAAEAAEAAAABAAAAAAAjAAEAAAABAAAAAAAEABQAAAABAAIAAAAjABQAAAABAAIAAAA=")
 tile_set = ExtResource("2_7ft05")
-
-[node name="UI" type="TileMapLayer" parent="TileMap"]
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAADAAMAAAABAAAAAAADAAQAAAABAAAAAAADAAUAAAABAAAAAAADAAAAAAABAAAAAAADAAEAAAABAAAAAAADAAIAAAABAAAAAAADAAYAAAABAAAAAAADAAcAAAABAAAAAAADAAgAAAABAAAAAAADAAkAAAABAAAAAAADAAoAAAABAAAAAAADAAsAAAABAAAAAAADAAwAAAABAAAAAAADAA0AAAABAAAAAAADAA4AAAABAAAAAAADAA8AAAABAAAAAAADABAAAAABAAAAAAADABEAAAABAAAAAAADABIAAAABAAAAAAADABMAAAABAAAAAAADABQAAAABAAAAAAADABUAAAACAAAAAAADABYAAAAAAAAAAAAkAAAAAAABAAAAABAkAAEAAAABAAAAABAkAAIAAAABAAAAABAkAAMAAAABAAAAABAkAAQAAAABAAAAABAkAAUAAAABAAAAABAkAAYAAAABAAAAABAkAAcAAAABAAAAABAkAAgAAAABAAAAABAkAAkAAAABAAAAABAkAAoAAAABAAAAABAkAAsAAAABAAAAABAkAAwAAAABAAAAABAkAA0AAAABAAAAABAkAA4AAAABAAAAABAkAA8AAAABAAAAABAkABAAAAABAAAAABAkABEAAAABAAAAABAkABIAAAABAAAAABAkABMAAAABAAAAABAkABQAAAABAAAAABAkABUAAAACAAAAAAAkABYAAAAAAAAAAAAlAAAAAAAAAAAAAAAlAAEAAAAAAAAAAAAlAAIAAAAAAAAAAAAlAAMAAAAAAAAAAAAlAAQAAAAAAAAAAAAlAAUAAAAAAAAAAAAlAAYAAAAAAAAAAAAlAAcAAAAAAAAAAAAlAAgAAAAAAAAAAAAlAAkAAAAAAAAAAAAlAAoAAAAAAAAAAAAlAAsAAAAAAAAAAAAlAAwAAAAAAAAAAAAlAA0AAAAAAAAAAAAlAA4AAAAAAAAAAAAlAA8AAAAAAAAAAAAlABAAAAAAAAAAAAAlABEAAAAAAAAAAAAlABIAAAAAAAAAAAAlABMAAAAAAAAAAAAlABQAAAAAAAAAAAAlABUAAAACAAAAAAAlABYAAAAAAAAAAAAmAAAAAAAAAAAAAAAmAAEAAAAAAAAAAAAmAAIAAAAAAAAAAAAmAAMAAAAAAAAAAAAmAAQAAAAAAAAAAAAmAAUAAAAAAAAAAAAmAAYAAAAAAAAAAAAmAAcAAAAAAAAAAAAmAAgAAAAAAAAAAAAmAAkAAAAAAAAAAAAmAAoAAAAAAAAAAAAmAAsAAAAAAAAAAAAmAAwAAAAAAAAAAAAmAA0AAAAAAAAAAAAmAA4AAAAAAAAAAAAmAA8AAAAAAAAAAAAmABAAAAAAAAAAAAAmABEAAAAAAAAAAAAmABIAAAAAAAAAAAAmABMAAAAAAAAAAAAmABQAAAAAAAAAAAAmABUAAAACAAAAAAAmABYAAAAAAAAAAAAnAAAAAAAAAAAAAAAnAAEAAAAAAAAAAAAnAAIAAAAAAAAAAAAnAAMAAAAAAAAAAAAnAAQAAAAAAAAAAAAnAAUAAAAAAAAAAAAnAAYAAAAAAAAAAAAnAAcAAAAAAAAAAAAnAAgAAAAAAAAAAAAnAAkAAAAAAAAAAAAnAAoAAAAAAAAAAAAnAAsAAAAAAAAAAAAnAAwAAAAAAAAAAAAnAA0AAAAAAAAAAAAnAA4AAAAAAAAAAAAnAA8AAAAAAAAAAAAnABAAAAAAAAAAAAAnABEAAAAAAAAAAAAnABIAAAAAAAAAAAAnABMAAAAAAAAAAAAnABQAAAAAAAAAAAAnABUAAAACAAAAAAAnABYAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA8AAAAAAAAAAAAAABAAAAAAAAAAAAAAABEAAAAAAAAAAAAAABIAAAAAAAAAAAAAABMAAAAAAAAAAAAAABQAAAAAAAAAAAAAABUAAAACAAAAAAAAABYAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAABAAgAAAAAAAAAAAABAAkAAAAAAAAAAAABAAoAAAAAAAAAAAABAAsAAAAAAAAAAAABAAwAAAAAAAAAAAABAA0AAAAAAAAAAAABAA4AAAAAAAAAAAABAA8AAAAAAAAAAAABABAAAAAAAAAAAAABABEAAAAAAAAAAAABABIAAAAAAAAAAAABABMAAAAAAAAAAAABABQAAAAAAAAAAAABABUAAAACAAAAAAABABYAAAAAAAAAAAACAAYAAAAAAAAAAAACAAcAAAAAAAAAAAACAAgAAAAAAAAAAAACAAkAAAAAAAAAAAACAAoAAAAAAAAAAAACAAsAAAAAAAAAAAACAAwAAAAAAAAAAAACAA0AAAAAAAAAAAACAA4AAAAAAAAAAAACAA8AAAAAAAAAAAACABAAAAAAAAAAAAACABEAAAAAAAAAAAACABIAAAAAAAAAAAACABMAAAAAAAAAAAACABQAAAAAAAAAAAACABUAAAACAAAAAAACABYAAAAAAAAAAAAEABUAAAACAAAAAAAFABUAAAACAAAAAAAGABUAAAACAAAAAAAHABUAAAACAAAAAAAIABUAAAACAAAAAAAJABUAAAACAAAAAAAKABUAAAACAAAAAAALABUAAAACAAAAAAAMABUAAAACAAAAAAANABUAAAACAAAAAAAOABUAAAACAAAAAAAPABUAAAACAAAAAAAQABUAAAACAAAAAAARABUAAAACAAAAAAASABUAAAACAAAAAAATABUAAAACAAAAAAAUABUAAAACAAAAAAAVABUAAAACAAAAAAAWABUAAAACAAAAAAAXABUAAAACAAAAAAAYABUAAAACAAAAAAAZABUAAAACAAAAAAAaABUAAAACAAAAAAAbABUAAAACAAAAAAAcABUAAAACAAAAAAAdABUAAAACAAAAAAAeABUAAAACAAAAAAAfABUAAAACAAAAAAAgABUAAAACAAAAAAAhABUAAAACAAAAAAAiABUAAAACAAAAAAAjABUAAAACAAAAAAAEABYAAAAAAAAAAAAFABYAAAAAAAAAAAAGABYAAAAAAAAAAAAHABYAAAAAAAAAAAAIABYAAAAAAAAAAAAJABYAAAAAAAAAAAAKABYAAAAAAAAAAAALABYAAAAAAAAAAAAMABYAAAAAAAAAAAANABYAAAAAAAAAAAAOABYAAAAAAAAAAAAPABYAAAAAAAAAAAAQABYAAAAAAAAAAAARABYAAAAAAAAAAAASABYAAAAAAAAAAAATABYAAAAAAAAAAAAUABYAAAAAAAAAAAAVABYAAAAAAAAAAAAWABYAAAAAAAAAAAAXABYAAAAAAAAAAAAYABYAAAAAAAAAAAAZABYAAAAAAAAAAAAaABYAAAAAAAAAAAAbABYAAAAAAAAAAAAcABYAAAAAAAAAAAAdABYAAAAAAAAAAAAeABYAAAAAAAAAAAAfABYAAAAAAAAAAAAgABYAAAAAAAAAAAAhABYAAAAAAAAAAAAiABYAAAAAAAAAAAAjABYAAAAAAAAAAAAEAAAAAAACAAEAAAAFAAAAAAACAAEAAAAGAAAAAAACAAEAAAAHAAAAAAACAAEAAAAIAAAAAAACAAEAAAAJAAAAAAACAAEAAAAKAAAAAAACAAEAAAALAAAAAAACAAEAAAAMAAAAAAACAAEAAAANAAAAAAACAAEAAAAOAAAAAAACAAEAAAAPAAAAAAACAAEAAAAQAAAAAAACAAEAAAARAAAAAAACAAEAAAASAAAAAAACAAEAAAATAAAAAAACAAEAAAAUAAAAAAACAAEAAAAVAAAAAAACAAEAAAAWAAAAAAACAAEAAAAXAAAAAAACAAEAAAAYAAAAAAACAAEAAAAZAAAAAAACAAEAAAAaAAAAAAACAAEAAAAbAAAAAAACAAEAAAAcAAAAAAACAAEAAAAdAAAAAAACAAEAAAAeAAAAAAACAAEAAAAfAAAAAAACAAEAAAAgAAAAAAACAAEAAAAhAAAAAAACAAEAAAAiAAAAAAACAAEAAAAjAAAAAAACAAEAAAA=")
-tile_set = SubResource("TileSet_ts1j6")
 
 [node name="Cards" type="Node" parent="."]
 
@@ -84,3 +120,513 @@ stats = ExtResource("6_8d55x")
 [node name="RedPrincessDown" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
 position = Vector2(472, 264)
 stats = ExtResource("5_8d55x")
+
+[node name="ElixirTimer" type="Timer" parent="."]
+wait_time = 0.7
+autostart = true
+
+[node name="UI" type="Node" parent="."]
+
+[node name="Tileset" type="TileMapLayer" parent="UI"]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAADAAMAAAABAAAAAAADAAQAAAABAAAAAAADAAUAAAABAAAAAAADAAAAAAABAAAAAAADAAEAAAABAAAAAAADAAIAAAABAAAAAAADAAYAAAABAAAAAAADAAcAAAABAAAAAAADAAgAAAABAAAAAAADAAkAAAABAAAAAAADAAoAAAABAAAAAAADAAsAAAABAAAAAAADAAwAAAABAAAAAAADAA0AAAABAAAAAAADAA4AAAABAAAAAAADAA8AAAABAAAAAAADABAAAAABAAAAAAADABEAAAABAAAAAAADABIAAAABAAAAAAADABMAAAABAAAAAAADABQAAAABAAAAAAADABUAAAABAAAAAAADABYAAAABAAAAAAAkAAAAAAABAAAAABAkAAEAAAABAAAAABAkAAIAAAABAAAAABAkAAMAAAABAAAAABAkAAQAAAABAAAAABAkAAUAAAABAAAAABAkAAYAAAABAAAAABAkAAcAAAABAAAAABAkAAgAAAABAAAAABAkAAkAAAABAAAAABAkAAoAAAABAAAAABAkAAsAAAABAAAAABAkAAwAAAABAAAAABAkAA0AAAABAAAAABAkAA4AAAABAAAAABAkAA8AAAABAAAAABAkABAAAAABAAAAABAkABEAAAABAAAAABAkABIAAAABAAAAABAkABMAAAABAAAAABAkABQAAAABAAAAABAkABUAAAABAAAAABAkABYAAAABAAAAABAlAAAAAAAAAAAAAAAlAAEAAAAAAAAAAAAlAAIAAAAAAAAAAAAlAAMAAAAAAAAAAAAlAAQAAAAAAAAAAAAlAAUAAAAAAAAAAAAlAAYAAAAAAAAAAAAlAAcAAAAAAAAAAAAlAAgAAAAAAAAAAAAlAAkAAAAAAAAAAAAlAAoAAAAAAAAAAAAlAAsAAAAAAAAAAAAlAAwAAAAAAAAAAAAlAA0AAAAAAAAAAAAlAA4AAAAAAAAAAAAlAA8AAAAAAAAAAAAlABAAAAAAAAAAAAAlABEAAAAAAAAAAAAlABIAAAAAAAAAAAAlABMAAAAAAAAAAAAlABQAAAAAAAAAAAAlABUAAAAAAAAAAAAlABYAAAAAAAAAAAAmAAAAAAAAAAAAAAAmAAEAAAAAAAAAAAAmAAIAAAAAAAAAAAAmAAMAAAAAAAAAAAAmAAQAAAAAAAAAAAAmAAUAAAAAAAAAAAAmAAYAAAAAAAAAAAAmAAcAAAAAAAAAAAAmAAgAAAAAAAAAAAAmAAkAAAAAAAAAAAAmAAoAAAAAAAAAAAAmAAsAAAAAAAAAAAAmAAwAAAAAAAAAAAAmAA0AAAAAAAAAAAAmAA4AAAAAAAAAAAAmAA8AAAAAAAAAAAAmABAAAAAAAAAAAAAmABEAAAAAAAAAAAAmABIAAAAAAAAAAAAmABMAAAAAAAAAAAAmABQAAAAAAAAAAAAmABUAAAAAAAAAAAAmABYAAAAAAAAAAAAnAAAAAAAAAAAAAAAnAAEAAAAAAAAAAAAnAAIAAAAAAAAAAAAnAAMAAAAAAAAAAAAnAAQAAAAAAAAAAAAnAAUAAAAAAAAAAAAnAAYAAAAAAAAAAAAnAAcAAAAAAAAAAAAnAAgAAAAAAAAAAAAnAAkAAAAAAAAAAAAnAAoAAAAAAAAAAAAnAAsAAAAAAAAAAAAnAAwAAAAAAAAAAAAnAA0AAAAAAAAAAAAnAA4AAAAAAAAAAAAnAA8AAAAAAAAAAAAnABAAAAAAAAAAAAAnABEAAAAAAAAAAAAnABIAAAAAAAAAAAAnABMAAAAAAAAAAAAnABQAAAAAAAAAAAAnABUAAAAAAAAAAAAnABYAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA8AAAAAAAAAAAAAABAAAAAAAAAAAAAAABEAAAAAAAAAAAAAABIAAAAAAAAAAAAAABMAAAAAAAAAAAAAABQAAAAAAAAAAAAAABUAAAAAAAAAAAAAABYAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAABAAgAAAAAAAAAAAABAAkAAAAAAAAAAAABAAoAAAAAAAAAAAABAAsAAAAAAAAAAAABAAwAAAAAAAAAAAABAA0AAAAAAAAAAAABAA4AAAAAAAAAAAABAA8AAAAAAAAAAAABABAAAAAAAAAAAAABABEAAAAAAAAAAAABABIAAAAAAAAAAAABABMAAAAAAAAAAAABABQAAAAAAAAAAAABABUAAAAAAAAAAAABABYAAAAAAAAAAAACAAYAAAAAAAAAAAACAAcAAAAAAAAAAAACAAgAAAAAAAAAAAACAAkAAAAAAAAAAAACAAoAAAAAAAAAAAACAAsAAAAAAAAAAAACAAwAAAAAAAAAAAACAA0AAAAAAAAAAAACAA4AAAAAAAAAAAACAA8AAAAAAAAAAAACABAAAAAAAAAAAAACABEAAAAAAAAAAAACABIAAAAAAAAAAAACABMAAAAAAAAAAAACABQAAAAAAAAAAAACABUAAAAAAAAAAAACABYAAAAAAAAAAAAEABUAAAACAAAAAAAFABUAAAACAAAAAAAGABUAAAACAAAAAAAHABUAAAACAAAAAAAIABUAAAACAAAAAAAJABUAAAACAAAAAAAKABUAAAACAAAAAAALABUAAAACAAAAAAAMABUAAAACAAAAAAANABUAAAACAAAAAAAOABUAAAACAAAAAAAPABUAAAACAAAAAAAQABUAAAACAAAAAAARABUAAAACAAAAAAASABUAAAACAAAAAAATABUAAAACAAAAAAAUABUAAAACAAAAAAAVABUAAAACAAAAAAAWABUAAAACAAAAAAAXABUAAAACAAAAAAAYABUAAAACAAAAAAAZABUAAAACAAAAAAAaABUAAAACAAAAAAAbABUAAAACAAAAAAAcABUAAAACAAAAAAAdABUAAAACAAAAAAAeABUAAAACAAAAAAAfABUAAAACAAAAAAAgABUAAAACAAAAAAAhABUAAAACAAAAAAAiABUAAAACAAAAAAAjABUAAAACAAAAAAAEABYAAAAAAAAAAAAFABYAAAAAAAAAAAAGABYAAAAAAAAAAAAHABYAAAAAAAAAAAAIABYAAAAAAAAAAAAJABYAAAAAAAAAAAAKABYAAAAAAAAAAAALABYAAAAAAAAAAAAMABYAAAAAAAAAAAANABYAAAAAAAAAAAAOABYAAAAAAAAAAAAPABYAAAAAAAAAAAAQABYAAAAAAAAAAAARABYAAAAAAAAAAAASABYAAAAAAAAAAAATABYAAAAAAAAAAAAUABYAAAAAAAAAAAAVABYAAAAAAAAAAAAWABYAAAAAAAAAAAAXABYAAAAAAAAAAAAYABYAAAAAAAAAAAAZABYAAAAAAAAAAAAaABYAAAAAAAAAAAAbABYAAAAAAAAAAAAcABYAAAAAAAAAAAAdABYAAAAAAAAAAAAeABYAAAAAAAAAAAAfABYAAAAAAAAAAAAgABYAAAAAAAAAAAAhABYAAAAAAAAAAAAiABYAAAAAAAAAAAAjABYAAAAAAAAAAAAEAAAAAAACAAEAAAAFAAAAAAACAAEAAAAGAAAAAAACAAEAAAAHAAAAAAACAAEAAAAIAAAAAAACAAEAAAAJAAAAAAACAAEAAAAKAAAAAAACAAEAAAALAAAAAAACAAEAAAAMAAAAAAACAAEAAAANAAAAAAACAAEAAAAOAAAAAAACAAEAAAAPAAAAAAACAAEAAAAQAAAAAAACAAEAAAARAAAAAAACAAEAAAASAAAAAAACAAEAAAATAAAAAAACAAEAAAAUAAAAAAACAAEAAAAVAAAAAAACAAEAAAAWAAAAAAACAAEAAAAXAAAAAAACAAEAAAAYAAAAAAACAAEAAAAZAAAAAAACAAEAAAAaAAAAAAACAAEAAAAbAAAAAAACAAEAAAAcAAAAAAACAAEAAAAdAAAAAAACAAEAAAAeAAAAAAACAAEAAAAfAAAAAAACAAEAAAAgAAAAAAACAAEAAAAhAAAAAAACAAEAAAAiAAAAAAACAAEAAAAjAAAAAAACAAEAAAA=")
+tile_set = SubResource("TileSet_ts1j6")
+
+[node name="MarginContainerLeft" type="MarginContainer" parent="UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+
+[node name="BlueCards" type="VBoxContainer" parent="UI/MarginContainerLeft"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CardSlot1" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
+layout_mode = 2
+texture = ExtResource("7_ts1j6")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot1"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerLeft/BlueCards/CardSlot1/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2alhc")
+texture_normal = ExtResource("8_lebtn")
+texture_pressed = ExtResource("9_0310r")
+
+[node name="Elixir" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot1"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("11_57w3w")
+
+[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/CardSlot1/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot2" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
+layout_mode = 2
+texture = ExtResource("7_ts1j6")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot2"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerLeft/BlueCards/CardSlot2/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2alhc")
+texture_normal = ExtResource("8_lebtn")
+texture_pressed = ExtResource("9_0310r")
+
+[node name="Elixir" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot2"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("11_57w3w")
+
+[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/CardSlot2/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot3" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
+layout_mode = 2
+texture = ExtResource("7_ts1j6")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot3"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerLeft/BlueCards/CardSlot3/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2alhc")
+texture_normal = ExtResource("8_lebtn")
+texture_pressed = ExtResource("9_0310r")
+
+[node name="Elixir" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot3"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("11_57w3w")
+
+[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/CardSlot3/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot4" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
+layout_mode = 2
+texture = ExtResource("7_ts1j6")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot4"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerLeft/BlueCards/CardSlot4/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2alhc")
+texture_normal = ExtResource("8_lebtn")
+texture_pressed = ExtResource("9_0310r")
+
+[node name="Elixir" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot4"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("11_57w3w")
+
+[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/CardSlot4/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "0"
+horizontal_alignment = 1
+
+[node name="NextCard" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
+layout_mode = 2
+texture = ExtResource("13_macxf")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/NextCard"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 19.0
+offset_right = 58.0
+offset_bottom = 79.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_mxqhn")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/NextCard"]
+layout_mode = 0
+offset_left = -6.0
+offset_right = 58.0
+offset_bottom = 26.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "NEXT"
+horizontal_alignment = 1
+
+[node name="MarginContainerRight" type="MarginContainer" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -56.0
+offset_bottom = 368.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+
+[node name="RedCards" type="VBoxContainer" parent="UI/MarginContainerRight"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CardSlot1" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
+layout_mode = 2
+texture = ExtResource("14_gi188")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot1"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerRight/RedCards/CardSlot1/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_788rj")
+texture_normal = ExtResource("8_lebtn")
+texture_pressed = ExtResource("9_0310r")
+
+[node name="Elixir" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot1"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("11_57w3w")
+
+[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/CardSlot1/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot2" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
+layout_mode = 2
+texture = ExtResource("14_gi188")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot2"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerRight/RedCards/CardSlot2/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_788rj")
+texture_normal = ExtResource("8_lebtn")
+texture_pressed = ExtResource("9_0310r")
+
+[node name="Elixir" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot2"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("11_57w3w")
+
+[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/CardSlot2/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot3" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
+layout_mode = 2
+texture = ExtResource("14_gi188")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot3"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerRight/RedCards/CardSlot3/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_788rj")
+texture_normal = ExtResource("8_lebtn")
+texture_pressed = ExtResource("9_0310r")
+
+[node name="Elixir" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot3"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("11_57w3w")
+
+[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/CardSlot3/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot4" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
+layout_mode = 2
+texture = ExtResource("14_gi188")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot4"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerRight/RedCards/CardSlot4/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_788rj")
+texture_normal = ExtResource("8_lebtn")
+texture_pressed = ExtResource("9_0310r")
+
+[node name="Elixir" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot4"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("11_57w3w")
+
+[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/CardSlot4/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "0"
+horizontal_alignment = 1
+
+[node name="NextCard" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
+layout_mode = 2
+texture = ExtResource("15_7rgpn")
+
+[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/NextCard"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 19.0
+offset_right = 58.0
+offset_bottom = 79.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_mxqhn")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/NextCard"]
+layout_mode = 0
+offset_left = -6.0
+offset_right = 58.0
+offset_bottom = 26.0
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "NEXT"
+horizontal_alignment = 1
+
+[node name="MarginContainerBottom" type="MarginContainer" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.5
+offset_top = -40.0
+offset_right = 100.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainerBottom"]
+layout_mode = 2
+alignment = 1
+
+[node name="BlueElixir" type="TextureProgressBar" parent="UI/MarginContainerBottom/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+max_value = 10.0
+step = 0.25
+value = 5.0
+texture_under = ExtResource("16_7rgpn")
+texture_progress = ExtResource("17_2alhc")
+
+[node name="TextureRect" type="TextureRect" parent="UI/MarginContainerBottom/HBoxContainer/BlueElixir"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -18.0
+offset_top = -8.0
+offset_right = -2.0
+offset_bottom = 8.0
+grow_vertical = 2
+texture = ExtResource("18_2alhc")
+
+[node name="Label" type="Label" parent="UI/MarginContainerBottom/HBoxContainer/BlueElixir/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MarginContainerBottom/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 60
+
+[node name="RedElixir" type="TextureProgressBar" parent="UI/MarginContainerBottom/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+max_value = 10.0
+step = 0.25
+value = 5.0
+fill_mode = 1
+texture_under = ExtResource("16_7rgpn")
+texture_progress = ExtResource("17_2alhc")
+
+[node name="TextureRect" type="TextureRect" parent="UI/MarginContainerBottom/HBoxContainer/RedElixir"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 2.0
+offset_top = -8.0
+offset_right = 18.0
+offset_bottom = 8.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("18_2alhc")
+
+[node name="Label" type="Label" parent="UI/MarginContainerBottom/HBoxContainer/RedElixir/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("12_dp7am")
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="input_event" from="BlueSide" to="." method="_on_blue_side_input_event"]
+[connection signal="input_event" from="RedSide" to="." method="_on_red_side_input_event"]
+[connection signal="timeout" from="ElixirTimer" to="." method="_on_elixir_timer_timeout"]

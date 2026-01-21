@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crqqlmg42uwr0"
-path="res://.godot/imported/card_frame_hover.png-1964e6d72c133aab9054a6e8f199d597.ctex"
+uid="uid://bt00q4fqixy6x"
+path="res://.godot/imported/card.png-a7094d81eb4ff59f7f3761d7cac81bb8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/card_frame_hover.png"
-dest_files=["res://.godot/imported/card_frame_hover.png-1964e6d72c133aab9054a6e8f199d597.ctex"]
+source_file="res://cards/troops/minions/assets/card.png"
+dest_files=["res://.godot/imported/card.png-a7094d81eb4ff59f7f3761d7cac81bb8.ctex"]
 
 [params]
 

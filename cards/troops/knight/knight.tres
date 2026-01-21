@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CardStats" load_steps=3 format=3 uid="uid://dxfn65holjdlh"]
+[gd_resource type="Resource" script_class="CardStats" load_steps=4 format=3 uid="uid://dxfn65holjdlh"]
 
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_4se1m"]
 [ext_resource type="Texture2D" uid="uid://7u8i64yrgojb" path="res://cards/troops/knight/assets/arena.png" id="1_dyyva"]
+[ext_resource type="Texture2D" uid="uid://d8g4obx3ihm1" path="res://cards/troops/knight/assets/card.png" id="2_qfkqi"]
 
 [resource]
 resource_name = "Knight"
@@ -10,13 +11,16 @@ hp = 1766
 move_speed = 60
 hit_speed = 1.2
 first_hit_speed = 0.5
+elixir = 3
 sight_range = 5.5
 hit_range = 1.2
 damage = 202
+crown_tower_damage = 202
 target_troops = true
 target_buildings = true
 target_ground = true
 is_troop = true
 arena_sprite = ExtResource("1_dyyva")
+card_sprite = ExtResource("2_qfkqi")
 mass = 6
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

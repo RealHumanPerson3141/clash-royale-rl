@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CardStats" load_steps=3 format=3 uid="uid://cmgaduxvnkxtu"]
+[gd_resource type="Resource" script_class="CardStats" load_steps=4 format=3 uid="uid://cmgaduxvnkxtu"]
 
 [ext_resource type="Texture2D" uid="uid://b435uog2168kc" path="res://cards/troops/archers/assets/arena.png" id="1_ene80"]
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_wnlto"]
+[ext_resource type="Texture2D" uid="uid://b862g8730kxek" path="res://cards/troops/archers/assets/card.png" id="2_2d6ft"]
 
 [resource]
 resource_name = "Archers"
@@ -10,6 +11,7 @@ hp = 304
 move_speed = 60
 hit_speed = 0.9
 first_hit_speed = 0.1
+elixir = 3
 count = 2
 sight_range = 5.5
 hit_range = 5.0
@@ -22,5 +24,6 @@ target_ground = true
 is_troop = true
 is_ranged = true
 arena_sprite = ExtResource("1_ene80")
+card_sprite = ExtResource("2_2d6ft")
 mass = 3
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

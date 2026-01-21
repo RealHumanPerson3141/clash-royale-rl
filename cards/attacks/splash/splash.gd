@@ -8,8 +8,7 @@ var radius: float
 
 
 func _ready() -> void:
-	$CollisionShape2D.shape = CircleShape2D.new()
-	$CollisionShape2D.shape.radius = radius * Global.TILE_SIZE
+	scale = Vector2(radius * Global.TILE_SIZE, radius * Global.TILE_SIZE)
 
 
 func _on_timer_timeout() -> void:

@@ -35,7 +35,7 @@ texture = ExtResource("1_d81rb")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 2.0
-target_desired_distance = 4.0
+target_desired_distance = 0.1
 radius = 8.0
 neighbor_distance = 32.0
 max_neighbors = 4

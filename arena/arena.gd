@@ -1,7 +1,5 @@
 extends Node2D
 
-# TODO: Replace this with an actual card placement system
-
 
 var card_scene: PackedScene = preload("res://cards/card.tscn")
 var deck: Array[CardStats] = [
@@ -18,56 +16,117 @@ var deck: Array[CardStats] = [
 var blue_hand: Hand
 var red_hand: Hand
 
+@export var blue_hand_ui: ButtonGroup
+@export var red_hand_ui: ButtonGroup
+
+var blue_elixir := 5.0
+var red_elixir := 5.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	blue_hand = Hand.new(deck)
-	red_hand = Hand.new(deck)
+	blue_hand = Hand.new(deck, $UI/MarginContainerLeft/BlueCards)
+	red_hand = Hand.new(deck, $UI/MarginContainerRight/RedCards)
 	
 	print(blue_hand, "\n")
 	print(red_hand)
 
 
-func _input(event: InputEvent) -> void:
-	for color in ["blue", "red"]:
-		for index in range(4):
-			if not event.is_action_pressed(color + "_" + str(index + 1)):
-				continue
-				
-			var hand = blue_hand if color == "blue" else red_hand
-			
-			var card_stats := hand.get_card(index)
-			
-			for i in range(card_stats.count):
-				var card := card_scene.instantiate()
-			
-				card.stats = card_stats
-				card.is_blue = color == "blue"
-				# Slightly randomize card placement to avoid repulsion artefacts
-				card.position = get_global_mouse_position() + Vector2(randf() * 2 - 1, randf() * 2 - 1)
-				
-				var unique_id := str(get_tree().get_node_count_in_group(color))
-				card.name = color.capitalize() + card_stats.resource_name + unique_id
-			
-				$Cards.add_child(card)
+func _instantiate_card(stats: CardStats, is_blue: bool):
+	if is_blue:
+		blue_elixir -= stats.elixir
+	else:
+		red_elixir -= stats.elixir
+	
+	_update_elixir_ui()
+	
+	for i in range(stats.count):
+		var card := card_scene.instantiate()
+		
+		card.stats = stats
+		card.is_blue = is_blue
+		# Slightly randomize card placement to avoid repulsion artefacts
+		card.position = get_global_mouse_position() + Vector2(randf() * 2 - 1, randf() * 2 - 1)
+		
+		var color := "blue" if is_blue else "red"
+		var unique_id := str(get_tree().get_node_count_in_group(color))
+		card.name = color.capitalize() + stats.resource_name + unique_id
+		
+		$Cards.add_child(card)
 
+
+func _on_elixir_timer_timeout() -> void:
+	if red_elixir < 10:
+		red_elixir += 0.25
+	if blue_elixir < 10:
+		blue_elixir += 0.25
+	
+	_update_elixir_ui()
+
+
+func _update_elixir_ui():
+	var blue_bar = $UI/MarginContainerBottom/HBoxContainer/BlueElixir
+	var red_bar = $UI/MarginContainerBottom/HBoxContainer/RedElixir
+	
+	blue_bar.value = blue_elixir
+	red_bar.value = red_elixir
+	
+	blue_bar.get_child(0).get_child(0).text = str(int(blue_elixir))
+	red_bar.get_child(0).get_child(0).text = str(int(red_elixir))
+
+
+func _place_card(is_blue: bool, hand: Hand, button_group: ButtonGroup):
+	var selected_card = button_group.get_pressed_button()
+	if selected_card == null:
+		return
+		
+	selected_card.button_pressed = false
+		
+	# Hierarchy finagling
+	var index = selected_card.get_parent().get_parent().get_index()
+		
+	var elixir = blue_elixir if is_blue else red_elixir
+	if not hand.can_place(index, elixir):
+		print("Not enough Elixir")
+		return
+	
+	var card_stats := hand.get_card(index)
+	
+	_instantiate_card(card_stats, is_blue)
+
+
+func _on_blue_side_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event.is_action_pressed("place_blue"):
+		_place_card(true, blue_hand, blue_hand_ui)
+
+
+func _on_red_side_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event.is_action_pressed("place_red"):
+		_place_card(false, red_hand, red_hand_ui)
 
 class Hand:
 	var deck: Array[CardStats]
 	var cards: Array[int]
 	var next: Array[int]
 	
-	func _init(card_stats: Array[CardStats]):
+	var ui: BoxContainer
+	
+	func _init(card_stats: Array[CardStats], box_container: BoxContainer):
 		deck = card_stats
+		ui = box_container
+		
 		cards = []
 		
 		var sorted_deck := range(8)
 		for i in range(8):
-			var random_card = sorted_deck.pop_at(randi_range(0, 7 - i))
+			var random_index = sorted_deck.pop_at(randi_range(0, 7 - i))
 			
 			if i < 4:
-				cards.append(random_card)
+				cards.append(random_index)
+				_set_ui_card(i, deck[random_index])
 			else:
-				next.append(random_card)
+				next.append(random_index)
+		
+		_set_ui_card(-1, deck[next[0]])
 	
 	func _to_string() -> String:
 		var cards_str = "Cards: " + str(cards.map(_index_to_card_name)) + "\n"
@@ -84,10 +143,23 @@ class Hand:
 		next.append(cards[index])
 		cards.set(index, next.pop_front())
 		
+		_set_ui_card(index, deck[cards[index]])
+		_set_ui_card(-1, deck[next[0]])
+		
 		return chosen_card
+	
+	func can_place(index: int, elixir: float) -> bool:
+		return deck[cards[index]].elixir <= elixir
 	
 	func _index_to_card_name(index: int) -> String:
 		if index < 0 or index >= 8:
 			return "Error"
 			
 		return deck[index].resource_name
+	
+	func _set_ui_card(hand_index: int, card: CardStats) -> void:
+		var card_texture = ui.get_child(hand_index).get_child(0)
+		card_texture.texture = card.card_sprite
+		if hand_index >= 0 and hand_index < 4:
+			var card_elixir_label = ui.get_child(hand_index).get_child(1).get_child(0)
+			card_elixir_label.text = str(card.elixir)

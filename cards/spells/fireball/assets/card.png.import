@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckmyn7k8fxjhb"
-path="res://.godot/imported/card_slot_red.png-87d4c1ce31c01636f8693fe62b7c3705.ctex"
+uid="uid://5vckoqmjc84g"
+path="res://.godot/imported/card.png-a86ace40bbdbb2fd2e6e0a8344975360.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/card_slot_red.png"
-dest_files=["res://.godot/imported/card_slot_red.png-87d4c1ce31c01636f8693fe62b7c3705.ctex"]
+source_file="res://cards/spells/fireball/assets/card.png"
+dest_files=["res://.godot/imported/card.png-a86ace40bbdbb2fd2e6e0a8344975360.ctex"]
 
 [params]
 

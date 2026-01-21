@@ -11,6 +11,7 @@ extends Resource
 @export var first_hit_speed: float
 
 @export_group("Deploy")
+@export var elixir: int
 @export var count: int = 1
 @export var deploy_time: float = 1
 
@@ -41,6 +42,7 @@ extends Resource
 
 @export_group("Visual")
 @export var arena_sprite: Texture2D
+@export var card_sprite: Texture2D
 
 @export_group("Miscellaneous")
 @export var mass: int

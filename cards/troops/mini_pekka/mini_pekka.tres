@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CardStats" load_steps=3 format=3 uid="uid://dcife0k06pr5l"]
+[gd_resource type="Resource" script_class="CardStats" load_steps=4 format=3 uid="uid://dcife0k06pr5l"]
 
 [ext_resource type="Texture2D" uid="uid://dne4vpl82eo0y" path="res://cards/troops/mini_pekka/assets/arena.png" id="1_duhy8"]
 [ext_resource type="Script" uid="uid://chdsc6dtr4mny" path="res://cards/card_stats.gd" id="1_xtx6h"]
+[ext_resource type="Texture2D" uid="uid://dlbp0gn61mvb5" path="res://cards/troops/mini_pekka/assets/card.png" id="2_7c3l5"]
 
 [resource]
 resource_name = "MiniPEKKA"
@@ -10,6 +11,7 @@ hp = 1433
 move_speed = 90
 hit_speed = 1.6
 first_hit_speed = 0.5
+elixir = 4
 sight_range = 5.0
 hit_range = 0.8
 damage = 755
@@ -19,5 +21,6 @@ target_buildings = true
 target_ground = true
 is_troop = true
 arena_sprite = ExtResource("1_duhy8")
+card_sprite = ExtResource("2_7c3l5")
 mass = 4
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"
