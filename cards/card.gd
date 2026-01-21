@@ -149,6 +149,7 @@ func _retarget():
 	
 	if not hit_area.overlaps_area(target):
 		attacking = false
+		hit_timer.stop()
 	if not sight_area.overlaps_area(target):
 		in_combat = false
 
