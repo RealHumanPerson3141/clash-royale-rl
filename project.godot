@@ -36,6 +36,10 @@ project/assembly_name="Clash Royale RL"
 movie_writer/video_quality=1.0
 movie_writer/movie_file="/home/ok/Projects/Godot/clash-royale-rl/latest_run.ogv"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_rl_agents/plugin.cfg")
+
 [input]
 
 place_blue={

@@ -23,4 +23,5 @@ is_troop = true
 arena_sprite = ExtResource("1_duhy8")
 card_sprite = ExtResource("2_7c3l5")
 mass = 4
+id = 4
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

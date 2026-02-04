@@ -19,4 +19,5 @@ target_air = true
 target_ground = true
 is_spell = true
 card_sprite = ExtResource("1_yy1cv")
+id = 7
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

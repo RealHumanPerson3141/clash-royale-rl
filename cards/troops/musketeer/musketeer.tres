@@ -25,4 +25,5 @@ is_ranged = true
 arena_sprite = ExtResource("1_iffta")
 card_sprite = ExtResource("2_lmrh3")
 mass = 5
+id = 5
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"

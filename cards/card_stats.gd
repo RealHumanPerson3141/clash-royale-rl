@@ -47,3 +47,4 @@ extends Resource
 @export_group("Miscellaneous")
 @export var mass: int
 @export var radius: float = 0.5
+@export var id: int

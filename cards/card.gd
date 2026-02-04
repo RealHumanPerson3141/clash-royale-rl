@@ -95,6 +95,15 @@ func _physics_process(delta: float) -> void:
 	_repel_colliding_cards(delta)
 
 
+func get_observation() -> Array[float]:
+	var obs: Array[float] = []
+	
+	obs.append(stats.id)
+	obs.append(stats.elixir)
+	
+	return obs
+
+
 func _configure_groups():
 	if stats.is_air:
 		add_to_group("air")

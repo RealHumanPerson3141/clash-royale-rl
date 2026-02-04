@@ -23,4 +23,5 @@ arena_sprite = ExtResource("1_c8lw5")
 card_sprite = ExtResource("2_4s2xa")
 mass = 18
 radius = 0.625
+id = 1
 metadata/_custom_type_script = "uid://chdsc6dtr4mny"
