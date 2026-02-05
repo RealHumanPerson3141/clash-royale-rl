@@ -22,6 +22,9 @@ var red_hand: Hand
 var blue_elixir := 5.0
 var red_elixir := 5.0
 
+var on_blue := false
+var on_red := false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	blue_hand = Hand.new(deck, $UI/MarginContainerLeft/BlueCards)
@@ -85,8 +88,8 @@ func _place_card(is_blue: bool, hand: Hand, button_group: ButtonGroup):
 	var index = selected_card.get_parent().get_parent().get_index()
 		
 	var elixir = blue_elixir if is_blue else red_elixir
-	if not hand.can_place(index, elixir):
-		print("Not enough Elixir")
+	
+	if not hand.sufficient_elixir(index, elixir):
 		return
 	
 	var card_stats := hand.get_card(index)
@@ -94,14 +97,22 @@ func _place_card(is_blue: bool, hand: Hand, button_group: ButtonGroup):
 	_instantiate_card(card_stats, is_blue)
 
 
-func _on_blue_side_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event.is_action_pressed("place_blue"):
+func _on_arena_collider_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	# TODO: Fix this YUCK YUCK YUCK YUCK
+	var blue_spell := false
+	var red_spell := false
+	
+	if blue_hand_ui.get_pressed_button() != null:
+		blue_spell = blue_hand.is_spell(blue_hand_ui.get_pressed_button().get_node("../..").get_index())
+	if red_hand_ui.get_pressed_button() != null:
+		red_spell = red_hand.is_spell(red_hand_ui.get_pressed_button().get_node("../..").get_index())
+	
+	if event.is_action_pressed("place_blue") and (on_blue or (blue_spell and on_red)):
 		_place_card(true, blue_hand, blue_hand_ui)
 
-
-func _on_red_side_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event.is_action_pressed("place_red"):
+	if event.is_action_pressed("place_red") and (on_red or (red_spell and on_blue)):
 		_place_card(false, red_hand, red_hand_ui)
+
 
 class Hand:
 	var deck: Array[CardStats]
@@ -128,11 +139,13 @@ class Hand:
 		
 		_set_ui_card(-1, deck[next[0]])
 	
+	
 	func _to_string() -> String:
 		var cards_str = "Cards: " + str(cards.map(_index_to_card_name)) + "\n"
 		var next_str = "Next: " + str(next.map(_index_to_card_name))
 		
 		return cards_str + next_str
+	
 	
 	func get_card(index: int) -> CardStats:
 		if index < 0 or index >= 4:
@@ -148,8 +161,14 @@ class Hand:
 		
 		return chosen_card
 	
-	func can_place(index: int, elixir: float) -> bool:
+	
+	func sufficient_elixir(index: int, elixir: float) -> bool:
 		return deck[cards[index]].elixir <= elixir
+	
+	
+	func is_spell(index: int) -> bool:
+		return deck[cards[index]].is_spell
+	
 	
 	func _index_to_card_name(index: int) -> String:
 		if index < 0 or index >= 8:
@@ -163,3 +182,19 @@ class Hand:
 		if hand_index >= 0 and hand_index < 4:
 			var card_elixir_label = ui.get_child(hand_index).get_child(1).get_child(0)
 			card_elixir_label.text = str(card.elixir)
+
+
+func _on_blue_side_mouse_entered() -> void:
+	on_blue = true
+
+
+func _on_blue_side_mouse_exited() -> void:
+	on_blue = false
+
+
+func _on_red_side_mouse_entered() -> void:
+	on_red = true
+
+
+func _on_red_side_mouse_exited() -> void:
+	on_red = false
