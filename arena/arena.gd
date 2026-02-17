@@ -34,6 +34,38 @@ func _ready() -> void:
 	print(red_hand)
 
 
+func get_observation(is_observer_blue: bool) -> Array[float]:
+	var obs: Array[float] = []
+	
+	if is_observer_blue:
+		obs.append(blue_elixir)
+		
+		obs.append_array(blue_hand.get_observation())
+		obs.append_array(red_hand.get_observation())
+	else:
+		obs.append(red_elixir)
+		
+		obs.append_array(red_hand.get_observation())
+		obs.append_array(blue_hand.get_observation())
+	
+	var blue_cards := get_tree().get_nodes_in_group("blue").slice(3)
+	var red_cards := get_tree().get_nodes_in_group("red").slice(3)
+	
+	var cards_order = [blue_cards, red_cards] if is_observer_blue else [red_cards, blue_cards]
+	
+	const CARD_OBS_SIZE = 5
+	const MAX_CARDS = 16
+	
+	for cards in cards_order:
+		for card in cards:
+			obs.append_array(card.get_observation(is_observer_blue))
+	
+		for i in range(CARD_OBS_SIZE * (MAX_CARDS - len(cards))):
+			obs.append(0)
+	
+	return obs
+
+
 func _instantiate_card(stats: CardStats, is_blue: bool):
 	if is_blue:
 		blue_elixir -= stats.elixir
@@ -55,15 +87,6 @@ func _instantiate_card(stats: CardStats, is_blue: bool):
 		card.name = color.capitalize() + stats.resource_name + unique_id
 		
 		$Cards.add_child(card)
-
-
-func _on_elixir_timer_timeout() -> void:
-	if red_elixir < 10:
-		red_elixir += 0.25
-	if blue_elixir < 10:
-		blue_elixir += 0.25
-	
-	_update_elixir_ui()
 
 
 func _update_elixir_ui():
@@ -97,8 +120,16 @@ func _place_card(is_blue: bool, hand: Hand, button_group: ButtonGroup):
 	_instantiate_card(card_stats, is_blue)
 
 
+func _on_elixir_timer_timeout() -> void:
+	if red_elixir < 10:
+		red_elixir += 0.25
+	if blue_elixir < 10:
+		blue_elixir += 0.25
+	
+	_update_elixir_ui()
+
+
 func _on_arena_collider_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	# TODO: Fix this YUCK YUCK YUCK YUCK
 	var blue_spell := false
 	var red_spell := false
 	
@@ -109,9 +140,27 @@ func _on_arena_collider_input_event(_viewport: Node, event: InputEvent, _shape_i
 	
 	if event.is_action_pressed("place_blue") and (on_blue or (blue_spell and on_red)):
 		_place_card(true, blue_hand, blue_hand_ui)
-
+		print(get_observation(true), len(get_observation(true)))
+	
 	if event.is_action_pressed("place_red") and (on_red or (red_spell and on_blue)):
 		_place_card(false, red_hand, red_hand_ui)
+		print(get_observation(false), len(get_observation(false)))
+
+
+func _on_blue_side_mouse_entered() -> void:
+	on_blue = true
+
+
+func _on_blue_side_mouse_exited() -> void:
+	on_blue = false
+
+
+func _on_red_side_mouse_entered() -> void:
+	on_red = true
+
+
+func _on_red_side_mouse_exited() -> void:
+	on_red = false
 
 
 class Hand:
@@ -162,6 +211,18 @@ class Hand:
 		return chosen_card
 	
 	
+	func get_observation() -> Array[float]:
+		var obs: Array[float] = []
+	
+		for card in cards:
+			obs.append(deck[card].id)
+			obs.append(deck[card].elixir)
+		
+		obs.append(deck[next[0]].id)
+		
+		return obs
+	
+	
 	func sufficient_elixir(index: int, elixir: float) -> bool:
 		return deck[cards[index]].elixir <= elixir
 	
@@ -182,19 +243,3 @@ class Hand:
 		if hand_index >= 0 and hand_index < 4:
 			var card_elixir_label = ui.get_child(hand_index).get_child(1).get_child(0)
 			card_elixir_label.text = str(card.elixir)
-
-
-func _on_blue_side_mouse_entered() -> void:
-	on_blue = true
-
-
-func _on_blue_side_mouse_exited() -> void:
-	on_blue = false
-
-
-func _on_red_side_mouse_entered() -> void:
-	on_red = true
-
-
-func _on_red_side_mouse_exited() -> void:
-	on_red = false

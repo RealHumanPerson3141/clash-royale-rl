@@ -95,11 +95,20 @@ func _physics_process(delta: float) -> void:
 	_repel_colliding_cards(delta)
 
 
-func get_observation() -> Array[float]:
+func get_observation(is_observer_blue: bool) -> Array[float]:
 	var obs: Array[float] = []
 	
+	var arena_pos := Vector2(320, 176)
+	var arena_radius := Vector2(256, 144)
+	
+	var normalized_pos := (position - arena_pos) / arena_radius
+	if is_observer_blue:
+		normalized_pos.x *= -1
+	
 	obs.append(stats.id)
-	obs.append(stats.elixir)
+	obs.append(normalized_pos.x)
+	obs.append(normalized_pos.y)
+	obs.append(float(current_hp) / stats.hp)
 	
 	return obs
 

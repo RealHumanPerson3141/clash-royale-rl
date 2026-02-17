@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=4 uid="uid://lyjsvmqbf02i"]
+[gd_scene load_steps=25 format=4 uid="uid://lyjsvmqbf02i"]
 
 [ext_resource type="Script" uid="uid://d2jhelqpw6li3" path="res://arena/arena.gd" id="1_4ag8t"]
 [ext_resource type="TileSet" uid="uid://b4gvw31o3wo84" path="res://arena/assets/arena_tileset.tres" id="2_7ft05"]
+[ext_resource type="Script" uid="uid://dr8qqvbm1teq0" path="res://arena/ai_controller.gd" id="2_788rj"]
 [ext_resource type="PackedScene" uid="uid://b3037ygui4mb5" path="res://cards/card.tscn" id="3_olpmc"]
 [ext_resource type="Texture2D" uid="uid://cn85mcwihqogp" path="res://ui/assets/ui_tileset.png" id="3_x52g8"]
 [ext_resource type="Resource" uid="uid://cddlsr53im4lv" path="res://cards/buildings/princess_tower/princess_tower.tres" id="5_8d55x"]
@@ -48,19 +49,28 @@ script = ExtResource("1_4ag8t")
 blue_hand_ui = SubResource("ButtonGroup_2alhc")
 red_hand_ui = SubResource("ButtonGroup_788rj")
 
+[node name="BlueAIController" type="Node2D" parent="."]
+script = ExtResource("2_788rj")
+is_blue = true
+metadata/_custom_type_script = "uid://urar176wysa7"
+
+[node name="RedAIController" type="Node2D" parent="."]
+script = ExtResource("2_788rj")
+metadata/_custom_type_script = "uid://urar176wysa7"
+
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 visible = false
 position = Vector2(64, 32)
 navigation_polygon = SubResource("NavigationPolygon_7ft05")
 
 [node name="ArenaCollider" type="Area2D" parent="."]
-position = Vector2(192, 176)
+position = Vector2(320, 176)
 collision_layer = 16
 collision_mask = 16
 monitoring = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ArenaCollider"]
-polygon = PackedVector2Array(-112, -144, 368, -144, 368, -48, 384, -48, 384, 48, 368, 48, 368, 144, -112, 144, -112, 48, -128, 48, -128, -48, -112, -48)
+polygon = PackedVector2Array(-240, -144, 240, -144, 240, -48, 256, -48, 256, 48, 240, 48, 240, 144, -240, 144, -240, 48, -256, 48, -256, -48, -240, -48)
 
 [node name="BlueSide" type="Area2D" parent="."]
 position = Vector2(192, 176)
