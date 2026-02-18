@@ -86,7 +86,7 @@ func get_observation() -> Array[float]:
 	return obs
 
 
-func _place_card():
+func place_card(pos: Vector2):
 	if selected == -1:
 		return
 	
@@ -96,12 +96,12 @@ func _place_card():
 	
 	var stats := hand.draw_card(selected)
 	
-	_instantiate_card(stats)
+	_instantiate_card(stats, pos)
 	
 	card_placed.emit()
 
 
-func _instantiate_card(stats: CardStats):
+func _instantiate_card(stats: CardStats, pos: Vector2):
 	elixir -= stats.elixir
 	
 	for i in range(stats.count):
@@ -110,7 +110,7 @@ func _instantiate_card(stats: CardStats):
 		card.stats = stats
 		card.is_blue = is_blue
 		# Slightly randomize card placement to avoid repulsion artefacts
-		card.position = get_global_mouse_position() + Vector2(randf() * 2 - 1, randf() * 2 - 1)
+		card.position = pos + Vector2(randf() * 2 - 1, randf() * 2 - 1)
 		
 		var color := "blue" if is_blue else "red"
 		var unique_id := str(get_tree().get_node_count_in_group(color))
@@ -129,7 +129,7 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 	var action_name = "place_blue" if is_blue else "place_red"
 	
 	if event.is_action_pressed(action_name):
-		_place_card()
+		place_card(get_global_mouse_position())
 
 
 func _on_enemy_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -139,7 +139,7 @@ func _on_enemy_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) 
 		return
 	
 	if event.is_action_pressed(action_name) and hand.get_card(selected).is_spell:
-		_place_card()
+		place_card(get_global_mouse_position())
 
 
 func _on_elixir_timer_timeout() -> void:
