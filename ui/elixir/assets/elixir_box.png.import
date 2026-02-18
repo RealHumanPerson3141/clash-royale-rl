@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dmthbjavnas6q"
-path="res://.godot/imported/elixir_icon.png-28e5037dcba8074013e391ee570df972.ctex"
+uid="uid://brmikn28v10op"
+path="res://.godot/imported/elixir_box.png-8698cb7e69846e881c8b953d6857bd09.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/elixir/elixir_icon.png"
-dest_files=["res://.godot/imported/elixir_icon.png-28e5037dcba8074013e391ee570df972.ctex"]
+source_file="res://ui/elixir/assets/elixir_box.png"
+dest_files=["res://.godot/imported/elixir_box.png-8698cb7e69846e881c8b953d6857bd09.ctex"]
 
 [params]
 

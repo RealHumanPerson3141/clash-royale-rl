@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cuc8j88it6sxt"
-path="res://.godot/imported/next_card_slot_blue.png-21396641a832d9c59874aeacc7d438d3.ctex"
+uid="uid://crqqlmg42uwr0"
+path="res://.godot/imported/card_frame_hover.png-81f8cf701910ca0f63fbee3ddd4f7197.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/cards/next_card_slot_blue.png"
-dest_files=["res://.godot/imported/next_card_slot_blue.png-21396641a832d9c59874aeacc7d438d3.ctex"]
+source_file="res://ui/cards/assets/card_frame_hover.png"
+dest_files=["res://.godot/imported/card_frame_hover.png-81f8cf701910ca0f63fbee3ddd4f7197.ctex"]
 
 [params]
 

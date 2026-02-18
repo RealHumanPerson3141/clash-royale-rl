@@ -1,30 +1,14 @@
-[gd_scene load_steps=25 format=4 uid="uid://lyjsvmqbf02i"]
+[gd_scene load_steps=13 format=4 uid="uid://lyjsvmqbf02i"]
 
-[ext_resource type="Script" uid="uid://d2jhelqpw6li3" path="res://arena/arena.gd" id="1_4ag8t"]
 [ext_resource type="TileSet" uid="uid://b4gvw31o3wo84" path="res://arena/assets/arena_tileset.tres" id="2_7ft05"]
-[ext_resource type="Script" uid="uid://dr8qqvbm1teq0" path="res://arena/ai_controller.gd" id="2_788rj"]
-[ext_resource type="PackedScene" uid="uid://b3037ygui4mb5" path="res://cards/card.tscn" id="3_olpmc"]
+[ext_resource type="PackedScene" uid="uid://blik06fcl52cg" path="res://player/player.tscn" id="2_gi188"]
 [ext_resource type="Texture2D" uid="uid://cn85mcwihqogp" path="res://ui/assets/ui_tileset.png" id="3_x52g8"]
-[ext_resource type="Resource" uid="uid://cddlsr53im4lv" path="res://cards/buildings/princess_tower/princess_tower.tres" id="5_8d55x"]
-[ext_resource type="Resource" uid="uid://dq7kn6yqpf2mg" path="res://cards/buildings/king_tower/king_tower.tres" id="6_8d55x"]
-[ext_resource type="Texture2D" uid="uid://fjn4bs5ncn18" path="res://ui/assets/cards/card_slot_blue.png" id="7_ts1j6"]
-[ext_resource type="Texture2D" uid="uid://d2f5dpudtm2vq" path="res://ui/assets/cards/card_frame.png" id="8_lebtn"]
-[ext_resource type="Texture2D" uid="uid://0vhxfkl3xem7" path="res://cards/spells/arrows/assets/card.png" id="8_mxqhn"]
-[ext_resource type="Texture2D" uid="uid://crqqlmg42uwr0" path="res://ui/assets/cards/card_frame_hover.png" id="9_0310r"]
-[ext_resource type="Texture2D" uid="uid://dmthbjavnas6q" path="res://ui/assets/elixir/elixir_icon.png" id="11_57w3w"]
+[ext_resource type="PackedScene" uid="uid://cl7b8dapm2noe" path="res://ui/cards/hand_display.tscn" id="5_lebtn"]
 [ext_resource type="FontFile" uid="uid://b5rp2neeiipol" path="res://ui/assets/fonts/block_craft.otf" id="12_dp7am"]
-[ext_resource type="Texture2D" uid="uid://cuc8j88it6sxt" path="res://ui/assets/cards/next_card_slot_blue.png" id="13_macxf"]
-[ext_resource type="Texture2D" uid="uid://ckmyn7k8fxjhb" path="res://ui/assets/cards/card_slot_red.png" id="14_gi188"]
-[ext_resource type="Texture2D" uid="uid://bbsf6sx7wene" path="res://ui/assets/cards/next_card_slot_red.png" id="15_7rgpn"]
-[ext_resource type="Texture2D" uid="uid://bqc7p1lunpryd" path="res://ui/assets/elixir/elixir_under.png" id="16_7rgpn"]
-[ext_resource type="Texture2D" uid="uid://bx3lsxb7yhcxm" path="res://ui/assets/elixir/elixir_progress.png" id="17_2alhc"]
-[ext_resource type="Texture2D" uid="uid://brmikn28v10op" path="res://ui/assets/elixir/elixir_box.png" id="18_2alhc"]
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_2alhc"]
-allow_unpress = true
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_788rj"]
-allow_unpress = true
+[ext_resource type="Script" uid="uid://byyr2lno2nx4p" path="res://ui/elixir/elixir.gd" id="16_2alhc"]
+[ext_resource type="Texture2D" uid="uid://bqc7p1lunpryd" path="res://ui/elixir/assets/elixir_under.png" id="16_7rgpn"]
+[ext_resource type="Texture2D" uid="uid://bx3lsxb7yhcxm" path="res://ui/elixir/assets/elixir_progress.png" id="17_2alhc"]
+[ext_resource type="Texture2D" uid="uid://brmikn28v10op" path="res://ui/elixir/assets/elixir_box.png" id="18_2alhc"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7ft05"]
 vertices = PackedVector2Array(279.89844, 223.89844, 279.89844, 64.10156, 488.10156, 184.10156, 488.10156, 280.10156, 279.89844, 47.898438, 279.89844, 7.8984375, 488.10156, 7.8984375, 488.10156, 103.89844, 504.10156, 103.89844, 504.10156, 184.10156, 232.10156, 47.898438, 232.10156, 64.10156, 279.89844, 280.10156, 279.89844, 240.10156, 232.10156, 223.89844, 232.10156, 240.10156, 23.898438, 184.10156, 232.10156, 280.10156, 23.898438, 280.10156, 23.898438, 103.89844, 7.8984375, 184.10156, 7.8984375, 103.89844, 23.898438, 7.8984375, 232.10156, 7.8984375)
@@ -45,50 +29,26 @@ texture = ExtResource("3_x52g8")
 sources/0 = SubResource("TileSetAtlasSource_8m4co")
 
 [node name="Arena" type="Node2D"]
-script = ExtResource("1_4ag8t")
-blue_hand_ui = SubResource("ButtonGroup_2alhc")
-red_hand_ui = SubResource("ButtonGroup_788rj")
 
-[node name="BlueAIController" type="Node2D" parent="."]
-script = ExtResource("2_788rj")
+[node name="BluePlayer" parent="." node_paths=PackedStringArray("enemy") instance=ExtResource("2_gi188")]
 is_blue = true
-metadata/_custom_type_script = "uid://urar176wysa7"
+enemy = NodePath("../RedPlayer")
 
-[node name="RedAIController" type="Node2D" parent="."]
-script = ExtResource("2_788rj")
-metadata/_custom_type_script = "uid://urar176wysa7"
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BluePlayer"]
+position = Vector2(192, 176)
+polygon = PackedVector2Array(-112, -144, 112, -144, 112, 144, -112, 144, -112, 48, -128, 48, -128, -48, -112, -48)
+
+[node name="RedPlayer" parent="." node_paths=PackedStringArray("enemy") instance=ExtResource("2_gi188")]
+enemy = NodePath("../BluePlayer")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RedPlayer"]
+position = Vector2(448, 176)
+polygon = PackedVector2Array(112, -144, 112, -48, 128, -48, 128, 48, 112, 48, 112, 144, -112, 144, -112, -144)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 visible = false
 position = Vector2(64, 32)
 navigation_polygon = SubResource("NavigationPolygon_7ft05")
-
-[node name="ArenaCollider" type="Area2D" parent="."]
-position = Vector2(320, 176)
-collision_layer = 16
-collision_mask = 16
-monitoring = false
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ArenaCollider"]
-polygon = PackedVector2Array(-240, -144, 240, -144, 240, -48, 256, -48, 256, 48, 240, 48, 240, 144, -240, 144, -240, 48, -256, 48, -256, -48, -240, -48)
-
-[node name="BlueSide" type="Area2D" parent="."]
-position = Vector2(192, 176)
-collision_layer = 16
-collision_mask = 16
-monitoring = false
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BlueSide"]
-polygon = PackedVector2Array(-112, -144, 112, -144, 112, 144, -112, 144, -112, 48, -128, 48, -128, -48, -112, -48)
-
-[node name="RedSide" type="Area2D" parent="."]
-position = Vector2(448, 176)
-collision_layer = 16
-collision_mask = 16
-monitoring = false
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RedSide"]
-polygon = PackedVector2Array(112, -144, 112, -48, 128, -48, 128, 48, 112, 48, 112, 144, -112, 144, -112, -144)
 
 [node name="TileMap" type="Node2D" parent="."]
 
@@ -108,37 +68,6 @@ tile_set = ExtResource("2_7ft05")
 tile_map_data = PackedByteArray("AAAJAAQAAAAAAAEAAAAJAAUAAAAAAAEAAAAJAAYAAAAAAAEAAAAKAAQAAAAAAAEAAAAKAAUAAAAAAAEAAAAKAAYAAAAAAAEAAAALAAQAAAAAAAEAAAALAAUAAAAAAAEAAAALAAYAAAAAAAEAAAAcAAQAAAAAAAEAAAAcAAUAAAAAAAEAAAAcAAYAAAAAAAEAAAAdAAQAAAAAAAEAAAAdAAUAAAAAAAEAAAAdAAYAAAAAAAEAAAAeAAQAAAAAAAEAAAAeAAUAAAAAAAEAAAAeAAYAAAAAAAEAAAAfAAkAAAAAAAEAAAAfAAoAAAAAAAEAAAAfAAsAAAAAAAEAAAAfAAwAAAAAAAEAAAAgAAkAAAAAAAEAAAAgAAoAAAAAAAEAAAAgAAsAAAAAAAEAAAAgAAwAAAAAAAEAAAAhAAkAAAAAAAEAAAAhAAoAAAAAAAEAAAAhAAsAAAAAAAEAAAAhAAwAAAAAAAEAAAAiAAkAAAAAAAEAAAAiAAoAAAAAAAEAAAAiAAsAAAAAAAEAAAAiAAwAAAAAAAEAAAAcAA8AAAAAAAEAAAAcABAAAAAAAAEAAAAcABEAAAAAAAEAAAAdAA8AAAAAAAEAAAAdABAAAAAAAAEAAAAdABEAAAAAAAEAAAAeAA8AAAAAAAEAAAAeABAAAAAAAAEAAAAeABEAAAAAAAEAAAAJAA8AAAAAAAEAAAAJABAAAAAAAAEAAAAJABEAAAAAAAEAAAAKAA8AAAAAAAEAAAAKABAAAAAAAAEAAAAKABEAAAAAAAEAAAALAA8AAAAAAAEAAAALABAAAAAAAAEAAAALABEAAAAAAAEAAAAFAAkAAAAAAAEAAAAFAAoAAAAAAAEAAAAFAAsAAAAAAAEAAAAFAAwAAAAAAAEAAAAGAAkAAAAAAAEAAAAGAAoAAAAAAAEAAAAGAAsAAAAAAAEAAAAGAAwAAAAAAAEAAAAHAAkAAAAAAAEAAAAHAAoAAAAAAAEAAAAHAAsAAAAAAAEAAAAHAAwAAAAAAAEAAAAIAAkAAAAAAAEAAAAIAAoAAAAAAAEAAAAIAAsAAAAAAAEAAAAIAAwAAAAAAAEAAAAHAAgAAAAAAAEAAAAHAAcAAAAAAAEAAAAHAAYAAAAAAAEAAAAHAAUAAAAAAAEAAAAIAAUAAAAAAAEAAAAHAA0AAAAAAAEAAAAHAA4AAAAAAAEAAAAHAA8AAAAAAAEAAAAHABAAAAAAAAEAAAAIABAAAAAAAAEAAAAMABAAAAAAAAEAAAANABAAAAAAAAEAAAAOABAAAAAAAAEAAAAPABAAAAAAAAEAAAAQABAAAAAAAAEAAAARABAAAAAAAAEAAAASABAAAAAAAAEAAAAVABAAAAAAAAEAAAAWABAAAAAAAAEAAAAXABAAAAAAAAEAAAAYABAAAAAAAAEAAAAZABAAAAAAAAEAAAAaABAAAAAAAAEAAAAbABAAAAAAAAEAAAAfABAAAAAAAAEAAAAgABAAAAAAAAEAAAAgAA8AAAAAAAEAAAAgAA4AAAAAAAEAAAAgAAcAAAAAAAEAAAAgAAYAAAAAAAEAAAAgAAUAAAAAAAEAAAAfAAUAAAAAAAEAAAAbAAUAAAAAAAEAAAAaAAUAAAAAAAEAAAAZAAUAAAAAAAEAAAAYAAUAAAAAAAEAAAAXAAUAAAAAAAEAAAAWAAUAAAAAAAEAAAAVAAUAAAAAAAEAAAAMAAUAAAAAAAEAAAANAAUAAAAAAAEAAAAOAAUAAAAAAAEAAAAPAAUAAAAAAAEAAAAQAAUAAAAAAAEAAAARAAUAAAAAAAEAAAASAAUAAAAAAAEAAAATAAQAAAABAAAAAAATAAUAAAABAAEAAAATAAYAAAABAAIAAAAUAAQAAAABAAAAAAAUAAUAAAABAAEAAAAUAAYAAAABAAIAAAATAA8AAAABAAAAAAATABAAAAABAAEAAAATABEAAAABAAIAAAAUAA8AAAABAAAAAAAUABAAAAABAAEAAAAUABEAAAABAAIAAAAMABEAAAACAAMAAAAMAA8AAAACAAMAAGAIAA8AAAADAAMAADAIABEAAAACAAMAAFAfAA8AAAADAAMAADAIAAYAAAADAAMAAAAfAAYAAAADAAMAAAAJABIAAAABAAMAAFAKABIAAAABAAMAAFALABIAAAABAAMAAFALAA4AAAABAAMAAGAKAA4AAAABAAMAAGAJAA4AAAABAAMAAGAIAA4AAAABAAMAAAAIAA0AAAACAAMAAAAGAA0AAAACAAMAAFAGAA4AAAABAAMAADAGAA8AAAABAAMAADAGABAAAAABAAMAADAHABEAAAABAAMAAFANABEAAAABAAMAAFAOABEAAAABAAMAAFAPABEAAAABAAMAAFAQABEAAAABAAMAAFARABEAAAABAAMAAFASABEAAAABAAMAAFAVABEAAAABAAMAAFAWABEAAAABAAMAAFAXABEAAAABAAMAAFAYABEAAAABAAMAAFAZABEAAAABAAMAAFAaABEAAAABAAMAAFAbABEAAAACAAMAAFAbAA8AAAACAAMAADAaAA8AAAABAAMAAGAZAA8AAAABAAMAAGAYAA8AAAABAAMAAGAXAA8AAAABAAMAAGAWAA8AAAABAAMAAGAVAA8AAAABAAMAAGASAA8AAAABAAMAAGARAA8AAAABAAMAAGAQAA8AAAABAAMAAGAPAA8AAAABAAMAAGAOAA8AAAABAAMAAGANAA8AAAABAAMAAGAMAAQAAAACAAMAAGANAAQAAAABAAMAAGAOAAQAAAABAAMAAGAPAAQAAAABAAMAAGAQAAQAAAABAAMAAGARAAQAAAABAAMAAGASAAQAAAABAAMAAGAVAAQAAAABAAMAAGAWAAQAAAABAAMAAGAXAAQAAAABAAMAAGAYAAQAAAABAAMAAGAZAAQAAAABAAMAAGAaAAQAAAABAAMAAGAbAAQAAAACAAMAADAbAAYAAAACAAMAAFAaAAYAAAABAAMAAFAZAAYAAAABAAMAAFAYAAYAAAABAAMAAFAXAAYAAAABAAMAAFAWAAYAAAABAAMAAFAVAAYAAAABAAMAAFASAAYAAAABAAMAAFARAAYAAAABAAMAAFAQAAYAAAABAAMAAFAPAAYAAAABAAMAAFAOAAYAAAABAAMAAFANAAYAAAABAAMAAFAMAAYAAAACAAMAAAAIAAQAAAACAAMAADAfAAQAAAACAAMAAGAcAAcAAAABAAMAAFAdAAcAAAABAAMAAFAeAAcAAAABAAMAAFAcAAMAAAABAAMAAGAdAAMAAAABAAMAAGAeAAMAAAABAAMAAGALAAMAAAABAAMAAGAKAAMAAAABAAMAAGAJAAMAAAABAAMAAGAcAA4AAAABAAMAAGAdAA4AAAABAAMAAGAeAA4AAAABAAMAAGAfABEAAAACAAMAAAAcABIAAAABAAMAAFAdABIAAAABAAMAAFAeABIAAAABAAMAAFAgABEAAAABAAMAAFAhAA4AAAABAAMAAAAhAA8AAAABAAMAAAAhABAAAAABAAMAAAAfAA4AAAABAAMAADAEAAwAAAABAAMAADAEAAsAAAABAAMAADAEAAoAAAABAAMAADAEAAkAAAABAAMAADAFAAgAAAABAAMAAGAJAAkAAAABAAMAAAAJAAoAAAABAAMAAAAJAAsAAAABAAMAAAAJAAwAAAABAAMAAAAIAAgAAAACAAMAAGAGAAgAAAACAAMAADAFAA0AAAABAAMAAFAeAAkAAAABAAMAADAeAAoAAAABAAMAADAeAAsAAAABAAMAADAeAAwAAAABAAMAADAjAAkAAAABAAMAAAAjAAoAAAABAAMAAAAjAAsAAAABAAMAAAAjAAwAAAABAAMAAAAhAA0AAAACAAMAAAAfAA0AAAACAAMAAFAfAAgAAAACAAMAADAhAAgAAAACAAMAAGAiAAgAAAABAAMAAGAiAA0AAAABAAMAAFAgAA0AAAAAAAEAAAAgAAgAAAAAAAEAAAAhAAcAAAABAAMAAAAhAAYAAAABAAMAAAAhAAUAAAABAAMAAAAgAAQAAAABAAMAAGAfAAcAAAABAAMAADAGAAcAAAABAAMAADAGAAYAAAABAAMAADAGAAUAAAABAAMAADAIAAcAAAABAAMAAAAHAAQAAAABAAMAAGAJAAcAAAABAAMAAFAKAAcAAAABAAMAAFALAAcAAAABAAMAAFAFAAEAAAABAAAAAAAGAAEAAAABAAAAAAAHAAEAAAABAAAAAAAIAAEAAAABAAAAAAAJAAEAAAABAAAAAAAKAAEAAAABAAAAAAALAAEAAAABAAAAAAAMAAEAAAABAAAAAAANAAEAAAABAAAAAAAOAAEAAAABAAAAAAAPAAEAAAABAAAAAAAQAAEAAAABAAAAAAARAAEAAAABAAAAAAASAAEAAAABAAAAAAAVAAEAAAABAAAAAAAWAAEAAAABAAAAAAAXAAEAAAABAAAAAAAYAAEAAAABAAAAAAAZAAEAAAABAAAAAAAaAAEAAAABAAAAAAAbAAEAAAABAAAAAAAcAAEAAAABAAAAAAAdAAEAAAABAAAAAAAeAAEAAAABAAAAAAAfAAEAAAABAAAAAAAgAAEAAAABAAAAAAAhAAEAAAABAAAAAAAiAAEAAAABAAAAAAAVABQAAAABAAIAAAAWABQAAAABAAIAAAAXABQAAAABAAIAAAAYABQAAAABAAIAAAAZABQAAAABAAIAAAAaABQAAAABAAIAAAAbABQAAAABAAIAAAAcABQAAAABAAIAAAAdABQAAAABAAIAAAAeABQAAAABAAIAAAAfABQAAAABAAIAAAAgABQAAAABAAIAAAAhABQAAAABAAIAAAAiABQAAAABAAIAAAAFABQAAAABAAIAAAAGABQAAAABAAIAAAAHABQAAAABAAIAAAAIABQAAAABAAIAAAAJABQAAAABAAIAAAAKABQAAAABAAIAAAALABQAAAABAAIAAAAMABQAAAABAAIAAAANABQAAAABAAIAAAAOABQAAAABAAIAAAAPABQAAAABAAIAAAAQABQAAAABAAIAAAARABQAAAABAAIAAAASABQAAAABAAIAAAATABQAAAABAAIAAAAUABQAAAABAAIAAAATAAEAAAABAAAAAAAUAAEAAAABAAAAAAAEAAEAAAABAAAAAAAjAAEAAAABAAAAAAAEABQAAAABAAIAAAAjABQAAAABAAIAAAA=")
 tile_set = ExtResource("2_7ft05")
 
-[node name="Cards" type="Node" parent="."]
-
-[node name="CrownTowers" type="Node" parent="Cards"]
-
-[node name="BluePrincessUp" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
-position = Vector2(168, 88)
-stats = ExtResource("5_8d55x")
-is_blue = true
-
-[node name="BlueKing" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
-position = Vector2(112, 176)
-stats = ExtResource("6_8d55x")
-is_blue = true
-
-[node name="BluePrincessDown" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
-position = Vector2(168, 264)
-stats = ExtResource("5_8d55x")
-is_blue = true
-
-[node name="RedPrincessUp" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
-position = Vector2(472, 88)
-stats = ExtResource("5_8d55x")
-
-[node name="RedKing" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
-position = Vector2(528, 176)
-stats = ExtResource("6_8d55x")
-
-[node name="RedPrincessDown" parent="Cards/CrownTowers" groups=["towers"] instance=ExtResource("3_olpmc")]
-position = Vector2(472, 264)
-stats = ExtResource("5_8d55x")
-
 [node name="ElixirTimer" type="Timer" parent="."]
 wait_time = 0.7
 autostart = true
@@ -155,193 +84,9 @@ offset_bottom = 40.0
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 
-[node name="BlueCards" type="VBoxContainer" parent="UI/MarginContainerLeft"]
+[node name="BlueHand" parent="UI/MarginContainerLeft" node_paths=PackedStringArray("player") instance=ExtResource("5_lebtn")]
 layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="CardSlot1" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
-layout_mode = 2
-texture = ExtResource("7_ts1j6")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot1"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 47.0
-offset_bottom = 63.0
-
-[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerLeft/BlueCards/CardSlot1/Card"]
-z_index = 1
-layout_mode = 0
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 47.0
-offset_bottom = 63.0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_2alhc")
-texture_normal = ExtResource("8_lebtn")
-texture_pressed = ExtResource("9_0310r")
-
-[node name="Elixir" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot1"]
-z_index = 2
-layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 29.0
-offset_bottom = 70.0
-texture = ExtResource("11_57w3w")
-
-[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/CardSlot1/Elixir"]
-layout_mode = 0
-offset_right = 9.0
-offset_bottom = 16.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "0"
-horizontal_alignment = 1
-
-[node name="CardSlot2" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
-layout_mode = 2
-texture = ExtResource("7_ts1j6")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot2"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 47.0
-offset_bottom = 63.0
-
-[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerLeft/BlueCards/CardSlot2/Card"]
-z_index = 1
-layout_mode = 0
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 47.0
-offset_bottom = 63.0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_2alhc")
-texture_normal = ExtResource("8_lebtn")
-texture_pressed = ExtResource("9_0310r")
-
-[node name="Elixir" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot2"]
-z_index = 2
-layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 29.0
-offset_bottom = 70.0
-texture = ExtResource("11_57w3w")
-
-[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/CardSlot2/Elixir"]
-layout_mode = 0
-offset_right = 9.0
-offset_bottom = 16.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "0"
-horizontal_alignment = 1
-
-[node name="CardSlot3" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
-layout_mode = 2
-texture = ExtResource("7_ts1j6")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot3"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 47.0
-offset_bottom = 63.0
-
-[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerLeft/BlueCards/CardSlot3/Card"]
-z_index = 1
-layout_mode = 0
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 47.0
-offset_bottom = 63.0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_2alhc")
-texture_normal = ExtResource("8_lebtn")
-texture_pressed = ExtResource("9_0310r")
-
-[node name="Elixir" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot3"]
-z_index = 2
-layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 29.0
-offset_bottom = 70.0
-texture = ExtResource("11_57w3w")
-
-[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/CardSlot3/Elixir"]
-layout_mode = 0
-offset_right = 9.0
-offset_bottom = 16.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "0"
-horizontal_alignment = 1
-
-[node name="CardSlot4" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
-layout_mode = 2
-texture = ExtResource("7_ts1j6")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot4"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 47.0
-offset_bottom = 63.0
-
-[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerLeft/BlueCards/CardSlot4/Card"]
-z_index = 1
-layout_mode = 0
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 47.0
-offset_bottom = 63.0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_2alhc")
-texture_normal = ExtResource("8_lebtn")
-texture_pressed = ExtResource("9_0310r")
-
-[node name="Elixir" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/CardSlot4"]
-z_index = 2
-layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 29.0
-offset_bottom = 70.0
-texture = ExtResource("11_57w3w")
-
-[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/CardSlot4/Elixir"]
-layout_mode = 0
-offset_right = 9.0
-offset_bottom = 16.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "0"
-horizontal_alignment = 1
-
-[node name="NextCard" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards"]
-layout_mode = 2
-texture = ExtResource("13_macxf")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerLeft/BlueCards/NextCard"]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 19.0
-offset_right = 58.0
-offset_bottom = 79.0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("8_mxqhn")
-expand_mode = 1
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/MarginContainerLeft/BlueCards/NextCard"]
-layout_mode = 0
-offset_left = -6.0
-offset_right = 58.0
-offset_bottom = 26.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "NEXT"
-horizontal_alignment = 1
+player = NodePath("../../../BluePlayer")
 
 [node name="MarginContainerRight" type="MarginContainer" parent="UI"]
 anchors_preset = 1
@@ -353,193 +98,9 @@ grow_horizontal = 0
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 
-[node name="RedCards" type="VBoxContainer" parent="UI/MarginContainerRight"]
+[node name="RedHand" parent="UI/MarginContainerRight" node_paths=PackedStringArray("player") instance=ExtResource("5_lebtn")]
 layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="CardSlot1" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
-layout_mode = 2
-texture = ExtResource("14_gi188")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot1"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 47.0
-offset_bottom = 63.0
-
-[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerRight/RedCards/CardSlot1/Card"]
-z_index = 1
-layout_mode = 0
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 47.0
-offset_bottom = 63.0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_788rj")
-texture_normal = ExtResource("8_lebtn")
-texture_pressed = ExtResource("9_0310r")
-
-[node name="Elixir" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot1"]
-z_index = 2
-layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 29.0
-offset_bottom = 70.0
-texture = ExtResource("11_57w3w")
-
-[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/CardSlot1/Elixir"]
-layout_mode = 0
-offset_right = 9.0
-offset_bottom = 16.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "0"
-horizontal_alignment = 1
-
-[node name="CardSlot2" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
-layout_mode = 2
-texture = ExtResource("14_gi188")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot2"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 47.0
-offset_bottom = 63.0
-
-[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerRight/RedCards/CardSlot2/Card"]
-z_index = 1
-layout_mode = 0
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 47.0
-offset_bottom = 63.0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_788rj")
-texture_normal = ExtResource("8_lebtn")
-texture_pressed = ExtResource("9_0310r")
-
-[node name="Elixir" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot2"]
-z_index = 2
-layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 29.0
-offset_bottom = 70.0
-texture = ExtResource("11_57w3w")
-
-[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/CardSlot2/Elixir"]
-layout_mode = 0
-offset_right = 9.0
-offset_bottom = 16.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "0"
-horizontal_alignment = 1
-
-[node name="CardSlot3" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
-layout_mode = 2
-texture = ExtResource("14_gi188")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot3"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 47.0
-offset_bottom = 63.0
-
-[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerRight/RedCards/CardSlot3/Card"]
-z_index = 1
-layout_mode = 0
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 47.0
-offset_bottom = 63.0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_788rj")
-texture_normal = ExtResource("8_lebtn")
-texture_pressed = ExtResource("9_0310r")
-
-[node name="Elixir" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot3"]
-z_index = 2
-layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 29.0
-offset_bottom = 70.0
-texture = ExtResource("11_57w3w")
-
-[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/CardSlot3/Elixir"]
-layout_mode = 0
-offset_right = 9.0
-offset_bottom = 16.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "0"
-horizontal_alignment = 1
-
-[node name="CardSlot4" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
-layout_mode = 2
-texture = ExtResource("14_gi188")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot4"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 47.0
-offset_bottom = 63.0
-
-[node name="CardFrame" type="TextureButton" parent="UI/MarginContainerRight/RedCards/CardSlot4/Card"]
-z_index = 1
-layout_mode = 0
-offset_left = -3.0
-offset_top = -3.0
-offset_right = 47.0
-offset_bottom = 63.0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_788rj")
-texture_normal = ExtResource("8_lebtn")
-texture_pressed = ExtResource("9_0310r")
-
-[node name="Elixir" type="TextureRect" parent="UI/MarginContainerRight/RedCards/CardSlot4"]
-z_index = 2
-layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 29.0
-offset_bottom = 70.0
-texture = ExtResource("11_57w3w")
-
-[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/CardSlot4/Elixir"]
-layout_mode = 0
-offset_right = 9.0
-offset_bottom = 16.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "0"
-horizontal_alignment = 1
-
-[node name="NextCard" type="TextureRect" parent="UI/MarginContainerRight/RedCards"]
-layout_mode = 2
-texture = ExtResource("15_7rgpn")
-
-[node name="Card" type="TextureRect" parent="UI/MarginContainerRight/RedCards/NextCard"]
-layout_mode = 0
-offset_left = 14.0
-offset_top = 19.0
-offset_right = 58.0
-offset_bottom = 79.0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("8_mxqhn")
-expand_mode = 1
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/MarginContainerRight/RedCards/NextCard"]
-layout_mode = 0
-offset_left = -6.0
-offset_right = 58.0
-offset_bottom = 26.0
-theme_override_fonts/font = ExtResource("12_dp7am")
-text = "NEXT"
-horizontal_alignment = 1
+player = NodePath("../../../RedPlayer")
 
 [node name="MarginContainerBottom" type="MarginContainer" parent="UI"]
 anchors_preset = 7
@@ -567,6 +128,7 @@ step = 0.25
 value = 5.0
 texture_under = ExtResource("16_7rgpn")
 texture_progress = ExtResource("17_2alhc")
+script = ExtResource("16_2alhc")
 
 [node name="TextureRect" type="TextureRect" parent="UI/MarginContainerBottom/HBoxContainer/BlueElixir"]
 layout_mode = 1
@@ -611,6 +173,7 @@ value = 5.0
 fill_mode = 1
 texture_under = ExtResource("16_7rgpn")
 texture_progress = ExtResource("17_2alhc")
+script = ExtResource("16_2alhc")
 
 [node name="TextureRect" type="TextureRect" parent="UI/MarginContainerBottom/HBoxContainer/RedElixir"]
 layout_mode = 1
@@ -645,9 +208,11 @@ text = "5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="input_event" from="ArenaCollider" to="." method="_on_arena_collider_input_event"]
-[connection signal="mouse_entered" from="BlueSide" to="." method="_on_blue_side_mouse_entered"]
-[connection signal="mouse_exited" from="BlueSide" to="." method="_on_blue_side_mouse_exited"]
-[connection signal="mouse_entered" from="RedSide" to="." method="_on_red_side_mouse_entered"]
-[connection signal="mouse_exited" from="RedSide" to="." method="_on_red_side_mouse_exited"]
-[connection signal="timeout" from="ElixirTimer" to="." method="_on_elixir_timer_timeout"]
+[connection signal="card_placed" from="BluePlayer" to="UI/MarginContainerLeft/BlueHand" method="_on_card_placed"]
+[connection signal="elixir_changed" from="BluePlayer" to="UI/MarginContainerBottom/HBoxContainer/BlueElixir" method="_on_elixir_changed"]
+[connection signal="card_placed" from="RedPlayer" to="UI/MarginContainerRight/RedHand" method="_on_card_placed"]
+[connection signal="elixir_changed" from="RedPlayer" to="UI/MarginContainerBottom/HBoxContainer/RedElixir" method="_on_elixir_changed"]
+[connection signal="timeout" from="ElixirTimer" to="BluePlayer" method="_on_elixir_timer_timeout"]
+[connection signal="timeout" from="ElixirTimer" to="RedPlayer" method="_on_elixir_timer_timeout"]
+[connection signal="selected_changed" from="UI/MarginContainerLeft/BlueHand" to="BluePlayer" method="_on_selected_changed"]
+[connection signal="selected_changed" from="UI/MarginContainerRight/RedHand" to="RedPlayer" method="_on_selected_changed"]

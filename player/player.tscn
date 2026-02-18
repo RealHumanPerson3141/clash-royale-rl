@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://blik06fcl52cg"]
+
+[ext_resource type="Script" uid="uid://bdbnjrtxkib60" path="res://player/player.gd" id="1_yw30f"]
+[ext_resource type="PackedScene" uid="uid://b3037ygui4mb5" path="res://cards/card.tscn" id="2_qjkh3"]
+[ext_resource type="Resource" uid="uid://cddlsr53im4lv" path="res://cards/buildings/princess_tower/princess_tower.tres" id="3_g6k8r"]
+[ext_resource type="Resource" uid="uid://dq7kn6yqpf2mg" path="res://cards/buildings/king_tower/king_tower.tres" id="4_boad6"]
+[ext_resource type="Script" uid="uid://dr8qqvbm1teq0" path="res://player/ai_controller.gd" id="5_qjkh3"]
+
+[node name="Player" type="Area2D"]
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("1_yw30f")
+
+[node name="CrownTowers" type="Node" parent="."]
+
+[node name="PrincessUp" parent="CrownTowers" groups=["towers"] instance=ExtResource("2_qjkh3")]
+position = Vector2(168, 89)
+stats = ExtResource("3_g6k8r")
+is_blue = true
+
+[node name="King" parent="CrownTowers" groups=["towers"] instance=ExtResource("2_qjkh3")]
+position = Vector2(112, 176)
+stats = ExtResource("4_boad6")
+is_blue = true
+
+[node name="PrincessDown" parent="CrownTowers" groups=["towers"] instance=ExtResource("2_qjkh3")]
+position = Vector2(168, 264)
+stats = ExtResource("3_g6k8r")
+is_blue = true
+
+[node name="Cards" type="Node" parent="."]
+
+[node name="AIController2D" type="Node2D" parent="."]
+script = ExtResource("5_qjkh3")
+metadata/_custom_type_script = "uid://urar176wysa7"
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

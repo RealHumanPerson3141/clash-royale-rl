@@ -1,0 +1,199 @@
+[gd_scene load_steps=8 format=3 uid="uid://cl7b8dapm2noe"]
+
+[ext_resource type="Script" uid="uid://iug4dhkoj7vh" path="res://ui/cards/hand_display.gd" id="1_l5mcl"]
+[ext_resource type="Texture2D" uid="uid://d2f5dpudtm2vq" path="res://ui/cards/assets/card_frame.png" id="2_l5mcl"]
+[ext_resource type="Texture2D" uid="uid://crqqlmg42uwr0" path="res://ui/cards/assets/card_frame_hover.png" id="3_73a1h"]
+[ext_resource type="Texture2D" uid="uid://dmthbjavnas6q" path="res://ui/elixir/assets/elixir_icon.png" id="4_5e1va"]
+[ext_resource type="FontFile" uid="uid://b5rp2neeiipol" path="res://ui/assets/fonts/block_craft.otf" id="5_38wub"]
+[ext_resource type="Texture2D" uid="uid://0vhxfkl3xem7" path="res://cards/spells/arrows/assets/card.png" id="7_nt1qt"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_2alhc"]
+allow_unpress = true
+
+[node name="HandDisplay" type="VBoxContainer"]
+theme_override_constants/separation = 8
+script = ExtResource("1_l5mcl")
+
+[node name="CardSlot1" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="Card" type="TextureRect" parent="CardSlot1"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="CardSlot1/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2alhc")
+texture_normal = ExtResource("2_l5mcl")
+texture_pressed = ExtResource("3_73a1h")
+
+[node name="Elixir" type="TextureRect" parent="CardSlot1"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("4_5e1va")
+
+[node name="Label" type="Label" parent="CardSlot1/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("5_38wub")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot2" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="Card" type="TextureRect" parent="CardSlot2"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="CardSlot2/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2alhc")
+texture_normal = ExtResource("2_l5mcl")
+texture_pressed = ExtResource("3_73a1h")
+
+[node name="Elixir" type="TextureRect" parent="CardSlot2"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("4_5e1va")
+
+[node name="Label" type="Label" parent="CardSlot2/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("5_38wub")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot3" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="Card" type="TextureRect" parent="CardSlot3"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="CardSlot3/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2alhc")
+texture_normal = ExtResource("2_l5mcl")
+texture_pressed = ExtResource("3_73a1h")
+
+[node name="Elixir" type="TextureRect" parent="CardSlot3"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("4_5e1va")
+
+[node name="Label" type="Label" parent="CardSlot3/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("5_38wub")
+text = "0"
+horizontal_alignment = 1
+
+[node name="CardSlot4" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="Card" type="TextureRect" parent="CardSlot4"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 47.0
+offset_bottom = 63.0
+
+[node name="CardFrame" type="TextureButton" parent="CardSlot4/Card"]
+z_index = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 47.0
+offset_bottom = 63.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2alhc")
+texture_normal = ExtResource("2_l5mcl")
+texture_pressed = ExtResource("3_73a1h")
+
+[node name="Elixir" type="TextureRect" parent="CardSlot4"]
+z_index = 2
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 29.0
+offset_bottom = 70.0
+texture = ExtResource("4_5e1va")
+
+[node name="Label" type="Label" parent="CardSlot4/Elixir"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("5_38wub")
+text = "0"
+horizontal_alignment = 1
+
+[node name="NextCard" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="Card" type="TextureRect" parent="NextCard"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 19.0
+offset_right = 58.0
+offset_bottom = 79.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_nt1qt")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="NextCard"]
+layout_mode = 0
+offset_left = -6.0
+offset_right = 58.0
+offset_bottom = 26.0
+theme_override_fonts/font = ExtResource("5_38wub")
+text = "NEXT"
+horizontal_alignment = 1
+
+[connection signal="toggled" from="CardSlot1/Card/CardFrame" to="." method="_on_card_toggled"]
+[connection signal="toggled" from="CardSlot2/Card/CardFrame" to="." method="_on_card_toggled"]
+[connection signal="toggled" from="CardSlot3/Card/CardFrame" to="." method="_on_card_toggled"]
+[connection signal="toggled" from="CardSlot4/Card/CardFrame" to="." method="_on_card_toggled"]
