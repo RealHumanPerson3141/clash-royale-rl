@@ -250,12 +250,11 @@ func _on_hit_timer_timeout() -> void:
 	if stats.is_ranged:
 		var projectile = projectile_scene.instantiate()
 		
-		projectile.position = position
 		projectile.target = target
 		projectile.tiles_per_second = 600 * 0.02 * Global.TILE_SIZE
 		projectile.hit_target.connect(_attack)
 		
-		add_sibling(projectile)
+		add_child(projectile)
 	else:
 		_attack()
 
