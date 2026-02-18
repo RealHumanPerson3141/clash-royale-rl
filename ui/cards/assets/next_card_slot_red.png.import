@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqc7p1lunpryd"
-path="res://.godot/imported/elixir_under.png-39ea82a70576cab757b7945db8a732a0.ctex"
+uid="uid://bbsf6sx7wene"
+path="res://.godot/imported/next_card_slot_red.png-1110498afdb244f2fd3a8828fcfea405.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/elixir/elixir_under.png"
-dest_files=["res://.godot/imported/elixir_under.png-39ea82a70576cab757b7945db8a732a0.ctex"]
+source_file="res://ui/cards/assets/next_card_slot_red.png"
+dest_files=["res://.godot/imported/next_card_slot_red.png-1110498afdb244f2fd3a8828fcfea405.ctex"]
 
 [params]
 

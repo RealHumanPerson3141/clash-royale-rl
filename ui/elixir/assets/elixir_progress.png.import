@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crqqlmg42uwr0"
-path="res://.godot/imported/card_frame_hover.png-22af4a0880af183f7c5098ddfe16e97b.ctex"
+uid="uid://bx3lsxb7yhcxm"
+path="res://.godot/imported/elixir_progress.png-4555d4ef1e0314053ff92d5b238fe9a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui/assets/cards/card_frame_hover.png"
-dest_files=["res://.godot/imported/card_frame_hover.png-22af4a0880af183f7c5098ddfe16e97b.ctex"]
+source_file="res://ui/elixir/assets/elixir_progress.png"
+dest_files=["res://.godot/imported/elixir_progress.png-4555d4ef1e0314053ff92d5b238fe9a1.ctex"]
 
 [params]
 

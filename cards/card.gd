@@ -36,18 +36,12 @@ func _ready() -> void:
 	
 	# Set collision mask to only collide with cards of same transport type (ground/air)
 	collision_mask = 4 + 4 * int(stats.is_air)
-	# Set collision layers to differenciate blue and red
-	collision_layer = 2 - int(is_blue) + collision_mask
 	z_index = int(stats.is_air)
-	
-	sight_area.collision_mask = 2 - int(not is_blue)
-	hit_area.collision_mask = 2 - int(not is_blue)
 	
 	navigation.target_desired_distance = stats.hit_range * Global.TILE_SIZE
 	
 	current_hp = stats.hp
 	health_bar.max_value = stats.hp
-	health_bar.modulate = Color(0, 0, 1) if is_blue else Color(1, 0, 0)
 	
 	tiles_per_second = stats.move_speed * 0.02 * Global.TILE_SIZE
 	
@@ -60,8 +54,7 @@ func _ready() -> void:
 	$CollisionShape2D.shape = CircleShape2D.new()
 	$CollisionShape2D.shape.radius = stats.radius * Global.TILE_SIZE
 	
-	_configure_groups()
-	_configure_target_groups()
+	update_color()
 
 
 func _physics_process(delta: float) -> void:
@@ -93,6 +86,23 @@ func _physics_process(delta: float) -> void:
 		$Sprite2D.rotation = round(next_path_direction.angle() * 2 / PI) / 2 * PI 
 	
 	_repel_colliding_cards(delta)
+
+
+func update_color():
+	# Set collision layers to differenciate blue and red
+	collision_layer = 2 - int(is_blue) + collision_mask
+	
+	sight_area.collision_mask = 2 - int(not is_blue)
+	hit_area.collision_mask = 2 - int(not is_blue)
+	
+	health_bar.modulate = Color(0, 0, 1) if is_blue else Color(1, 0, 0)
+	
+	remove_from_group("red")
+	remove_from_group("blue")
+	_configure_groups()
+	
+	target_groups = []
+	_configure_target_groups()
 
 
 func get_observation(is_observer_blue: bool) -> Array[float]:
@@ -151,24 +161,15 @@ func _configure_target_groups():
 
 
 func _retarget():
-	# TODO: Find an even slightly more elegant solution because this sucks
-	if targets.is_empty():
-		# Add enemy crown towers to targets, as they are
-		# anomalously targeted by every card since start
-		var towers = get_tree().get_nodes_in_group("towers")
-		for tower in towers:
-			if tower.is_in_group(enemy_group):
-				targets.append(tower)
-	
 	# Remove untargetable cards from target list
 	targets = targets.filter(func(node): return node != null and not node.is_queued_for_deletion())
 	
 	target = _get_nearest(targets)
 	
-	if not hit_area.overlaps_area(target):
+	if target == null or not hit_area.overlaps_area(target):
 		attacking = false
 		hit_timer.stop()
-	if not sight_area.overlaps_area(target):
+	if target == null or not sight_area.overlaps_area(target):
 		in_combat = false
 
 

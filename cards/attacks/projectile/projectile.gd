@@ -12,7 +12,7 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	
-	position = position.move_toward(target.position, tiles_per_second * delta)
+	global_position = global_position.move_toward(target.global_position, tiles_per_second * delta)
 
 
 func _on_area_entered(area: Node2D) -> void:

@@ -1,11 +1,8 @@
 extends AIController2D
 
 
-@export var is_blue: bool
-
 func get_obs() -> Dictionary:
-	var obs: Array[float] = get_parent().get_observation(is_blue)
-	
+	var obs: Array[float] = get_parent().get_observation()
 	return {"obs": obs}
 
 

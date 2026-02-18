@@ -8,7 +8,7 @@ var radius: float
 
 
 func _ready() -> void:
-	scale = Vector2(radius * Global.TILE_SIZE, radius * Global.TILE_SIZE)
+	global_scale = Vector2(radius * Global.TILE_SIZE, radius * Global.TILE_SIZE)
 
 
 func _on_timer_timeout() -> void:
