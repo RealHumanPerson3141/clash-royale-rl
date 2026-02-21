@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbhvk6sof6cga"]
+
+[ext_resource type="PackedScene" uid="uid://lyjsvmqbf02i" path="res://arena/arena.tscn" id="1_aiymq"]
+[ext_resource type="Script" uid="uid://dx4lrkmp7krux" path="res://addons/godot_rl_agents/sync.gd" id="2_c5tny"]
+
+[node name="TestingScene" type="Node"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+size = Vector2i(640, 360)
+
+[node name="Arena" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_aiymq")]
+
+[node name="Sync" type="Node" parent="."]
+script = ExtResource("2_c5tny")
+control_mode = 2
+onnx_model_path = "train_test/model.onnx"
+metadata/_custom_type_script = "uid://dx4lrkmp7krux"

@@ -56,4 +56,5 @@ func _on_card_toggled(_toggled_on: bool):
 
 
 func _on_card_placed() -> void:
-	button_group.get_pressed_button().button_pressed = false
+	if button_group.get_pressed_button() != null:
+		button_group.get_pressed_button().button_pressed = false

@@ -127,7 +127,6 @@ func is_winning():
 			lowest_enemy_tower = tower.current_hp
 	
 	
-	print(lowest_tower, lowest_enemy_tower)
 	if lowest_tower > lowest_enemy_tower:
 		return true
 	
@@ -196,9 +195,6 @@ func _on_reward_timer_timeout() -> void:
 	$AIController2D.reward += 1 if is_winning() else -1
 	# Penalize enemies on player's side
 	$AIController2D.reward -= len(get_overlapping_areas()) / 4.0
-	
-	if is_blue:
-		print(get_observation())
 
 
 func _on_king_died() -> void:

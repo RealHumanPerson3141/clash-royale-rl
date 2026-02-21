@@ -26,7 +26,8 @@ func get_action_space() -> Dictionary:
 		}
 	
 func set_action(action) -> void:
-	var confidences: Array[float] = action.card_confidences
+	var confidences: Array[float]
+	confidences.assign(action.card_confidences)
 	
 	var pos = Vector2()
 	
