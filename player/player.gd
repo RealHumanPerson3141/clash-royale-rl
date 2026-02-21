@@ -4,6 +4,7 @@ extends Area2D
 
 signal card_placed()
 signal elixir_changed(new: float)
+signal king_died()
 
 @export var is_blue: bool
 @export var enemy: Player
@@ -32,6 +33,8 @@ var elixir: float:
 
 @onready var hand := Hand.new(deck)
 
+@onready var king_tower := $CrownTowers/King
+
 
 func _ready() -> void:
 	if not is_blue:
@@ -44,6 +47,9 @@ func _ready() -> void:
 			tower.position.x = 640 - tower.position.x
 	
 	enemy.input_event.connect(_on_enemy_input_event)
+	
+	# See only enemies
+	collision_mask = 2 - int(not is_blue)
 
 
 func get_crown_towers() -> Array[Card]:
@@ -72,7 +78,6 @@ func get_observation() -> Array[float]:
 	const CARD_OBS_SIZE = 4
 	const MAX_CARDS_PER_SIDE = 10
 	
-	
 	for cards in [get_cards(), enemy.get_cards()]:
 		for card in cards:
 			obs.append_array(card.get_observation(is_blue))
@@ -99,6 +104,47 @@ func place_card(pos: Vector2):
 	_instantiate_card(stats, pos)
 	
 	card_placed.emit()
+
+
+func is_winning():
+	var princess_towers = get_crown_towers()
+	princess_towers.erase(king_tower)
+	
+	var enemy_princess_towers = enemy.get_crown_towers()
+	enemy_princess_towers.erase(enemy.king_tower)
+	
+	if len(princess_towers) > len(enemy_princess_towers):
+		return true
+	
+	var lowest_tower := 3052.0
+	for tower in princess_towers:
+		if tower.current_hp < lowest_tower:
+			lowest_tower = tower.current_hp
+			
+	var lowest_enemy_tower = 3052.0
+	for tower in enemy_princess_towers:
+		if tower.current_hp < lowest_tower:
+			lowest_enemy_tower = tower.current_hp
+	
+	
+	print(lowest_tower, lowest_enemy_tower)
+	if lowest_tower > lowest_enemy_tower:
+		return true
+	
+	return false
+
+
+func reset():
+	for tower in get_crown_towers():
+		tower.reset()
+	
+	for card in get_cards():
+		card.queue_free()
+	
+	elixir = 5.0
+	hand = Hand.new(deck)
+	
+	$AIController2D.reset()
 
 
 func _instantiate_card(stats: CardStats, pos: Vector2):
@@ -144,3 +190,16 @@ func _on_enemy_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) 
 
 func _on_elixir_timer_timeout() -> void:
 	elixir += 0.25
+
+
+func _on_reward_timer_timeout() -> void:
+	$AIController2D.reward += 1 if is_winning() else -1
+	# Penalize enemies on player's side
+	$AIController2D.reward -= len(get_overlapping_areas()) / 4.0
+	
+	if is_blue:
+		print(get_observation())
+
+
+func _on_king_died() -> void:
+	king_died.emit()

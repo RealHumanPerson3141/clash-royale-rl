@@ -34,4 +34,9 @@ is_blue = true
 script = ExtResource("5_qjkh3")
 metadata/_custom_type_script = "uid://urar176wysa7"
 
+[node name="RewardTimer" type="Timer" parent="."]
+autostart = true
+
 [connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="died" from="CrownTowers/King" to="." method="_on_king_died"]
+[connection signal="timeout" from="RewardTimer" to="." method="_on_reward_timer_timeout"]

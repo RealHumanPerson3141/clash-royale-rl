@@ -2,6 +2,8 @@ class_name Card
 extends Area2D
 
 
+signal died()
+
 @export var stats: CardStats
 @export var is_blue: bool
 
@@ -68,8 +70,15 @@ func _physics_process(delta: float) -> void:
 	# TODO: Add actual attack animations
 	
 	if current_hp <= 0:
+		
+		if is_in_group("towers"):
+			process_mode = Node.PROCESS_MODE_DISABLED
+			visible = false
+		else:
+			queue_free()
+		
 		print(name, " died")
-		queue_free()
+		died.emit()
 	
 	if target == null:
 		_retarget()
@@ -121,6 +130,14 @@ func get_observation(is_observer_blue: bool) -> Array[float]:
 	obs.append(float(current_hp) / stats.hp)
 	
 	return obs
+
+
+func reset():
+	process_mode = Node.PROCESS_MODE_INHERIT
+	visible = true
+	current_hp = stats.hp
+	
+	_retarget()
 
 
 func _configure_groups():
@@ -265,7 +282,7 @@ func _get_nearest(nodes: Array):
 	
 	for node in nodes:
 		var distance_to_node = position.distance_squared_to(node.position)
-		if distance_to_node < min_distance:
+		if distance_to_node < min_distance and node.process_mode != Node.PROCESS_MODE_DISABLED:
 			nearest_node = node
 			min_distance = distance_to_node
 	
