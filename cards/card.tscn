@@ -72,6 +72,7 @@ one_shot = true
 
 [node name="Attacks" type="Node" parent="."]
 
+[connection signal="value_changed" from="HealthBar" to="." method="_on_health_value_changed"]
 [connection signal="area_entered" from="SightArea" to="." method="_on_sight_area_entered"]
 [connection signal="area_exited" from="SightArea" to="." method="_on_sight_area_exited"]
 [connection signal="area_entered" from="HitArea" to="." method="_on_hit_area_entered"]

@@ -46,10 +46,10 @@ func _ready() -> void:
 			
 			tower.position.x = 640 - tower.position.x
 	
-	enemy.input_event.connect(_on_enemy_input_event)
+	for tower in get_crown_towers() + enemy.get_crown_towers():
+		tower.took_damage.connect(_on_tower_damaged.bind(tower))
 	
-	# See only enemies
-	collision_mask = 2 - int(not is_blue)
+	enemy.input_event.connect(_on_enemy_input_event)
 
 
 func get_crown_towers() -> Array[Card]:
@@ -104,33 +104,6 @@ func place_card(pos: Vector2):
 	_instantiate_card(stats, pos)
 	
 	card_placed.emit()
-
-
-func is_winning():
-	var princess_towers = get_crown_towers()
-	princess_towers.erase(king_tower)
-	
-	var enemy_princess_towers = enemy.get_crown_towers()
-	enemy_princess_towers.erase(enemy.king_tower)
-	
-	if len(princess_towers) > len(enemy_princess_towers):
-		return true
-	
-	var lowest_tower := 3052.0
-	for tower in princess_towers:
-		if tower.current_hp < lowest_tower:
-			lowest_tower = tower.current_hp
-			
-	var lowest_enemy_tower = 3052.0
-	for tower in enemy_princess_towers:
-		if tower.current_hp < lowest_tower:
-			lowest_enemy_tower = tower.current_hp
-	
-	
-	if lowest_tower > lowest_enemy_tower:
-		return true
-	
-	return false
 
 
 func reset():
@@ -191,11 +164,13 @@ func _on_elixir_timer_timeout() -> void:
 	elixir += 0.25
 
 
-func _on_reward_timer_timeout() -> void:
-	$AIController2D.reward += 1 if is_winning() else -1
-	# Penalize enemies on player's side
-	$AIController2D.reward -= len(get_overlapping_areas()) / 4.0
-
-
 func _on_king_died() -> void:
 	king_died.emit()
+
+
+func _on_tower_damaged(damage: float, tower: Card) -> void:
+	var is_enemy = (is_blue and not tower.is_blue) or (tower.is_blue and not is_blue)
+	
+	var enemy_multiplier = -1 if is_enemy else 1
+	var king_multiplier = 2 if tower == king_tower or tower == enemy.king_tower else 1
+	$AIController2D.reward -= damage * enemy_multiplier * king_multiplier

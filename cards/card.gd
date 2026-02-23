@@ -3,11 +3,14 @@ extends Area2D
 
 
 signal died()
+signal took_damage(damage: int)
 
 @export var stats: CardStats
 @export var is_blue: bool
 
 var current_hp: int
+
+var previous_hp: int
 
 var tiles_per_second: float
 
@@ -43,6 +46,8 @@ func _ready() -> void:
 	navigation.target_desired_distance = stats.hit_range * Global.TILE_SIZE
 	
 	current_hp = stats.hp
+	previous_hp = current_hp
+	
 	health_bar.max_value = stats.hp
 	
 	tiles_per_second = stats.move_speed * 0.02 * Global.TILE_SIZE
@@ -85,6 +90,7 @@ func _physics_process(delta: float) -> void:
 	if targets.is_empty() and not is_in_group("towers"):
 		queue_free()
 		return
+	
 	if target == null:
 		_retarget()
 	
@@ -238,6 +244,26 @@ func _repel_colliding_cards(delta: float) -> void:
 			card.position -= repel_vector * delta * mass_ratio
 
 
+func _get_nearest(nodes: Array):
+	var nearest_node: Node2D = null
+	var min_distance := 1.79769e308 # Maximum float value
+	
+	for node in nodes:
+		var distance_to_node = position.distance_squared_to(node.position)
+		if distance_to_node < min_distance and node.process_mode != Node.PROCESS_MODE_DISABLED:
+			nearest_node = node
+			min_distance = distance_to_node
+	
+	return nearest_node
+
+
+func _is_targetable(card: Card) -> bool:
+	for group in target_groups:
+		if not card.is_in_group(group):
+			return card.is_in_group(enemy_group) and card.is_in_group("towers")
+	return true
+
+
 func _on_sight_area_entered(area: Node2D) -> void:
 	# Enemy towers are always targeted, and so are not appended when spotted
 	if _is_targetable(area) and not area.is_in_group("towers"):
@@ -284,21 +310,6 @@ func _on_hit_timer_timeout() -> void:
 		_attack()
 
 
-func _get_nearest(nodes: Array):
-	var nearest_node: Node2D = null
-	var min_distance := 1.79769e308 # Maximum float value
-	
-	for node in nodes:
-		var distance_to_node = position.distance_squared_to(node.position)
-		if distance_to_node < min_distance and node.process_mode != Node.PROCESS_MODE_DISABLED:
-			nearest_node = node
-			min_distance = distance_to_node
-	
-	return nearest_node
-
-
-func _is_targetable(card: Card) -> bool:
-	for group in target_groups:
-		if not card.is_in_group(group):
-			return card.is_in_group(enemy_group) and card.is_in_group("towers")
-	return true
+func _on_health_value_changed(_value: float) -> void:
+	took_damage.emit(previous_hp - current_hp)
+	previous_hp = current_hp
