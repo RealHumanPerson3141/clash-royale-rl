@@ -31,10 +31,10 @@ func set_action(action) -> void:
 	
 	var pos = Vector2()
 	
-	pos.y = action.placement_position[0] * 144 + 176
+	pos.y = clamp(action.placement_position[0], -1, 1) * 144 + 176
 	pos.x = 192 if player.is_blue else 640 - 192
 	
 	for i in range(4):
-		if confidences[i] > 0.5:
+		if confidences[i] > 0:
 			player.selected = i
 			player.place_card(pos)

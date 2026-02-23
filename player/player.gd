@@ -75,7 +75,7 @@ func get_observation() -> Array[float]:
 	obs.append_array(hand.get_observation())
 	obs.append_array(enemy.hand.get_observation())
 	
-	const CARD_OBS_SIZE = 4
+	const CARD_OBS_SIZE = 6
 	const MAX_CARDS_PER_SIDE = 10
 	
 	for cards in [get_cards(), enemy.get_cards()]:

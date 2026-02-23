@@ -86,12 +86,12 @@ func _physics_process(delta: float) -> void:
 		
 		died.emit()
 	
-	if targets.is_empty() and not is_in_group("towers"):
-		queue_free()
-		return
-	
 	if target == null:
 		_retarget()
+	
+	if target == null and not is_in_group("towers"):
+		queue_free()
+		return
 	
 	if attacking and hit_timer.is_stopped():
 		hit_timer.start(stats.hit_speed)
@@ -134,10 +134,12 @@ func get_observation(is_observer_blue: bool) -> Array[float]:
 	if is_observer_blue:
 		normalized_pos.x *= -1
 	
-	obs.append(stats.id)
 	obs.append(normalized_pos.x)
 	obs.append(normalized_pos.y)
 	obs.append(1.0 if stats.is_spell else float(current_hp) / stats.hp)
+	obs.append(stats.hp / 3052.0)
+	obs.append(stats.damage / 755.0)
+	obs.append(stats.hit_range / 7.5)
 	
 	return obs
 
