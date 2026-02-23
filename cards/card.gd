@@ -57,20 +57,22 @@ func _ready() -> void:
 	$CollisionShape2D.shape.radius = stats.radius * Global.TILE_SIZE
 	
 	update_color()
-
-
-func _physics_process(delta: float) -> void:
-	health_bar.value = current_hp
 	
 	if stats.is_spell:
 		_attack()
-		queue_free()
+
+
+func _physics_process(delta: float) -> void:
+	if stats.is_spell:
+		if $Attacks.get_child_count() == 0:
+			queue_free()
 		return
+	
+	health_bar.value = current_hp
 	
 	# TODO: Add actual attack animations
 	
 	if current_hp <= 0:
-		
 		if is_in_group("towers"):
 			process_mode = Node.PROCESS_MODE_DISABLED
 			visible = false
@@ -80,6 +82,9 @@ func _physics_process(delta: float) -> void:
 		print(name, " died")
 		died.emit()
 	
+	if targets.is_empty() and not is_in_group("towers"):
+		queue_free()
+		return
 	if target == null:
 		_retarget()
 	
@@ -99,7 +104,7 @@ func _physics_process(delta: float) -> void:
 
 func update_color():
 	# Set collision layers to differenciate blue and red
-	collision_layer = 2 - int(is_blue) + collision_mask
+	collision_layer = 0 if stats.is_spell else 2 - int(is_blue) + collision_mask
 	
 	sight_area.collision_mask = 2 - int(not is_blue)
 	hit_area.collision_mask = 2 - int(not is_blue)
@@ -190,24 +195,26 @@ func _retarget():
 		in_combat = false
 
 
+func _hurt() -> void:
+	if target.is_in_group("towers"):
+		target.current_hp -= stats.crown_tower_damage
+	else:
+		target.current_hp -= stats.damage
+
+
 func _attack() -> void:
 	if stats.splash_radius == 0:
-		if target.is_in_group("towers"):
-			target.current_hp -= stats.crown_tower_damage
-		else:
-			target.current_hp -= stats.damage
+		_hurt()
 		return
 	
 	var splash = splash_scene.instantiate()
-	# TODO: Make this not suck
+	
 	splash.position = position if stats.is_centered_attack else target.position
-	splash.damage = stats.damage
-	splash.crown_tower_damage = stats.crown_tower_damage
 	splash.radius = stats.splash_radius
 	
 	splash.collision_mask = hit_area.collision_mask
 	
-	add_sibling(splash)
+	$Attacks.add_child(splash)
 
 
 func _repel_colliding_cards(delta: float) -> void:
@@ -267,11 +274,12 @@ func _on_hit_timer_timeout() -> void:
 	if stats.is_ranged:
 		var projectile = projectile_scene.instantiate()
 		
+		projectile.position = position
 		projectile.target = target
 		projectile.tiles_per_second = 600 * 0.02 * Global.TILE_SIZE
 		projectile.hit_target.connect(_attack)
 		
-		add_child(projectile)
+		$Attacks.add_child(projectile)
 	else:
 		_attack()
 

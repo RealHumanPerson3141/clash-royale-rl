@@ -1,21 +1,20 @@
 extends Area2D
 
 
-var damage: int
-var crown_tower_damage: int
+var summoner: Card
 
 var radius: float
 
 
 func _ready() -> void:
 	global_scale = Vector2(radius * Global.TILE_SIZE, radius * Global.TILE_SIZE)
+	summoner = get_parent().get_parent() as Card
 
 
 func _on_timer_timeout() -> void:
 	var cards := get_overlapping_areas()
 	for card in cards:
-		if card.is_in_group("towers"):
-			card.current_hp -= crown_tower_damage
-		else:
-			card.current_hp -= damage
+		summoner.target = card
+		summoner._hurt()
+	
 	queue_free()
