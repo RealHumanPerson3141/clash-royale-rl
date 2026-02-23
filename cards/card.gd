@@ -84,7 +84,6 @@ func _physics_process(delta: float) -> void:
 		else:
 			queue_free()
 		
-		print(name, " died")
 		died.emit()
 	
 	if targets.is_empty() and not is_in_group("towers"):
@@ -138,7 +137,7 @@ func get_observation(is_observer_blue: bool) -> Array[float]:
 	obs.append(stats.id)
 	obs.append(normalized_pos.x)
 	obs.append(normalized_pos.y)
-	obs.append(float(current_hp) / stats.hp)
+	obs.append(1.0 if stats.is_spell else float(current_hp) / stats.hp)
 	
 	return obs
 
@@ -202,6 +201,9 @@ func _retarget():
 
 
 func _hurt() -> void:
+	if target == null:
+		return
+	
 	if target.is_in_group("towers"):
 		target.current_hp -= stats.crown_tower_damage
 	else:
