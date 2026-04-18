@@ -127,6 +127,7 @@ func update_color():
 func get_observation(is_observer_blue: bool) -> Array[float]:
 	var obs: Array[float] = []
 	
+	# Get normalized position
 	var arena_pos := Vector2(320, 176)
 	var arena_radius := Vector2(256, 144)
 	
@@ -136,10 +137,11 @@ func get_observation(is_observer_blue: bool) -> Array[float]:
 	
 	obs.append(normalized_pos.x)
 	obs.append(normalized_pos.y)
+	
+	# Get current health (%)
 	obs.append(1.0 if stats.is_spell else float(current_hp) / stats.hp)
-	obs.append(stats.hp / 3052.0)
-	obs.append(stats.damage / 755.0)
-	obs.append(stats.hit_range / 7.5)
+	
+	obs.append_array(stats.get_observation())
 	
 	return obs
 

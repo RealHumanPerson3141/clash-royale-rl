@@ -48,3 +48,13 @@ extends Resource
 @export var mass: int
 @export var radius: float = 0.5
 @export var id: int
+
+
+func get_observation() -> Array[float]:
+	var obs: Array[float] = []
+
+	obs.append(0.0 if is_spell else hp / 4090.0)
+	obs.append(damage / 755.0 if is_spell else damage / hit_speed / 471.0) # dps
+	obs.append(hit_range / 7.5)
+	
+	return obs

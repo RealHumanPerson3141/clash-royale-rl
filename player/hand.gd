@@ -55,12 +55,14 @@ func get_observation() -> Array[float]:
 	var obs: Array[float] = []
 
 	for card in cards + [next[0]]:
-		# Account for cards spawning multiple troops
-		obs.append(deck[card].hp / 3052.0 * deck[card].count)
-		obs.append(deck[card].damage / 755.0 * deck[card].count)
+		var card_obs = deck[card].get_observation()
 		
-		obs.append(deck[card].hit_range / 7.5)
-		obs.append(deck[card].elixir)
+		# Account for cards spawning multiple troops
+		card_obs[0] *= deck[card].count
+		card_obs[1] *= deck[card].count
+		
+		obs.append(deck[card].elixir / 10.0)
+		obs.append_array(card_obs)
 	
 	return obs
 
