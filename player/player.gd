@@ -84,7 +84,15 @@ func get_observation() -> Array[float]:
 	const CARD_OBS_SIZE = 6
 	const MAX_CARDS_PER_SIDE = 10
 	
-	for cards in [get_cards(), enemy.get_cards()]:
+	var friendly_cards = get_cards()
+	var enemy_cards = enemy.get_cards()
+	
+	var sort_position = func (a: Card, b: Card) -> bool:
+		return a.position.x < b.position.x
+	
+	for cards in [friendly_cards, enemy_cards]:
+		cards.sort_custom(sort_position)
+		
 		for card in cards:
 			obs.append_array(card.get_observation(is_blue))
 	
