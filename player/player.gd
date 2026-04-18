@@ -46,9 +46,6 @@ func _ready() -> void:
 			
 			tower.position.x = 640 - tower.position.x
 	
-	for tower in get_crown_towers() + enemy.get_crown_towers():
-		tower.took_damage.connect(_on_tower_damaged.bind(tower))
-	
 	enemy.input_event.connect(_on_enemy_input_event)
 
 
@@ -65,6 +62,15 @@ func get_cards() -> Array[Card]:
 	cards.assign($Cards.get_children())
 	
 	return cards
+
+
+func get_total_elixir() -> int:
+	var sum := int(elixir)
+	
+	for card in get_cards():
+		sum += card.stats.elixir
+	
+	return sum
 
 
 func get_observation() -> Array[float]:
@@ -89,6 +95,21 @@ func get_observation() -> Array[float]:
 	
 	
 	return obs
+
+
+func get_reward():
+	var tower_health_sum := 0
+	
+	for tower in get_crown_towers():
+		tower_health_sum += tower.current_hp
+	for tower in enemy.get_crown_towers():
+		tower_health_sum -= tower.current_hp
+	
+	var elixir_advantage = float(get_total_elixir()) / enemy.get_total_elixir()
+	if tower_health_sum < 0:
+		elixir_advantage = 1 / elixir_advantage
+
+	return int(tower_health_sum * elixir_advantage)
 
 
 func place_card(pos: Vector2):
@@ -166,11 +187,3 @@ func _on_elixir_timer_timeout() -> void:
 
 func _on_king_died() -> void:
 	king_died.emit()
-
-
-func _on_tower_damaged(damage: float, tower: Card) -> void:
-	var is_enemy = (is_blue and not tower.is_blue) or (tower.is_blue and not is_blue)
-	
-	var enemy_multiplier = -1 if is_enemy else 1
-	var king_multiplier = 2 if tower == king_tower or tower == enemy.king_tower else 1
-	$AIController2D.reward -= damage * enemy_multiplier * king_multiplier

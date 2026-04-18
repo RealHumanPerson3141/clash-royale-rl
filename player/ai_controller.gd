@@ -9,7 +9,8 @@ func get_obs() -> Dictionary:
 
 
 func get_reward() -> float:
-	# Reward is modified directly in the player script
+	reward = player.get_reward()
+	
 	return reward
 
 
