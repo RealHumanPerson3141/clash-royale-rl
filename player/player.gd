@@ -76,12 +76,15 @@ func get_total_elixir() -> int:
 func get_observation() -> Array[float]:
 	var obs: Array[float] = []
 	
-	obs.append(elixir)
+	# Since good players can essentially figure this out in game
+	# the AI should be able to as well
+	obs.append(elixir / 10.0)
+	obs.append(enemy.elixir / 10.0)
 	
 	obs.append_array(hand.get_observation())
 	obs.append_array(enemy.hand.get_observation())
 	
-	const CARD_OBS_SIZE = 6
+	const CARD_OBS_SIZE = 10
 	const MAX_CARDS_PER_SIDE = 10
 	
 	var friendly_cards = get_cards()

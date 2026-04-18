@@ -56,5 +56,9 @@ func get_observation() -> Array[float]:
 	obs.append(0.0 if is_spell else hp / 4090.0)
 	obs.append(damage / 755.0 if is_spell else damage / hit_speed / 471.0) # dps
 	obs.append(hit_range / 7.5)
+	obs.append(move_speed / 90.0)
+	obs.append(1 if is_air else 0)
+	obs.append(1 if target_air else 0)
+	obs.append(1 if target_troops else 0)
 	
 	return obs
