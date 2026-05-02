@@ -9,6 +9,6 @@
 
 [node name="Sync" type="Node" parent="."]
 script = ExtResource("2_c5tny")
-control_mode = 0
+control_mode = 2
 onnx_model_path = "train_test/model.onnx"
 metadata/_custom_type_script = "uid://dx4lrkmp7krux"
