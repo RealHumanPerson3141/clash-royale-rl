@@ -56,10 +56,22 @@ func get_crown_towers() -> Array[Card]:
 	return towers
 
 
-func get_cards() -> Array[Card]:
+## Gets cards summoned by the player.
+## If side is positive, only get cards from the top side, 
+## and if side is negative, only get cards from the bottom side.
+## If side is 0, get all cards.
+func get_cards(side: int = 0) -> Array[Card]:
 	var cards: Array[Card] = []
 	
 	cards.assign($Cards.get_children())
+	
+	if side == 0:
+		return cards
+	
+	const MIDDLE_Y = 178
+	for card in cards:
+		if side < 0 and card.y < MIDDLE_Y or side > 0 and card.y > MIDDLE_Y:
+			cards.erase(card) 
 	
 	return cards
 
@@ -87,22 +99,23 @@ func get_observation() -> Array[float]:
 	const CARD_OBS_SIZE = 10
 	const MAX_CARDS_PER_SIDE = 10
 	
-	var friendly_cards = get_cards()
-	var enemy_cards = enemy.get_cards()
+	for side in [1, -1]:
+		var friendly_cards = get_cards(side)
+		var enemy_cards = enemy.get_cards(side)
 	
-	var sort_position = func (a: Card, b: Card) -> bool:
-		return a.position.x < b.position.x
+		var sort_position = func (a: Card, b: Card) -> bool:
+			return a.position.x < b.position.x
 	
-	for cards in [friendly_cards, enemy_cards]:
-		cards.sort_custom(sort_position)
+		for cards in [friendly_cards, enemy_cards]:
+			cards.sort_custom(sort_position)
 		
-		for card in cards:
-			obs.append_array(card.get_observation(is_blue))
+			for card in cards:
+				obs.append_array(card.get_observation(is_blue))
 	
-		assert(len(cards) <= MAX_CARDS_PER_SIDE, "maximum card observation reached")
+			assert(len(cards) <= MAX_CARDS_PER_SIDE, "maximum card observation reached")
 		
-		for i in range(CARD_OBS_SIZE * (MAX_CARDS_PER_SIDE - len(cards))):
-			obs.append(0)
+			for i in range(CARD_OBS_SIZE * (MAX_CARDS_PER_SIDE - len(cards))):
+				obs.append(0)
 	
 	
 	return obs
