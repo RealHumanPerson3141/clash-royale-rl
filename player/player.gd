@@ -148,6 +148,7 @@ func reset():
 	elixir = 5.0
 	hand = Hand.new(deck)
 	
+	$AIController2D.done = true
 	$AIController2D.reset()
 
 

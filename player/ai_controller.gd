@@ -16,30 +16,34 @@ func get_reward() -> float:
 
 func get_action_space() -> Dictionary:
 	return {
-		"card_confidences" : {
+		"selected_card" : {
 			"size": 4,
-			"action_type": "continuous"
+			"action_type": "discrete"
 		},
-		"placement_position" : {
-			"size": 1,
-			"action_type": "continuous"
+		"placement_row" : {
+			"size": 2,
+			"action_type": "discrete"
 		},
+		"place_card" : {
+			"size": 2,
+			"action_type": "discrete"
+		}
 		}
 	
 func set_action(action) -> void:
-	var confidences: Array[float]
-	confidences.assign(action.card_confidences)
+	# Only place a card if this value is 1
+	if action.place_card == 0:
+		return
+	
+	print(action)
 	
 	var pos = Vector2()
 	
-	pos.y = action.placement_position[0] * 144 + 176
 	pos.x = 192 if player.is_blue else 640 - 192
+	pos.y = 89 if action.placement == 0 else 264
 	
-	var max_i = 0
-	for i in range(1, 4):
-		if confidences[i] > confidences[max_i]:
-			max_i = i
+	if not player.is_blue:
+		pos.x = 640 - pos.x
 	
-	player.selected = max_i
-	if confidences[max_i] > 0.5:
-		player.place_card(pos)
+	player.selected = action.selected_card
+	player.place_card(pos)
