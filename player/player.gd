@@ -70,7 +70,7 @@ func get_cards(side: int = 0) -> Array[Card]:
 	
 	const MIDDLE_Y = 178
 	for card in cards:
-		if side < 0 and card.y < MIDDLE_Y or side > 0 and card.y > MIDDLE_Y:
+		if side < 0 and card.position.y < MIDDLE_Y or side > 0 and card.position.y > MIDDLE_Y:
 			cards.erase(card) 
 	
 	return cards

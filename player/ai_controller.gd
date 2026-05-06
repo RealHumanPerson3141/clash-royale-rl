@@ -40,10 +40,7 @@ func set_action(action) -> void:
 	var pos = Vector2()
 	
 	pos.x = 192 if player.is_blue else 640 - 192
-	pos.y = 89 if action.placement == 0 else 264
-	
-	if not player.is_blue:
-		pos.x = 640 - pos.x
+	pos.y = 89 if action.placement_row == 0 else 264
 	
 	player.selected = action.selected_card
 	player.place_card(pos)
