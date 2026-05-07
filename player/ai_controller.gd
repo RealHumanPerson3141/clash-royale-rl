@@ -35,12 +35,17 @@ func set_action(action) -> void:
 	if action.place_card == 0:
 		return
 	
-	print(action)
-	
 	var pos = Vector2()
 	
-	pos.x = 192 if player.is_blue else 640 - 192
-	pos.y = 89 if action.placement_row == 0 else 264
+	pos.y = 89 if action.placement_row == 1 else 264
+	
+	var enemies = player.enemy.get_cards(1 if pos.y == 89 else -1)
+	if player.hand.get_card(action.selected_card).is_spell and not enemies.is_empty():
+		# Absolute spaghetti (handle spell placement for ai)
+		pos.x = enemies.back().position.x - (64 if player.is_blue else -64)
+	else:
+		pos.x = 192 if player.is_blue else 640 - 192
 	
 	player.selected = action.selected_card
+	
 	player.place_card(pos)
