@@ -68,6 +68,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# Spells summon an attack immediately upon spawning.
+	# When the attack ends, the spell should be deleted
 	if stats.is_spell:
 		if $Attacks.get_child_count() == 0:
 			queue_free()
@@ -78,6 +80,7 @@ func _physics_process(delta: float) -> void:
 	# TODO: Add actual attack animations
 	
 	if current_hp <= 0:
+		# Towers are not fully deleted so they can be recycled for next round
 		if is_in_group("towers"):
 			process_mode = Node.PROCESS_MODE_DISABLED
 			visible = false
@@ -93,9 +96,11 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	
+	# Start hitting enemy if not already hitting them
 	if attacking and hit_timer.is_stopped():
 		hit_timer.start(stats.hit_speed)
 	
+	# Pathfinding logic (only for non-stationary cards)
 	if stats.move_speed > 0 and hit_timer.is_stopped():
 		navigation.target_position = target.position
 		
@@ -106,7 +111,8 @@ func _physics_process(delta: float) -> void:
 	
 	_repel_colliding_cards(delta)
 
-
+## Update all card values dependant on the 'is_blue' property.
+## Can be used after the card has been initialized.
 func update_color():
 	# Set collision layers to differenciate blue and red
 	collision_layer = 0 if stats.is_spell else 2 - int(is_blue) + collision_mask
@@ -123,7 +129,8 @@ func update_color():
 	target_groups = []
 	_configure_target_groups()
 
-
+## Return array of floats representing the most
+## important attributes of the card. Used for AI training.
 func get_observation(is_observer_blue: bool) -> Array[float]:
 	var obs: Array[float] = []
 	
@@ -203,22 +210,25 @@ func _retarget():
 	if target == null or not sight_area.overlaps_area(target):
 		in_combat = false
 
-
+# Deal one attack to the targeted enemy.
 func _hurt() -> void:
 	if target == null:
 		return
 	
+	# Crown towers take less damage from some attacks.
 	if target.is_in_group("towers"):
 		target.current_hp -= stats.crown_tower_damage
 	else:
 		target.current_hp -= stats.damage
 
-
+# Attacks the targeted enemy. Can also be called by an instantiated projectile.
 func _attack() -> void:
+	# If there's no splash, deal damage normally.
 	if stats.splash_radius == 0:
 		_hurt()
 		return
-	
+		
+	# Otherwise, instantiate and configure a splash entity
 	var splash = splash_scene.instantiate()
 	
 	splash.position = position if stats.is_centered_attack else target.position
@@ -228,9 +238,10 @@ func _attack() -> void:
 	
 	$Attacks.add_child(splash)
 
-
+# Handle collision with other cards
 func _repel_colliding_cards(delta: float) -> void:
 	for card in get_overlapping_areas():
+		# Don't collide with projectiles or splash entities
 		if not card is Card:
 			continue
 		
@@ -244,6 +255,7 @@ func _repel_colliding_cards(delta: float) -> void:
 		
 		var repel_vector = position_diff.normalized() * Global.TILE_SIZE
 		
+		# Buildings cannot be pushed
 		if not stats.is_building:
 			position += repel_vector * delta / mass_ratio
 		if not card.stats.is_building:
@@ -296,13 +308,16 @@ func _on_hit_area_exited(area: Node2D) -> void:
 	if area == target:
 		_retarget()
 
-
+## Handle attack when the hit cooldown expires
 func _on_hit_timer_timeout() -> void:
+	# Can't attack an enemy that doesn't exist;
 	if target == null or target.current_hp <= 0:
 		_retarget()
+	# If there's no other enemy to attack, cancel the attack
 	if not attacking:
 		return
 	
+	# If the enemy is ranged, defer the attack function to a projectile entity
 	if stats.is_ranged:
 		var projectile = projectile_scene.instantiate()
 		

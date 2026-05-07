@@ -10,7 +10,7 @@ signal king_died()
 @export var enemy: Player
 
 var card_scene: PackedScene = preload("res://cards/card.tscn")
-var deck: Array[CardStats] = [
+var deck: Array[CardStats] = [ # This is the standard deck used in clash royale.
 	preload("res://cards/troops/knight/knight.tres"),
 	preload("res://cards/spells/arrows/arrows.tres"),
 	preload("res://cards/troops/archers/archers.tres"),
@@ -28,6 +28,7 @@ var elixir: float:
 	get:
 		return _elixir
 	set(value):
+		# Elixir cannot exceed 10
 		_elixir = min(value, 10)
 		elixir_changed.emit(_elixir)
 
@@ -37,6 +38,7 @@ var elixir: float:
 
 
 func _ready() -> void:
+	# Towers are blue by default. If the player is red, update the towers accordingly.
 	if not is_blue:
 		var towers = get_crown_towers()
 		
@@ -46,9 +48,11 @@ func _ready() -> void:
 			
 			tower.position.x = 640 - tower.position.x
 	
+	# Registers towers taking damage (used for AI reward function)
 	for tower in get_crown_towers() + enemy.get_crown_towers():
 		tower.took_damage.connect(_on_tower_damaged.bind(tower))
 	
+	# Register input events on the enemy's side
 	enemy.input_event.connect(_on_enemy_input_event)
 
 
@@ -59,7 +63,7 @@ func get_crown_towers() -> Array[Card]:
 	return towers
 
 
-## Gets cards summoned by the player.
+## Gets cards summoned by the player.[br]
 ## If side is positive, only get cards from the top side, 
 ## and if side is negative, only get cards from the bottom side.
 ## If side is 0, get all cards.
@@ -71,12 +75,15 @@ func get_cards(side: int = 0) -> Array[Card]:
 	if side == 0:
 		return cards
 	
-	const MIDDLE_Y = 178
+	const MIDDLE_Y = 178 # Middle of the arena
+	# Get cards above MIDDLE_Y
 	if side > 0:
 		cards = cards.filter(func(card): return card.position.y < MIDDLE_Y)
+	# Get cards below MIDDLE_Y
 	else:
 		cards = cards.filter(func(card): return card.position.y > MIDDLE_Y)
 	
+	# Sort the array by distance from home side
 	var sort_position = func (a: Card, b: Card) -> bool:
 		return a.position.x < b.position.x != is_blue
 	
@@ -122,20 +129,22 @@ func get_observation() -> Array[float]:
 				obs.append_array(card.get_observation(is_blue))
 	
 			assert(len(cards) <= MAX_CARDS_PER_SIDE, "maximum card observation reached")
-		
+			
+			# Add zeroes to pad the obs array so it has constant size
 			for i in range(CARD_OBS_SIZE * (MAX_CARDS_PER_SIDE - len(cards))):
 				obs.append(0)
 	
 	return obs
 
-
+## Place the selected card at the inputted position.
 func place_card(pos: Vector2):
 	if selected == -1:
 		return
 	
+	# Ensure enough elixir to summon card
 	var card = hand.get_card(selected)
 	if elixir < card.elixir:
-		# lightly punish placing a card without elixir
+		# lightly punish placing a card without enough elixir
 		_add_reward(-50)
 		return
 	
@@ -149,7 +158,7 @@ func place_card(pos: Vector2):
 	
 	card_placed.emit()
 
-
+## Add appropriate reward for the placement of the card, depending on various factors
 func evaluate_placement(card: CardStats, pos: Vector2) -> void:
 	var card_side = 1 if pos.y < 178 else -1
 	
@@ -164,14 +173,17 @@ func evaluate_placement(card: CardStats, pos: Vector2) -> void:
 			_add_reward(-100)
 			print("poorly placed ", card.resource_name, " (into air units)")
 		
+		# Encourage capitalizing on lack of air defense
 		if card.is_air and not enemies.any(func(c): return c.stats.target_air):
 			_add_reward(100)
 			print("well placed ", card.resource_name, " (no anti-air)")
 		
+		# Encourage defending melee cards with ranged cards
 		if card.is_ranged and not enemies[0].stats.is_ranged:
 			_add_reward(100)
 			print("well placed ", card.resource_name, " (ranged defense)")
 		
+		# Encourage attacking flying and ranged enemies with spells
 		if (
 				card.is_spell and card.damage > enemies.back().stats.hp
 				and (enemies.back().stats.is_ranged or enemies.back().stats.is_air)
@@ -179,14 +191,17 @@ func evaluate_placement(card: CardStats, pos: Vector2) -> void:
 			_add_reward(300)
 			print("spell value")
 		
+		# Discourage placing a non-attacking card directly into enemy cards
 		if not card.target_troops:
 			_add_reward(-200)
 			print("poorly placed ", card.resource_name, " (into enemies)")
-			
+		
+		# Discourage placing a card on one side while there are undefended enemies on the other side
 		if not enemy.get_cards(card_side * -1).is_empty() and get_cards(card_side * -1).is_empty():
 			_add_reward(-100)
 			print("no defense on other lane")
 	
+	# Discourage spell waste
 	if card.is_spell and enemies.is_empty():
 		_add_reward(-300)
 		print("wasted spell")
@@ -195,23 +210,25 @@ func evaluate_placement(card: CardStats, pos: Vector2) -> void:
 		_add_reward(100)
 		print("opportunistic attack")
 
-
+## Reset the player to the start-of-match state.
 func reset():
 	for tower in get_crown_towers():
 		tower.reset()
 	
+	# Delete placed cards.
 	for card in get_cards():
 		card.queue_free()
 	
 	elixir = 5.0
 	hand = Hand.new(deck)
 	
+	# Add reward for winning
 	$AIController2D.done = true
 	_add_reward(1000 * (1 if is_winning() else 0))
 	
 	$AIController2D.reset()
 
-
+## Calculate who's winning, assuming the game is ongoing
 func is_winning():
 	var princess_towers = get_crown_towers()
 	princess_towers.erase(king_tower)
@@ -219,6 +236,7 @@ func is_winning():
 	var enemy_princess_towers = enemy.get_crown_towers()
 	enemy_princess_towers.erase(enemy.king_tower)
 	
+	# If we have more princess towers than the enemy, we win
 	if len(princess_towers) > len(enemy_princess_towers):
 		return true
 	
@@ -232,13 +250,10 @@ func is_winning():
 		if tower.current_hp < lowest_tower:
 			lowest_enemy_tower = tower.current_hp
 	
-	
-	if lowest_tower > lowest_enemy_tower:
-		return true
-	
-	return false
+	# If princess tower amounts are equal, the side with the lowest health tower loses.
+	return lowest_tower > lowest_enemy_tower
 
-
+## Configure a card node to be placed at the specified position. Does the dirty work for place_card
 func _instantiate_card(stats: CardStats, pos: Vector2):
 	elixir -= stats.elixir
 	
@@ -250,15 +265,17 @@ func _instantiate_card(stats: CardStats, pos: Vector2):
 		# Slightly randomize card placement to avoid repulsion artefacts
 		card.position = pos + Vector2(randf() * 2 - 1, randf() * 2 - 1)
 		
+		# Generate a unique name for the node i.e. RedKnight5
 		var color := "blue" if is_blue else "red"
 		var unique_id := str(get_tree().get_node_count_in_group(color))
 		card.name = color.capitalize() + stats.resource_name + unique_id
 		
+		# Make card target all enemy towers
 		card.targets.append_array(enemy.get_crown_towers())
 		
 		$Cards.add_child(card)
 
-
+# Register reward for AI training.
 func _add_reward(amount: float):
 	$AIController2D.reward += amount
 
@@ -269,7 +286,7 @@ func _on_selected_changed(new: int):
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	var action_name = "place_blue" if is_blue else "place_red"
-	
+	# If placed card on allied side of the arena, place it on the mouse.
 	if event.is_action_pressed(action_name):
 		place_card(get_global_mouse_position())
 
@@ -283,8 +300,9 @@ func _on_enemy_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) 
 	if event.is_action_pressed(action_name) and hand.get_card(selected).is_spell:
 		place_card(get_global_mouse_position())
 
-
+# Adds elixir every set interval (0.25 elixir every 0.7 seconds)
 func _on_elixir_timer_timeout() -> void:
+	# Penalize leaking elixir (letting the elixir count overflow)
 	if elixir == 10:
 		print("leaking elixir")
 		_add_reward(-50)
@@ -297,6 +315,6 @@ func _on_king_died() -> void:
 
 
 func _on_tower_damaged(damage: float, tower: Card) -> void:
-	var is_enemy = (is_blue and not tower.is_blue) or (tower.is_blue and not is_blue)
+	var is_enemy = is_blue != tower.is_blue
 	
 	_add_reward(damage * (1 if is_enemy else -1))

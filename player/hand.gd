@@ -1,4 +1,5 @@
 class_name Hand
+## Represents the hand, cards and deck used by the player and handles drawing cards.
 
 var deck: Array[CardStats]
 

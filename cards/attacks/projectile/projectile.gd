@@ -8,6 +8,7 @@ var target: Card
 
 
 func _physics_process(delta: float) -> void:
+	# If the target is deleted, delete the projectile
 	if target == null:
 		queue_free()
 		return

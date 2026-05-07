@@ -50,6 +50,8 @@ extends Resource
 @export var id: int
 
 
+## Return array of floats representing the most
+## important stats of the card. Used for AI training.
 func get_observation() -> Array[float]:
 	var obs: Array[float] = []
 

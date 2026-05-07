@@ -1,5 +1,5 @@
 extends VBoxContainer
-
+## Displays a player's hand in the UI and sends inputs to the player through signals.
 
 signal selected_changed(new: int)
 
@@ -14,6 +14,7 @@ func _ready() -> void:
 	
 	player.card_placed.connect(update)
 	
+	# Make card slots change color to match player color
 	var color_name = "blue" if player.is_blue else "red"
 	
 	var slot_texture := load("res://ui/cards/assets/card_slot_%s.png" % color_name)
@@ -32,7 +33,7 @@ func _ready() -> void:
 	
 	update()
 
-
+## Observe the player's hand and update the UI accordingly.
 func update() -> void:
 	var hand := player.hand
 	
