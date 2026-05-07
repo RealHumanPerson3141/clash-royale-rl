@@ -46,6 +46,9 @@ func _ready() -> void:
 			
 			tower.position.x = 640 - tower.position.x
 	
+	for tower in get_crown_towers() + enemy.get_crown_towers():
+		tower.took_damage.connect(_on_tower_damaged.bind(tower))
+	
 	enemy.input_event.connect(_on_enemy_input_event)
 
 
@@ -69,9 +72,15 @@ func get_cards(side: int = 0) -> Array[Card]:
 		return cards
 	
 	const MIDDLE_Y = 178
-	for card in cards:
-		if side < 0 and card.position.y < MIDDLE_Y or side > 0 and card.position.y > MIDDLE_Y:
-			cards.erase(card) 
+	if side > 0:
+		cards = cards.filter(func(card): return card.position.y < MIDDLE_Y)
+	else:
+		cards = cards.filter(func(card): return card.position.y > MIDDLE_Y)
+	
+	var sort_position = func (a: Card, b: Card) -> bool:
+		return a.position.x < b.position.x != is_blue
+	
+	cards.sort_custom(sort_position)
 	
 	return cards
 
@@ -103,12 +112,12 @@ func get_observation() -> Array[float]:
 		var friendly_cards = get_cards(side)
 		var enemy_cards = enemy.get_cards(side)
 	
-		var sort_position = func (a: Card, b: Card) -> bool:
-			return a.position.x < b.position.x
-	
 		for cards in [friendly_cards, enemy_cards]:
-			cards.sort_custom(sort_position)
-		
+			#if cards == friendly_cards:
+			#	print("\tfriendly")
+			#else:
+			#	print("\tenemy")
+			
 			for card in cards:
 				obs.append_array(card.get_observation(is_blue))
 	
@@ -117,23 +126,7 @@ func get_observation() -> Array[float]:
 			for i in range(CARD_OBS_SIZE * (MAX_CARDS_PER_SIDE - len(cards))):
 				obs.append(0)
 	
-	
 	return obs
-
-
-func get_reward():
-	var tower_health_sum := 0
-	
-	for tower in get_crown_towers():
-		tower_health_sum += tower.current_hp
-	for tower in enemy.get_crown_towers():
-		tower_health_sum -= tower.current_hp
-	
-	var elixir_advantage = float(get_total_elixir()) / enemy.get_total_elixir()
-	if tower_health_sum < 0:
-		elixir_advantage = 1 / elixir_advantage
-
-	return int(tower_health_sum * elixir_advantage)
 
 
 func place_card(pos: Vector2):
@@ -142,13 +135,65 @@ func place_card(pos: Vector2):
 	
 	var card = hand.get_card(selected)
 	if elixir < card.elixir:
+		# lightly punish placing a card without elixir
+		_add_reward(-50)
 		return
 	
 	var stats := hand.draw_card(selected)
 	
+	# AI playing
+	if $AIController2D.heuristic != "human":
+		evaluate_placement(card, pos)
+	
 	_instantiate_card(stats, pos)
 	
 	card_placed.emit()
+
+
+func evaluate_placement(card: CardStats, pos: Vector2) -> void:
+	var card_side = 1 if pos.y < 178 else -1
+	
+	var enemies = enemy.get_cards(card_side)
+	
+	if not enemies.is_empty():
+		# Encourage proper air defense
+		if enemies[0].stats.is_air and card.target_air:
+			print("well placed ", card.resource_name, " (anti-air)")
+			_add_reward(200)
+		elif enemies[0].stats.is_air:
+			_add_reward(-100)
+			print("poorly placed ", card.resource_name, " (into air units)")
+		
+		if card.is_air and not enemies.any(func(c): return c.stats.target_air):
+			_add_reward(100)
+			print("well placed ", card.resource_name, " (no anti-air)")
+		
+		if card.is_ranged and not enemies[0].stats.is_ranged:
+			_add_reward(100)
+			print("well placed ", card.resource_name, " (ranged defense)")
+		
+		if (
+				card.is_spell and card.damage > enemies.back().stats.hp
+				and (enemies.back().stats.is_ranged or enemies.back().stats.is_air)
+		):
+			_add_reward(300)
+			print("spell value")
+		
+		if not card.target_troops:
+			_add_reward(-200)
+			print("poorly placed ", card.resource_name, " (into enemies)")
+			
+		if not enemy.get_cards(card_side * -1).is_empty() and get_cards(card_side * -1).is_empty():
+			_add_reward(-100)
+			print("no defense on other lane")
+	
+	if card.is_spell and enemies.is_empty():
+		_add_reward(-300)
+		print("wasted spell")
+	
+	if enemy.elixir < 1:
+		_add_reward(100)
+		print("opportunistic attack")
 
 
 func reset():
@@ -162,7 +207,36 @@ func reset():
 	hand = Hand.new(deck)
 	
 	$AIController2D.done = true
+	_add_reward(1000 * (1 if is_winning() else 0))
+	
 	$AIController2D.reset()
+
+
+func is_winning():
+	var princess_towers = get_crown_towers()
+	princess_towers.erase(king_tower)
+	
+	var enemy_princess_towers = enemy.get_crown_towers()
+	enemy_princess_towers.erase(enemy.king_tower)
+	
+	if len(princess_towers) > len(enemy_princess_towers):
+		return true
+	
+	var lowest_tower := 3052.0
+	for tower in princess_towers:
+		if tower.current_hp < lowest_tower:
+			lowest_tower = tower.current_hp
+			
+	var lowest_enemy_tower = 3052.0
+	for tower in enemy_princess_towers:
+		if tower.current_hp < lowest_tower:
+			lowest_enemy_tower = tower.current_hp
+	
+	
+	if lowest_tower > lowest_enemy_tower:
+		return true
+	
+	return false
 
 
 func _instantiate_card(stats: CardStats, pos: Vector2):
@@ -183,6 +257,10 @@ func _instantiate_card(stats: CardStats, pos: Vector2):
 		card.targets.append_array(enemy.get_crown_towers())
 		
 		$Cards.add_child(card)
+
+
+func _add_reward(amount: float):
+	$AIController2D.reward += amount
 
 
 func _on_selected_changed(new: int):
@@ -207,8 +285,18 @@ func _on_enemy_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) 
 
 
 func _on_elixir_timer_timeout() -> void:
+	if elixir == 10:
+		print("leaking elixir")
+		_add_reward(-50)
 	elixir += 0.25
 
 
 func _on_king_died() -> void:
+	_add_reward(-1000)
 	king_died.emit()
+
+
+func _on_tower_damaged(damage: float, tower: Card) -> void:
+	var is_enemy = (is_blue and not tower.is_blue) or (tower.is_blue and not is_blue)
+	
+	_add_reward(damage * (1 if is_enemy else -1))
