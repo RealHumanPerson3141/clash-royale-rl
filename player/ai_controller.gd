@@ -45,9 +45,14 @@ func set_action(action) -> void:
 	# Assist AI in placing projectiles
 	var enemies = player.enemy.get_cards(1 if pos.y == 89 else -1)
 	if player.hand.get_card(action.selected_card).is_spell and not enemies.is_empty():
-		# Absolute spaghetti
 		# Target the backmost enemy with a spell, offsetted to match movement speed.
-		pos.x = enemies.back().position.x - (64 if player.is_blue else -64)
+		var offset = enemies.back().tiles_per_second * Global.TILE_SIZE
+		# If the enemy is attacking, they should be stationary
+		if enemies.back().attacking:
+			offset = 0
+		else:
+			offset *= 1 if player.is_blue else -1
+		pos.x = enemies.back().position.x - offset
 	else:
 		# This represents either right in front of the princess towers.
 		pos.x = 192 if player.is_blue else 640 - 192
