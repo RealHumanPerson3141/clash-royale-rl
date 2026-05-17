@@ -46,7 +46,7 @@ func set_action(action) -> void:
 	var enemies = player.enemy.get_cards(1 if pos.y == 89 else -1)
 	if player.hand.get_card(action.selected_card).is_spell and not enemies.is_empty():
 		# Target the backmost enemy with a spell, offsetted to match movement speed.
-		var offset = enemies.back().tiles_per_second * Global.TILE_SIZE
+		var offset = enemies.back().pixels_per_second
 		# If the enemy is attacking, they should be stationary
 		if enemies.back().attacking:
 			offset = 0

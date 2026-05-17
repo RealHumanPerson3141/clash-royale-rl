@@ -12,7 +12,7 @@ var current_hp: int
 
 var previous_hp: int
 
-var tiles_per_second: float
+var pixels_per_second: float
 
 var enemy_group: String
 
@@ -50,7 +50,7 @@ func _ready() -> void:
 	
 	health_bar.max_value = stats.hp
 	
-	tiles_per_second = stats.move_speed * 0.02 * Global.TILE_SIZE
+	pixels_per_second = stats.move_speed * 0.02 * Global.TILE_SIZE
 	
 	# The first children of these areas should be their collision circles
 	sight_area.get_child(0).shape = CircleShape2D.new()
@@ -105,7 +105,7 @@ func _physics_process(delta: float) -> void:
 		navigation.target_position = target.position
 		
 		var next_path_direction = to_local(navigation.get_next_path_position()).normalized()
-		position += next_path_direction * tiles_per_second * delta
+		position += next_path_direction * pixels_per_second * delta
 		# Lock rotation to 90 degree intervals
 		$Sprite2D.rotation = round(next_path_direction.angle() * 2 / PI) / 2 * PI 
 	
@@ -323,7 +323,7 @@ func _on_hit_timer_timeout() -> void:
 		
 		projectile.position = position
 		projectile.target = target
-		projectile.tiles_per_second = 600 * 0.02 * Global.TILE_SIZE
+		projectile.pixels_per_second = 600 * 0.02 * Global.TILE_SIZE
 		projectile.hit_target.connect(_attack)
 		
 		$Attacks.add_child(projectile)
