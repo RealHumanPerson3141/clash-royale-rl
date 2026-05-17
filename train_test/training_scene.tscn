@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://5gqblquu1mv8"]
+[gd_scene load_steps=4 format=3 uid="uid://5gqblquu1mv8"]
 
+[ext_resource type="Script" uid="uid://kt7mosnorpho" path="res://train_test/training_scene.gd" id="1_fgbly"]
 [ext_resource type="PackedScene" uid="uid://lyjsvmqbf02i" path="res://arena/arena.tscn" id="1_xc8rt"]
 [ext_resource type="Script" uid="uid://dx4lrkmp7krux" path="res://addons/godot_rl_agents/sync.gd" id="2_hbs11"]
 
 [node name="TrainingScene" type="Node"]
+script = ExtResource("1_fgbly")
 
 [node name="GridContainer" type="GridContainer" parent="."]
 anchors_preset = 15
