@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://v5un3joerh23"]
+
+[ext_resource type="PackedScene" uid="uid://c3tao3wqtu4ah" path="res://ui/menus/menu_panel.tscn" id="1_06wmu"]
+[ext_resource type="Script" uid="uid://b7ugvadgskrrk" path="res://ui/menus/settings.gd" id="2_gd5yh"]
+[ext_resource type="Theme" uid="uid://cvcnn8uadhord" path="res://ui/menus/style.tres" id="3_8f8g0"]
+
+[node name="Settings" instance=ExtResource("1_06wmu")]
+script = ExtResource("2_gd5yh")
+title = "SETTINGS"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+theme = ExtResource("3_8f8g0")
+text = "Resolution"
+
+[node name="Resolution" type="OptionButton" parent="VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+theme = ExtResource("3_8f8g0")
+selected = 1
+item_count = 3
+popup/item_0/text = "1920x1080"
+popup/item_0/id = 0
+popup/item_1/text = "1280x720"
+popup/item_1/id = 1
+popup/item_2/text = "640x360"
+popup/item_2/id = 2
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/Resolution" to="." method="_on_resolution_item_selected"]
