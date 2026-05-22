@@ -1,12 +1,15 @@
-[gd_scene load_steps=15 format=4 uid="uid://lyjsvmqbf02i"]
+[gd_scene load_steps=19 format=4 uid="uid://lyjsvmqbf02i"]
 
 [ext_resource type="Script" uid="uid://c1yho4o8wnt6" path="res://arena/arena.gd" id="1_0310r"]
 [ext_resource type="TileSet" uid="uid://b4gvw31o3wo84" path="res://arena/assets/arena_tileset.tres" id="2_7ft05"]
 [ext_resource type="PackedScene" uid="uid://blik06fcl52cg" path="res://player/player.tscn" id="2_gi188"]
 [ext_resource type="Texture2D" uid="uid://cn85mcwihqogp" path="res://ui/assets/ui_tileset.png" id="3_x52g8"]
 [ext_resource type="PackedScene" uid="uid://cl7b8dapm2noe" path="res://ui/cards/hand_display.tscn" id="5_lebtn"]
+[ext_resource type="Theme" uid="uid://cvcnn8uadhord" path="res://ui/menus/style.tres" id="6_57w3w"]
 [ext_resource type="Script" uid="uid://ch6713vgmqjgm" path="res://ui/timer.gd" id="10_lebtn"]
 [ext_resource type="FontFile" uid="uid://b5rp2neeiipol" path="res://ui/assets/fonts/block_craft.otf" id="12_dp7am"]
+[ext_resource type="Script" uid="uid://dx4lrkmp7krux" path="res://addons/godot_rl_agents/sync.gd" id="12_mxqhn"]
+[ext_resource type="PackedScene" uid="uid://cnvw0n34xflm4" path="res://ui/menus/game_over.tscn" id="13_dp7am"]
 [ext_resource type="Script" uid="uid://byyr2lno2nx4p" path="res://ui/elixir/elixir.gd" id="16_2alhc"]
 [ext_resource type="Texture2D" uid="uid://bqc7p1lunpryd" path="res://ui/elixir/assets/elixir_under.png" id="16_7rgpn"]
 [ext_resource type="Texture2D" uid="uid://bx3lsxb7yhcxm" path="res://ui/elixir/assets/elixir_progress.png" id="17_2alhc"]
@@ -29,6 +32,10 @@ texture = ExtResource("3_x52g8")
 
 [sub_resource type="TileSet" id="TileSet_ts1j6"]
 sources/0 = SubResource("TileSetAtlasSource_8m4co")
+
+[sub_resource type="LabelSettings" id="LabelSettings_dp7am"]
+font = ExtResource("12_dp7am")
+font_size = 32
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_0310r")
@@ -108,6 +115,31 @@ theme_override_constants/margin_right = 6
 [node name="RedHand" parent="UI/MarginContainerRight" node_paths=PackedStringArray("player") instance=ExtResource("5_lebtn")]
 layout_mode = 2
 player = NodePath("../../../RedPlayer")
+
+[node name="MarginContainerTop" type="MarginContainer" parent="UI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/MarginContainerTop"]
+layout_mode = 2
+theme = ExtResource("6_57w3w")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MarginContainerTop/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="Score" type="Label" parent="UI/MarginContainerTop/PanelContainer"]
+layout_mode = 2
+text = "0 - 0"
+label_settings = SubResource("LabelSettings_dp7am")
+horizontal_alignment = 1
 
 [node name="MarginContainerBottom" type="MarginContainer" parent="UI"]
 anchors_preset = 7
@@ -222,16 +254,39 @@ text = "5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="GameOver" parent="UI" instance=ExtResource("13_dp7am")]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = -44.5
+offset_right = 124.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sync" type="Node" parent="."]
+script = ExtResource("12_mxqhn")
+control_mode = 2
+onnx_model_path = "train_test/model.onnx"
+metadata/_custom_type_script = "uid://dx4lrkmp7krux"
+
 [connection signal="round_ended" from="." to="UI/MarginContainerLeft/BlueHand" method="update"]
 [connection signal="round_ended" from="." to="UI/MarginContainerRight/RedHand" method="update"]
 [connection signal="card_placed" from="BluePlayer" to="UI/MarginContainerLeft/BlueHand" method="_on_card_placed"]
 [connection signal="elixir_changed" from="BluePlayer" to="UI/MarginContainerBottom/HBoxContainer/BlueElixir" method="_on_elixir_changed"]
-[connection signal="king_died" from="BluePlayer" to="." method="reset"]
+[connection signal="king_died" from="BluePlayer" to="." method="_on_tower_died"]
+[connection signal="princess_died" from="BluePlayer" to="." method="_on_tower_died"]
 [connection signal="card_placed" from="RedPlayer" to="UI/MarginContainerRight/RedHand" method="_on_card_placed"]
 [connection signal="elixir_changed" from="RedPlayer" to="UI/MarginContainerBottom/HBoxContainer/RedElixir" method="_on_elixir_changed"]
-[connection signal="king_died" from="RedPlayer" to="." method="reset"]
-[connection signal="timeout" from="MatchTimer" to="." method="reset"]
+[connection signal="king_died" from="RedPlayer" to="." method="_on_tower_died"]
+[connection signal="princess_died" from="RedPlayer" to="." method="_on_tower_died"]
+[connection signal="timeout" from="MatchTimer" to="." method="end_match"]
 [connection signal="timeout" from="ElixirTimer" to="BluePlayer" method="_on_elixir_timer_timeout"]
 [connection signal="timeout" from="ElixirTimer" to="RedPlayer" method="_on_elixir_timer_timeout"]
 [connection signal="selected_changed" from="UI/MarginContainerLeft/BlueHand" to="BluePlayer" method="_on_selected_changed"]
 [connection signal="selected_changed" from="UI/MarginContainerRight/RedHand" to="RedPlayer" method="_on_selected_changed"]
+[connection signal="closed" from="UI/GameOver" to="." method="_on_play_again"]

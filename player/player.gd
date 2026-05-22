@@ -4,6 +4,7 @@ extends Area2D
 
 signal card_placed()
 signal elixir_changed(new: float)
+signal princess_died()
 signal king_died()
 
 @export var is_blue: bool
@@ -31,6 +32,9 @@ var elixir: float:
 		# Elixir cannot exceed 10
 		_elixir = min(value, 10)
 		elixir_changed.emit(_elixir)
+
+# The player's score, determined by the number of enemy towers remaining
+var score: int = 0
 
 @onready var hand := Hand.new(deck)
 
@@ -230,6 +234,8 @@ func reset():
 	for card in get_cards():
 		card.queue_free()
 	
+	score = 0
+	
 	elixir = 5.0
 	hand = Hand.new(deck)
 	
@@ -241,15 +247,14 @@ func reset():
 
 ## Calculate who's winning, assuming the game is ongoing
 func is_winning():
+	if score != enemy.score:
+		return score > enemy.score
+	
 	var princess_towers = get_crown_towers()
 	princess_towers.erase(king_tower)
 	
 	var enemy_princess_towers = enemy.get_crown_towers()
 	enemy_princess_towers.erase(enemy.king_tower)
-	
-	# If we have more princess towers than the enemy, we win
-	if len(princess_towers) > len(enemy_princess_towers):
-		return true
 	
 	var lowest_tower := 3052.0
 	for tower in princess_towers:
@@ -320,8 +325,15 @@ func _on_elixir_timer_timeout() -> void:
 	elixir += 0.25
 
 
+func _on_princess_died() -> void:
+	_add_reward(-500)
+	enemy.score += 1
+	princess_died.emit()
+
+
 func _on_king_died() -> void:
 	_add_reward(-1000)
+	enemy.score = 3
 	king_died.emit()
 
 

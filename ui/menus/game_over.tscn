@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnvw0n34xflm4"]
+
+[ext_resource type="PackedScene" uid="uid://c3tao3wqtu4ah" path="res://ui/menus/menu_panel.tscn" id="1_5lewt"]
+[ext_resource type="Script" uid="uid://bb3w548iuvkvu" path="res://ui/menus/game_over.gd" id="2_k5c08"]
+[ext_resource type="Theme" uid="uid://cvcnn8uadhord" path="res://ui/menus/style.tres" id="2_mocun"]
+
+[node name="GameOver" instance=ExtResource("1_5lewt")]
+process_mode = 3
+script = ExtResource("2_k5c08")
+title = "GAME OVER!"
+
+[node name="MainMenu" type="Button" parent="VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_mocun")
+text = "Main Menu"
+
+[node name="Return" parent="VBoxContainer/MarginContainer" index="0"]
+text = "Play Again"
+
+[connection signal="pressed" from="VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
