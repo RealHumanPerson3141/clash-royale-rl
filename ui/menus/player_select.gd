@@ -16,7 +16,16 @@ func _ready() -> void:
 
 
 func _on_start_game_pressed() -> void:
-	Global.is_blue_ai = blue_buttons.get_pressed_button().name == "AI"
-	Global.is_red_ai = red_buttons.get_pressed_button().name == "AI"
+	# If blue is AI
+	if blue_buttons.get_pressed_button().name == "AI":
+		Global.blue_control_mode = AIController2D.ControlModes.ONNX_INFERENCE
+	else:
+		Global.blue_control_mode = AIController2D.ControlModes.HUMAN
+	
+	# If red is AI
+	if red_buttons.get_pressed_button().name == "AI":
+		Global.red_control_mode = AIController2D.ControlModes.ONNX_INFERENCE
+	else:
+		Global.red_control_mode = AIController2D.ControlModes.HUMAN
 	
 	get_tree().change_scene_to_file("res://arena/arena.tscn")

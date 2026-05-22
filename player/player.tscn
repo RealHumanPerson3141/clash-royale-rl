@@ -32,7 +32,6 @@ is_blue = true
 
 [node name="AIController2D" type="Node2D" parent="."]
 script = ExtResource("5_qjkh3")
-onnx_model_path = "train_test/model.onnx"
 metadata/_custom_type_script = "uid://urar176wysa7"
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]

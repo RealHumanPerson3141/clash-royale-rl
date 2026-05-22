@@ -22,7 +22,7 @@ func _input(event: InputEvent) -> void:
 
 
 func end_match() -> void:
-	if Global.is_training:
+	if $Sync.control_mode == $Sync.ControlModes.TRAINING:
 		reset()
 	else:
 		$UI/GameOver.visible = true
@@ -44,7 +44,7 @@ func _on_tower_died() -> void:
 	var score_label = $UI/MarginContainerTop/PanelContainer/Score
 	score_label.text = "%s - %s" % [$BluePlayer.score, $RedPlayer.score]
 	
-	if $BluePlayer.king_tower.current_hp < 0 or $RedPlayer.king_tower.current_hp < 0:
+	if not $BluePlayer.king_tower.visible or not $RedPlayer.king_tower.visible:
 		end_match()
 
 

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxl3tts3nxo7t"]
+
+[ext_resource type="PackedScene" uid="uid://lyjsvmqbf02i" path="res://arena/arena.tscn" id="1_wbakl"]
+
+[node name="TrainingArena" instance=ExtResource("1_wbakl")]
+
+[node name="Sync" parent="." index="7"]
+control_mode = 1
+speed_up = 32.0
+onnx_model_path = ""

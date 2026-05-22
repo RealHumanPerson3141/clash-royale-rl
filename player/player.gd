@@ -59,16 +59,9 @@ func _ready() -> void:
 	# Register input events on the enemy's side
 	enemy.input_event.connect(_on_enemy_input_event)
 	
-	# The default mode is 'Inherit from Sync'. If training, leave this unchanged
-	if Global.is_training:
-		return
-	
 	# Change control mode of player to match global settings
-	var use_model = Global.is_blue_ai if is_blue else Global.is_red_ai
-	if use_model:
-		$AIController2D.control_mode = AIController2D.ControlModes.ONNX_INFERENCE
-	else:
-		$AIController2D.control_mode = AIController2D.ControlModes.HUMAN
+	var control_mode = Global.blue_control_mode if is_blue else Global.red_control_mode
+	$AIController2D.control_mode = control_mode
 
 
 func get_crown_towers() -> Array[Card]:
