@@ -13,6 +13,7 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	
+	# Move towards target at specified speed
 	global_position = global_position.move_toward(target.global_position, pixels_per_second * delta)
 
 
