@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c3tao3wqtu4ah"]
 
 [ext_resource type="Theme" uid="uid://cvcnn8uadhord" path="res://ui/menus/style.tres" id="1_y6gjx"]
-[ext_resource type="Script" uid="uid://cwpfwnndgwe8n" path="res://menu_panel.gd" id="2_kql8w"]
+[ext_resource type="Script" uid="uid://cwpfwnndgwe8n" path="res://ui/menus/menu_panel.gd" id="2_kql8w"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vvqa4"]
 font_size = 32

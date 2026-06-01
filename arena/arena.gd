@@ -3,9 +3,6 @@ extends Node2D
 
 signal round_ended()
 
-var blue_score := 0
-var red_score := 0
-
 
 func _ready() -> void:
 	# This signal needs to be emitted in order to activate the AI sync node.
